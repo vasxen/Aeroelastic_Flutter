@@ -68,13 +68,34 @@ def InfluenceCoefficients(Nel: int, CollocationPoints: NDArray[np.float64], Norm
 
     return A, B
 
-def Qmatrix():
+def Qmatrix(Nel: int, Ndof: int, NxElements: int, NodeMatrix: NDArray[np.float64], ElementMatrix: NDArray[np.int32]):
     '''Q matrix Relates pressure distribution with external forces'''
-    ...
+    Q = np.zeros((Ndof, Nel), dtype = np.float64)
+    for i in range(Nel):
+        y1 = NodeMatrix[ElementMatrix[i,0], 1]
+        y2 = NodeMatrix[ElementMatrix[i,1], 1]
+        y3 = NodeMatrix[ElementMatrix[i,2], 1]
+        y4 = NodeMatrix[ElementMatrix[i,3], 1]
+        Dy = (y3 + y4) / 2 - (y1 + y2) / 2
+        Dofs = (ElementMatrix[i,:] + 1) * 6 - 4
+        LE = i % (NxElements) == 0 # is leading edge panel?
+        Q[Dofs, i] += Dy / 4
+        if not LE:
+            Q[Dofs, i - 1] += -Dy / 4
 
-def Dmatrix():
+    return Q
+
+def Dmatrix(Nel: int, Ndof: int, NodeMatrix: NDArray[np.float64], ElementMatrix: NDArray[np.int32]):
     '''D matrix Relates AoA with vertical (z) displacement of the nodes'''
-    ...
+    D = np.zeros((Nel, Ndof), dtype = np.float64)
+    for i in range(Nel):
+        x1 = NodeMatrix[ElementMatrix[i,0], 0]
+        x2 = NodeMatrix[ElementMatrix[i,1], 0]
+        x3 = NodeMatrix[ElementMatrix[i,2], 0]
+        x4 = NodeMatrix[ElementMatrix[i,3], 0]
+        Dx = (x2 + x3) / 2 - (x1 + x4) /2
+        D[i, 6*(ElementMatrix[i,:] + 1) - 4] = 1 / (2 * Dx) * np.array([1, -1, -1, 1], dtype = np.float64)
+    return D
 
 def Ematrix():
     '''E matrix Relates structural velocity in the collocation points (zdirection ) to velocity vector { u_point }'''
@@ -83,40 +104,53 @@ def Ematrix():
 
 ######## Code Test ##########
 if __name__ == '__main__':
-    P1 = np.array([0, 0, 0], dtype = np.float64)
-    P2 = np.array([1, 1, 1], dtype = np.float64)
-    P = np.array([2, 2, 2], dtype = np.float64)
+    Dm = sio.loadmat('Dmatrix')
+    Dq = sio.loadmat('matrixQ')
+    dim = Dm['dim']
+    X = Dm['X']
+    Tn = (Dm['Tn'] - 1).astype(np.int32)
+    # Dmatlab = Dm['D']
+    # D = Dmatrix(160, 1122, X, Tn)
+    Q = Qmatrix(160, 1122, 10, X, Tn)
+    Qmatlab = Dq['Q']
+    Diff = Q - Qmatlab
+
+
+
+    # P1 = np.array([0, 0, 0], dtype = np.float64)
+    # P2 = np.array([1, 1, 1], dtype = np.float64)
+    # P = np.array([2, 2, 2], dtype = np.float64)
     Gamma = 2
-    V = VortexLineInducedVelocity(P1, P2, P , Gamma)
+    # V = VortexLineInducedVelocity(P1, P2, P , Gamma)
 
-    InfCoeffInput = sio.loadmat('InfCoeffInput')
-    InfCoeffOut = sio.loadmat('InfCoeffOut')
+    # InfCoeffInput = sio.loadmat('InfCoeffInput')
+    # InfCoeffOut = sio.loadmat('InfCoeffOut')
 
-    Nel = int((InfCoeffInput['xel'] *  InfCoeffInput['yel'])[0,0])
-    Npan = int(InfCoeffInput['npan'][0,0])
+    # Nel = int((InfCoeffInput['xel'] *  InfCoeffInput['yel'])[0,0])
+    # Npan = int(InfCoeffInput['npan'][0,0])
 
-    CollocationPoints = InfCoeffInput['c75elem']
-    Norm = InfCoeffInput['normals']
-    PanelNodes = InfCoeffInput['c4corner']
+    # CollocationPoints = InfCoeffInput['c75elem']
+    # Norm = InfCoeffInput['normals']
+    # PanelNodes = InfCoeffInput['c4corner']
 
-    PanelConnectivity = np.zeros((Npan, 6), dtype = np.int32)
-    PanelConnectivity[:,0] = np.arange(Npan)
-    PanelConnectivity[:,1:5] = InfCoeffInput['Tnp'][:,[0,3,2,1]] - 1 
-    PanelConnectivity[:,5] = InfCoeffInput['Tmp'][:,0]
+    # PanelConnectivity = np.zeros((Npan, 6), dtype = np.int32)
+    # PanelConnectivity[:,0] = np.arange(Npan)
+    # PanelConnectivity[:,1:5] = InfCoeffInput['Tnp'][:,[0,3,2,1]] - 1 
+    # PanelConnectivity[:,5] = InfCoeffInput['Tmp'][:,0]
 
-    Panel2ShellCon = np.zeros((Npan,2) , dtype = np.int32)
-    Panel2ShellCon[:,0] = np.arange(Npan)
-    Panel2ShellCon[:,1] = InfCoeffInput['Tdp'][:,0] - 1
+    # Panel2ShellCon = np.zeros((Npan,2) , dtype = np.int32)
+    # Panel2ShellCon[:,0] = np.arange(Npan)
+    # Panel2ShellCon[:,1] = InfCoeffInput['Tdp'][:,0] - 1
 
-    s = time()
-    A, B = InfluenceCoefficients(Nel, CollocationPoints, Norm, Npan, PanelNodes, PanelConnectivity, Panel2ShellCon)
-    f = time()
+    # s = time()
+    # A, B = InfluenceCoefficients(Nel, CollocationPoints, Norm, Npan, PanelNodes, PanelConnectivity, Panel2ShellCon)
+    # f = time()
 
-    print('time : ', f - s)
-    DifferenceA: NDArray = A - InfCoeffOut['A']
-    DifferenceB: NDArray = B - InfCoeffOut['B']
-    print(np.max(DifferenceA.flat))
-    print(np.max(DifferenceB.flat))
+    # print('time : ', f - s)
+    # DifferenceA: NDArray = A - InfCoeffOut['A']
+    # DifferenceB: NDArray = B - InfCoeffOut['B']
+    # print(np.max(DifferenceA.flat))
+    # print(np.max(DifferenceB.flat))
 
 
 

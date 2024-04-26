@@ -86,6 +86,10 @@ class PBEAM():
     MAT: IsotropicMaterial
     ...
 
+@dataclass
+class CAERO():
+    PanelNodes: NDArray[np.float64]
+    PanelConnectivity: NDArray[np.int32]
 # -------- Aeroelastic Analysis --------
 @dataclass
 class AerolasticAnalysis():
@@ -210,15 +214,15 @@ def main() -> None:
         # Plot the line connecting the four points
         ax.plot(x_coords, y_coords, color = 'red')
 
-    for element in Aeropanels:
-        # Extract x, y, z coordinates for each point in the element
-        element = np.append(element[1:-1], element[1])
-        x_coords = NodeMatrix[element, 0]
-        y_coords = NodeMatrix[element, 1]
-        z_coords = NodeMatrix[element, 2]
+    # for element in Aeropanels:
+    #     # Extract x, y, z coordinates for each point in the element
+    #     element = np.append(element[1:-1], element[1])
+    #     x_coords = NodeMatrix[element, 0]
+    #     y_coords = NodeMatrix[element, 1]
+    #     z_coords = NodeMatrix[element, 2]
         
-        # Plot the line connecting the four points
-        ax.plot(x_coords, y_coords, color = 'green')
+    #     # Plot the line connecting the four points
+    #     ax.plot(x_coords, y_coords, color = 'green')
     ax.set_aspect('equal')
     plt.show()
 
