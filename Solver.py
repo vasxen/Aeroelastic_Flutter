@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 import pandas as pd
 from typing import List, Tuple, Union, Dict
 from numpy.typing import NDArray
-from Preprocessor import PSHELL, PCOMP, OrthotropicMaterial, IsotropicMaterial
+from Preprocessor import PSHELL, PCOMP, OrthotropicMaterial, IsotropicMaterial, CORD1R
 
 from scipy.io import savemat
 from scipy.linalg import eig
@@ -63,9 +63,6 @@ class Q4Elements():
         self.MassMatrix = M
         self.RotationMatrices = R
         self.Areas = A
-
-
-
 
     @staticmethod
     def __RotationMatrix(Nodes: NDArray) -> Tuple[NDArray, np.float64]:
@@ -226,7 +223,7 @@ class Q4Elements():
             Ds = T2.T @ D2 @ T2
             return Dp, Ds
         
-        AngularDifference = np.arccos(np.dot(LocalxAxis, Property.CoordinateSystem[:,0]))
+        AngularDifference = np.arccos(np.dot(LocalxAxis, Property.CoordinateSystem.UnitVectors[:,0]))
         beta : List[float]= [b + AngularDifference for b in Property.Theta]
         # Stress - Strain Marices 
         Cm = np.zeros((3,3), dtype= np.float64) # Membrane  

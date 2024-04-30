@@ -97,15 +97,26 @@ def Dmatrix(Nel: int, Ndof: int, NodeMatrix: NDArray[np.float64], ElementMatrix:
         D[i, 6*(ElementMatrix[i,:] + 1) - 4] = 1 / (2 * Dx) * np.array([1, -1, -1, 1], dtype = np.float64)
     return D
 
-def Ematrix():
+def Ematrix(Nel: int, Ndof, ElementMatrix: NDArray[np.int32] ):
     '''E matrix Relates structural velocity in the collocation points (zdirection ) to velocity vector { u_point }'''
-    ...
+    # Collocation point isoparametric coordinates
+    E = np.zeros((Nel, Ndof), dtype = np.float64)
+    xi = 0.5
+    eta = 0
+    a = np.array([-1, 1, 1, -1])
+    b = np.array([-1, -1, 1, 1])
+    for e in range(Nel):
+        for i in range(4):
+            E[e, (ElementMatrix[e,i] + 1) * 6 - 4] = 0.25 * (1 + xi * a[i]) * (1 + eta *b [i])
+
+    return E
 
 
 ######## Code Test ##########
 if __name__ == '__main__':
     Dm = sio.loadmat('Dmatrix')
     Dq = sio.loadmat('matrixQ')
+    De = sio.loadmat('Ematrix')
     dim = Dm['dim']
     X = Dm['X']
     Tn = (Dm['Tn'] - 1).astype(np.int32)
@@ -113,8 +124,10 @@ if __name__ == '__main__':
     # D = Dmatrix(160, 1122, X, Tn)
     Q = Qmatrix(160, 1122, 10, X, Tn)
     Qmatlab = Dq['Q']
-    Diff = Q - Qmatlab
-
+    DiffQ = Q - Qmatlab
+    E = Ematrix(160, 1122, Tn)
+    Ematlab = De['E']
+    DiffE = E -Ematlab
 
 
     # P1 = np.array([0, 0, 0], dtype = np.float64)
