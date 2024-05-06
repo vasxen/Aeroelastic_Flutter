@@ -339,13 +339,13 @@ def main() -> None:
     # np.savetxt('Mass.txt', M)
 
     # K, M = Q4Elements.StiffnessMass(NodeMatrix, Elematrix[:,1:], Elematrix.shape[0], NodeMatrix.shape[0])
-    W, V = eig(K, M) # type: ignore
     # W, V = eigs(K, M = M, k = 20) # type: ignore
 
+    W, V = eig(K, M) # type: ignore
     Wr = W.real
     sorted_indices = np.argsort(Wr)
     sorted_eigenvalues = Wr[sorted_indices]
-    print(sorted_eigenvalues)
+    # print(sorted_eigenvalues)
     V = V[:, sorted_indices]
 
     Displacements = np.zeros_like(NodeMatrix)
@@ -372,4 +372,5 @@ def main() -> None:
     plt.ylabel("Y")
     plt.show()
 
-main()
+if __name__ == '__main__': 
+    main()

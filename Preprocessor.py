@@ -203,6 +203,7 @@ class PBEAM():
 class CAERO():
     PanelNodes: NDArray[np.float64]
     PanelConnectivity: NDArray[np.int32]
+
 # -------- Aeroelastic Analysis --------
 @dataclass
 class AerolasticAnalysis():
@@ -270,8 +271,6 @@ class AerolasticAnalysis():
                     temp.create_dataset('ORIGIN', data = p.CoordinateSystem.Origin)
                     temp.create_dataset('UNIT_VECTORS', data = p.CoordinateSystem.UnitVectors)
 
-
-
 # ----------- Preprocessor Functions ----------
 def CreateWingNodes(Wing: WingPlanform, Nspan: int, Nchord: int, WakeFactor: float = 2) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
     Ycoords = np.linspace(0, Wing.Wingspan, Nspan)
@@ -307,7 +306,6 @@ def CreateWingNodes(Wing: WingPlanform, Nspan: int, Nchord: int, WakeFactor: flo
 
 
     return NodeMatrixShell, NodeMatrixAeroPanel
-
 
 def ConnectStructuredGrid(Nspan: int, Nchord: int, NodeIndeces: List[int] = [], FirstIndex: int = 0) -> NDArray[np.int32]:
     if not NodeIndeces:
@@ -362,7 +360,7 @@ def main() -> None:
     Nchord = 10 + 1
     NodeMatrix, PanelNodes = CreateWingNodes(Wing, Nspan,Nchord)
     Elematrix = ConnectStructuredGrid(Nspan, Nchord)
-    Aeropanels = CreateCaeroPanels(Nspan , Nchord + 1, list(range(Nspan*Nchord, 2*Nspan*Nchord + Nspan +1 )) )
+    Aeropanels = CreateCaeroPanels(Nspan , Nchord + 1 )
     FixedDoFs = ClampLeftEdge(Nspan, Nchord)
     Mat1 = IsotropicMaterial(1, 1600, 9E10, 0.33)
     Prop1 = PSHELL(1, Mat1, 0.001)
@@ -375,32 +373,32 @@ def main() -> None:
     PropertyAssignment = AssignProperty(Elematrix[:,0].tolist(), Prop1)
     Analysis = AerolasticAnalysis(NodeMatrix, Elematrix, FixedDoFs, [Prop1, Prop2], PropertyAssignment, Caero)
     Analysis.ExportData('test')
-    # fig = plt.figure()
-    # ax = fig.add_subplot()
-    # # ax.scatter(NodeMatrix[:,0], NodeMatrix[:,1])
-    # for i in range(NodeMatrix.shape[0]):
-    #     ax.text(NodeMatrix[i,0], NodeMatrix[i,1], str(i))
-    #     ax.scatter(NodeMatrix[i,0], NodeMatrix[i,1], color = 'blue')
-    # for element in Elematrix:
-    #     # Extract x, y, z coordinates for each point in the element
-    #     element = np.append(element[1:], element[1])
-    #     x_coords = NodeMatrix[element, 0]
-    #     y_coords = NodeMatrix[element, 1]
+    fig = plt.figure()
+    ax = fig.add_subplot()
+    # ax.scatter(NodeMatrix[:,0], NodeMatrix[:,1])
+    for i in range(NodeMatrix.shape[0]):
+        ax.text(NodeMatrix[i,0], NodeMatrix[i,1], str(i))
+        ax.scatter(NodeMatrix[i,0], NodeMatrix[i,1], color = 'blue')
+    for element in Elematrix:
+        # Extract x, y, z coordinates for each point in the element
+        element = np.append(element[1:], element[1])
+        x_coords = NodeMatrix[element, 0]
+        y_coords = NodeMatrix[element, 1]
         
-    #     # Plot the line connecting the four points
-    #     ax.plot(x_coords, y_coords, color = 'red')
+        # Plot the line connecting the four points
+        ax.plot(x_coords, y_coords, color = 'red')
 
-    # for element in Aeropanels:
-    #     # Extract x, y, z coordinates for each point in the element
-    #     element = np.append(element[1:-1], element[1])
-    #     x_coords = NodeMatrix[element, 0]
-    #     y_coords = NodeMatrix[element, 1]
-    #     z_coords = NodeMatrix[element, 2]
+    for element in Aeropanels:
+        # Extract x, y, z coordinates for each point in the element
+        element = np.append(element[1:-1], element[1])
+        x_coords = PanelNodes[element, 0]
+        y_coords = PanelNodes[element, 1]
+        z_coords = PanelNodes[element, 2]
         
-    #     # Plot the line connecting the four points
-    #     ax.plot(x_coords, y_coords, color = 'green')
-    # ax.set_aspect('equal')
-    # plt.show()
+        # Plot the line connecting the four points
+        ax.plot(x_coords, y_coords, color = 'green')
+    ax.set_aspect('equal')
+    plt.show()
 
 if __name__ == '__main__':
     main()

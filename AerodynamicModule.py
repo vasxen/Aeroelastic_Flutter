@@ -5,7 +5,7 @@ from numpy.typing import NDArray
 from numba import jit
 from time import time
 
-@jit(nopython = True)
+@jit(nopython = True) # type: ignore
 def VortexLineInducedVelocity(P1: NDArray[np.float64], P2: NDArray[np.float64], P: NDArray[np.float64], Gamma: float, tol: float = 1E-4) -> NDArray[np.float64]:
     r0 = P2 - P1
     r1 = P - P1
@@ -29,7 +29,7 @@ def VortexLineInducedVelocity(P1: NDArray[np.float64], P2: NDArray[np.float64], 
     return Velocity 
 
 def InfluenceCoefficients(Nel: int, CollocationPoints: NDArray[np.float64], Normals: NDArray[np.float64],
-                           Npanels: int, PanelNodes: NDArray[np.float64], PanelConnectivity: NDArray[np.int32],#
+                           Npanels: int, PanelNodes: NDArray[np.float64], PanelConnectivity: NDArray[np.int32],
                              Panel2ShellConnectivity: NDArray[np.int32]) -> Tuple[NDArray[np.float64], NDArray[np.float64]]:
     # Influence Coefficient matrix init
     A = np.zeros((Nel, Nel), dtype = np.float64)
@@ -110,6 +110,36 @@ def Ematrix(Nel: int, Ndof, ElementMatrix: NDArray[np.int32] ):
             E[e, (ElementMatrix[e,i] + 1) * 6 - 4] = 0.25 * (1 + xi * a[i]) * (1 + eta *b [i])
 
     return E
+
+def RHSVector(Nel: int, Vinf: NDArray[np.float64], normals: NDArray[np.float64]):
+    RHS = np.zeros((Nel, 1))
+    for i in range(Nel):
+        RHS[i,0] = np.dot(-Vinf, normals[i,:])
+    
+    return RHS
+
+def Circulations(InfluenceCoefficientsA: NDArray[np.float64], RHSVector: NDArray[np.float64]):
+    Gamma = np.linalg.solve(InfluenceCoefficientsA, RHSVector)
+    return Gamma
+
+def InducedVelocity(InfluenceCoefficientsB: NDArray[np.float64], Gamma: NDArray[np.float64]):
+    Wind = InfluenceCoefficientsB @ Gamma
+    return Wind
+
+def CalculateLift(Nel: int, rho: float, Vinf: NDArray[np.float64], Gamma: NDArray[np.float64], PanelConnectivity: NDArray[np.int32], Db: NDArray[np.float64]):
+    # assert Nel == NxElements * NyElements, f'Check Number of elements and Grid Size: Nel must equal Nx * Ny. Nel = {Nel}, Nx = {NxElements}, Ny = {NyElements}'
+    Lift = np.zeros((Nel, 3), dtype = np.float64)
+    for i in range(Nel):
+        if PanelConnectivity[i, 5] == 1: # if LE panel
+            Lift[i, :] = Vinf * Gamma[i,0] * Db[i]
+        else:
+            Lift[i, :] = Vinf * (Gamma[i,0] - Gamma[i-1, 0]) * Db[i]
+
+    Lift *= rho
+    return np.sum(Lift, axis = 0)
+
+def CalculateDrag():
+    ...
 
 
 ######## Code Test ##########
