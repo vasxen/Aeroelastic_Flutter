@@ -2,8 +2,11 @@ import os
 import subprocess
 import pandas as pd
 import numpy as np
+from scipy.optimize import minimize, Bounds
+from numpy.typing import NDArray
 from dataclasses import dataclass
 from typing import List, Tuple
+
 
 # ---------- Classes -------------
 @dataclass
@@ -104,7 +107,7 @@ class PCOMP():
             line = f'+,{ply1.to_string()},{ply2.to_string()},'
             Lines.append(line)
 
-        if i < self.NumPlies:
+        if i + 1 < self.NumPlies - 1:
             line = f'+,{self.Plies[-1].to_string()},'
             Lines.append(line)
 
@@ -439,8 +442,87 @@ def CallSolver(inputfile: str, options: str) -> subprocess.CompletedProcess:
     os.remove('temp.bat')
     return s
 
+def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: str, FlutterVelocityConstraint: float, sym: int = 1 , penalty: float = 1E10 ) -> float:
+    assert len(thicknesses) == len(angles), f'Thicknesses and angles must haver the same length'
+    assert all([e > 0 for e in thicknesses]), ' All thicknesses must be strictly positive'
 
-FilePath_fem = 'C:/Users/vasxen/OneDrive/Thesis/GiagkosModel/Attempt 16/Flutter Attempt 16.fem'
+    Properties, _ = ReadFem(inputfile)
+    assert len(Properties) == 1, f'Function expected only one PCOMP to optimize, {len(Properties)} found'
+    Property = Properties[0]
+    # Property.to_string()
+
+    match sym:
+        case -1: #Antisymmetric
+            assert Property.NumPlies / 2 == len(thicknesses), f'for antisymmetric laminates the length of the inputs should be half the number of plies'
+            thicknesses.extend(thicknesses)
+            angles.extend([-e for e in angles])
+
+            for i in range(Property.NumPlies):
+                Property.Plies[i].Thickness = thicknesses[i]
+                Property.Plies[i].Theta = angles[i]
+
+        case 0: # No symmetry
+            assert Property.NumPlies == len(thicknesses), f'length of the number of inputs should be half the number of plies'
+            for i in range(Property.NumPlies):
+                Property.Plies[i].Thickness = thicknesses[i]
+                Property.Plies[i].Theta = angles[i]
+
+        case 1: # Symmetric
+            assert Property.NumPlies / 2 == len(thicknesses), f'for symmetric laminates the length of the inputs should be half the number of plies'
+            thicknesses.extend(thicknesses)
+            angles.extend(angles)
+
+            for i in range(Property.NumPlies):
+                Property.Plies[i].Thickness = thicknesses[i]
+                Property.Plies[i].Theta = angles[i]
+        
+    
+    WriteFem([Property], [], inputfile)
+    CallSolver(inputfile, '-nt 4')
+    outfile = inputfile.replace('.fem', '.out')
+    fltfile = inputfile.replace('.fem', '.flt')
+
+    Mass = readmass(outfile)
+    Flutter = FlutterSummary(fltfile)
+    assert len(Flutter.Subcases) == 1, f'Analysis should include only one subcase not {len(Flutter.Subcases)}'
+    Subcase = Flutter.Subcases[0]
+
+    Velocities: List[float] = []
+    for point in Subcase.Points:
+        Vel, _ = point.DetectFlutter()
+        if Vel: Velocities.append(Vel[0])
+    
+    P: float = 0
+    if Velocities:
+        FlutterVelocity = min(Velocities)
+        if FlutterVelocity < FlutterVelocityConstraint:
+            P = penalty * (FlutterVelocityConstraint - FlutterVelocity)
+
+    Objective = Mass + P 
+    
+    return Objective
+
+def WrappedObjecvie(x: NDArray[np.float64], *args: Tuple) -> float:
+    assert x.shape[0] % 2 == 0, 'input should have an even number of elements'
+    t = x[0:x.shape[0]//2].tolist()
+    a = x[x.shape[0]//2:].tolist()
+    return ObjectiveFunction(t,a,*args) #type: ignore
+
+def main():
+    x0 = np.array([0.0005, 0.0005, 0.0005, 44, -44, 44], dtype = np.float64)
+    inputFile = "C:/Users/vasxen/OneDrive/Thesis/code/FlutterOptimization.fem"
+    args = (inputFile, 130)
+    lower_bounds = 3 * [0.0001] + 3 * [0]
+    upper_bounds = 3 * [0.5] + 3 * [180]
+    bounds = Bounds(lower_bounds, upper_bounds) #type: ignore
+    options = {'disp' : True,
+               'maxfev' : 10,
+               'return_all' : True}
+    
+    minimize(WrappedObjecvie, x0 = x0, args = args, method = 'powell', bounds = bounds, options = options )
+
+
+# FilePath_fem = 'C:/Users/vasxen/OneDrive/Thesis/GiagkosModel/Attempt 16/Flutter Attempt 16.fem'
 # PCOMPList, MAT8sList = ReadFem(FilePath_fem)
 
 # PCOMP1 = PCOMPList[0]
@@ -453,7 +535,10 @@ FilePath_fem = 'C:/Users/vasxen/OneDrive/Thesis/GiagkosModel/Attempt 16/Flutter 
 # print(m)
 
 # Cp = CallSolver(FilePath_fem, '-nt 12')
-Fl = FlutterSummary("C:/Users/vasxen/OneDrive/Thesis/GiagkosModel/Attempt 16/Flutter Attempt 16.flt")
-print(Fl.Subcases[0].Points[2].DetectFlutter())
-print(Fl.Subcases[0].Points[4].DetectFlutter())
-print('g')
+# Fl = FlutterSummary("C:/Users/vasxen/OneDrive/Thesis/GiagkosModel/Attempt 16/Flutter Attempt 16.flt")
+# print(Fl.Subcases[0].Points[2].DetectFlutter())
+# print(Fl.Subcases[0].Points[4].DetectFlutter())
+# ObjectiveFunction(3 * [0.0005], [44, -44, 44],inputfile = FilePath_fem,FlutterVelocityConstraint = 130, sym = -1)
+# WrappedObjecvie(np.array([0.0005, 0.0005, 0.0005, 44, -44, 44]), FilePath_fem, 130) #type: ignore
+
+main()
