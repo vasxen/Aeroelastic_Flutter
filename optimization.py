@@ -1,3 +1,4 @@
+from enum import Enum
 import os
 import subprocess
 import pandas as pd
@@ -5,7 +6,8 @@ import numpy as np
 from scipy.optimize import minimize, Bounds
 from numpy.typing import NDArray
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import List, Tuple, Callable, Any, Dict
+# from time import time
 
 
 # ---------- Classes -------------
@@ -149,6 +151,14 @@ class FlutterSubcase():
     NumPoints: int
     Points: List[FlutterAnalysisPoint]
 
+    def FlutterInfo(self):
+        FlutterInfo: Dict[int, float] = {}
+        for point in self.Points:
+            Vel, _ = point.DetectFlutter()
+            if Vel: FlutterInfo[point.ModeNumber] = min(Vel)
+        
+        return FlutterInfo
+
 class FlutterSummary():
 
     @staticmethod
@@ -286,6 +296,69 @@ class FlutterSummary():
 
         #Number of Subcases
         self.NumSubcases = len(Subcases)
+
+    def PrintFlutterInfo(self):
+        print('********* FLUTTER INFORMATION *********\n\n')
+        for subcase in self.Subcases:
+            print(f'|------ SUBCASE {subcase.SubcaseId} ------|')
+            print('|                       |')
+            for point, vel in subcase.FlutterInfo().items():
+                print(f'| POINT {point} -> {round(vel, 2)} m/s |')
+
+class PlySymmetry(Enum):
+    AntiSymmetric = -1
+    NoSymmetry = 0
+    Symmetric = 1
+    
+class ToleranceWrapper():
+    def __init__(self, func: Callable,
+                  ThicknessTolerance: float,
+                      AngleTolerance: float,
+                        FlutterVelocityConstraint: float,
+                          inputfile: str,
+                            solverpath: str,
+                              Penalty: float = 1E10,
+                                PlySymmetry: PlySymmetry = PlySymmetry.AntiSymmetric):
+        self.func = func
+        self.ThicknessTolerance = ThicknessTolerance
+        self.AngleTolerance = AngleTolerance
+        self.FlutterVelocityConstraint = FlutterVelocityConstraint
+        self.inputfile = inputfile
+        self.solverpath = solverpath
+        self.Penalty = Penalty
+        self.PlySymmetry = PlySymmetry
+        self.cache: Dict[Tuple[float], float] = {}
+    
+    def __call__(self, x: NDArray[np.float64]) -> float:
+        t = x[0]
+        t = np.round(t / self.ThicknessTolerance) * self.ThicknessTolerance
+
+        a = x[1:]
+        a = (np.round(a / self.AngleTolerance) * self.AngleTolerance).tolist()
+        NumLayers = len(a)
+        t = NumLayers * [t]
+        rounded_input = (*t, *a)
+        if rounded_input in self.cache:
+            return self.cache[rounded_input]
+        else:
+            result = self.func(t, a, self.inputfile, self.solverpath, self.FlutterVelocityConstraint, self.PlySymmetry, self.Penalty)
+            self.cache[rounded_input] = result
+            return result
+    
+    def __str__(self) -> str:
+        s = f'Thickness Tolerance: {self.ThicknessTolerance}\n'
+        s += f'Angle Tolerance: {self.AngleTolerance}\n'
+        s += '\nCached Data:\n'
+        for k, v in self.cache.items():
+            s += f'x = {k} -> f(x) = {v}\n'
+        return s
+    
+    def savecahce(self, file: str) -> None:
+        assert file.endswith('.xlsx'), f'The file must be an .xlsx file not a .{file.split('.')[1]} file'
+        Dataframe = pd.DataFrame(list(self.cache.items()), columns = ['Input Vector', 'Function Value'])
+        Dataframe.to_excel(file)
+        return
+
 
 
 # -------- Functions --------------
@@ -427,22 +500,24 @@ def readmass(outputfile: str) -> float:
 
     return Mass
 
-def CallSolver(inputfile: str, options: str) -> subprocess.CompletedProcess:
+def CallSolver(inputfile: str, solverpath: str, options: str) -> subprocess.CompletedProcess:
     inputfile = f'"{inputfile.replace('/', '\\')}"'
+    solverpath = f'"{solverpath.replace('/', '\\')}"'
 
-    lines = ['@echo off', '\n'
-             r'cd C:\My_Programms\Altair\hwsolvers\scripts', '\n'
+
+    lines = ['@echo off\n',
+             'cd ' + solverpath, '\n',
              'optistruct ' + inputfile + ' ' + options]
     
     with open('temp.bat', 'w') as file:
         file.writelines(lines)
 
 
-    s = subprocess.run(['temp.bat'])
+    s = subprocess.run([f'temp.bat'])
     os.remove('temp.bat')
     return s
 
-def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: str, FlutterVelocityConstraint: float, sym: int = 1 , penalty: float = 1E10 ) -> float:
+def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: str, solverpath: str, FlutterVelocityConstraint: float, sym: PlySymmetry, penalty: float) -> float:
     assert len(thicknesses) == len(angles), f'Thicknesses and angles must haver the same length'
     assert all([e > 0 for e in thicknesses]), ' All thicknesses must be strictly positive'
 
@@ -451,7 +526,7 @@ def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: 
     Property = Properties[0]
     # Property.to_string()
 
-    match sym:
+    match sym.value:
         case -1: #Antisymmetric
             assert Property.NumPlies / 2 == len(thicknesses), f'for antisymmetric laminates the length of the inputs should be half the number of plies'
             thicknesses.extend(thicknesses)
@@ -472,13 +547,13 @@ def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: 
             thicknesses.extend(thicknesses)
             angles.extend(angles)
 
-            for i in range(Property.NumPlies):
+            for i in range(Property.NumPlies): 
                 Property.Plies[i].Thickness = thicknesses[i]
                 Property.Plies[i].Theta = angles[i]
-        
+
     
     WriteFem([Property], [], inputfile)
-    CallSolver(inputfile, '-nt 4')
+    CallSolver(inputfile, solverpath, '-nt 6')
     outfile = inputfile.replace('.fem', '.out')
     fltfile = inputfile.replace('.fem', '.flt')
 
@@ -499,46 +574,37 @@ def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: 
             P = penalty * (FlutterVelocityConstraint - FlutterVelocity)
 
     Objective = Mass + P 
-    
     return Objective
 
-def WrappedObjecvie(x: NDArray[np.float64], *args: Tuple) -> float:
-    assert x.shape[0] % 2 == 0, 'input should have an even number of elements'
-    t = x[0:x.shape[0]//2].tolist()
-    a = x[x.shape[0]//2:].tolist()
-    return ObjectiveFunction(t,a,*args) #type: ignore
+def DeleteUnessesaryFiles(directory: str, FileExtensions: Tuple[str, ...]) -> None:
+    files = os.listdir(directory)
+
+    for file in files:
+        if file.endswith(FileExtensions):
+            os.remove(os.path.join(directory, file))
 
 def main():
-    x0 = np.array([0.0005, 0.0005, 0.0005, 44, -44, 44], dtype = np.float64)
+    # Dεfine optimization problem parameters
     inputFile = "C:/Users/vasxen/OneDrive/Thesis/code/FlutterOptimization.fem"
-    args = (inputFile, 130)
-    lower_bounds = 3 * [0.0001] + 3 * [0]
-    upper_bounds = 3 * [0.5] + 3 * [180]
-    bounds = Bounds(lower_bounds, upper_bounds) #type: ignore
+    solverpath = "C:/My_Programms/Altair/hwsolvers/scripts"
+    x0 = np.array([0.0005, 44, -44, 44], dtype = np.float64)# initial solution vector
+    lower_bounds = [0.0001] + 3 * [-90]                     # lower constraints of thickness and ply angles
+    upper_bounds = [0.0050] + 3 * [+90]                     # Upper constraints of thickness and ply angles
+    bounds = Bounds(lower_bounds, upper_bounds)             # type: ignore
     options = {'disp' : True,
-               'maxfev' : 10,
+               'maxfev' : 5,
                'return_all' : True}
-    
-    minimize(WrappedObjecvie, x0 = x0, args = args, method = 'powell', bounds = bounds, options = options )
+    WrappedObj = ToleranceWrapper(ObjectiveFunction, 0.0001, 1, 130, inputFile, solverpath)
+    Min = minimize(WrappedObj, x0 = x0, method = 'powell', bounds = bounds, options = options)
+
+    DeleteUnessesaryFiles(os.getcwd(), FileExtensions = ('.out', '.stat'))
+
+    WrappedObj.savecahce('FunctionEvaluations.xlsx')
+    print('\n\n=========== OPTIMIZATION SUMMARY ===========')
+    print(Min)
+    FlutterSummary(inputFile.replace('.fem', '.flt')).PrintFlutterInfo()
 
 
-# FilePath_fem = 'C:/Users/vasxen/OneDrive/Thesis/GiagkosModel/Attempt 16/Flutter Attempt 16.fem'
-# PCOMPList, MAT8sList = ReadFem(FilePath_fem)
-
-# PCOMP1 = PCOMPList[0]
-# PCOMP1.Plies[2].Theta = 123.4
-
-# WriteFem(PCOMPList, [], FilePath_fem)
-# Flut1 = FlutterSummary("C:/Users/vasxen/OneDrive/Thesis/GiagkosModel/Attempt 12 PK/Flutter Attempt 12 KE.flt")
-
-# m = readmass("C:/Users/vasxen/OneDrive/Thesis/GiagkosModel/Attempt 16/Flutter Attempt 16.out")
-# print(m)
-
-# Cp = CallSolver(FilePath_fem, '-nt 12')
-# Fl = FlutterSummary("C:/Users/vasxen/OneDrive/Thesis/GiagkosModel/Attempt 16/Flutter Attempt 16.flt")
-# print(Fl.Subcases[0].Points[2].DetectFlutter())
-# print(Fl.Subcases[0].Points[4].DetectFlutter())
-# ObjectiveFunction(3 * [0.0005], [44, -44, 44],inputfile = FilePath_fem,FlutterVelocityConstraint = 130, sym = -1)
-# WrappedObjecvie(np.array([0.0005, 0.0005, 0.0005, 44, -44, 44]), FilePath_fem, 130) #type: ignore
 
 main()
+# FlutterSummary('FlutterOptimization.flt').PrintFlutterInfo()
