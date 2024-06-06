@@ -1,8 +1,8 @@
-from enum import Enum
 import os
 import subprocess
 import pandas as pd
 import numpy as np
+from enum import Enum
 from scipy.optimize import minimize, Bounds
 from numpy.typing import NDArray
 from dataclasses import dataclass
@@ -13,6 +13,7 @@ from typing import List, Tuple, Callable, Any, Dict
 # ---------- Classes -------------
 @dataclass
 class MAT8():
+    '''A MAT8 class which contains all the information of a MAT8 orthotropic material bulk data entry in optistruct'''
     LineIndex: int
     MID: int
     E1: float
@@ -24,21 +25,26 @@ class MAT8():
     RHO: float
 
     def to_string(self) -> str:
+        ''' This methods returns the information contained in the class in a string format identical to the one found in a .fem input file'''
         s = f'MAT8,{self.MID},{self.E1},{self.E2},{self.NU12},{self.G12},{self.G1Z},{self.G2Z},{self.RHO},'
         return s
     
 @dataclass
 class Ply():
+    '''A Ply class which contains all the information of a Ply of an PCOMP composite shell property bulk data entry in optistruct'''
     index: int
     MID: int
     Thickness: float
     Theta: float
 
     def to_string(self, SOUT: str = 'NO') -> str:
+        ''' This methods returns the information contained in the class in a string format identical to the one found in a .fem input file'''
         s = f'{self.MID},{self.Thickness},{self.Theta},{SOUT}'
         return s
 
 class PCOMP():
+    '''A PCOMP class which contains all the information of a Ply of an PCOMP composite shell property bulk data entry in optistruct'''
+
     def __init__(self,Id: int, Plies: List[Ply], original_txt_lines: List[str], Indeces: Tuple[int,int]):
         self._Id = Id
         self._Plies = Plies
@@ -100,6 +106,8 @@ class PCOMP():
     #=============== METHODS =================
 
     def to_string(self) -> List[str]:
+        ''' This methods returns the information contained in the class in a string format identical to the one found in a .fem input file'''
+
         Lines: List[str] = []
         Lines.append(self.original_txt_lines[0][:-1])
 
@@ -359,10 +367,14 @@ class ToleranceWrapper():
         Dataframe.to_excel(file)
         return
 
-
-
 # -------- Functions --------------
 def ReadFem(inputfile: str) -> Tuple[List[PCOMP], List[MAT8]]:
+    '''This funciton reads a .fem optistruct iinput file and detects any PCOMP and any MAT8 entries. This function assumes that PCOMP refers exlusively to MAT8 material types.
+     ### Parameters:
+     - inputfile: a file path to a .fem file given as a string
+     ### Returns:
+     - A List of PCOMP objects
+     - A list of MAT8 objects '''
     def readply(PlyIndex: int, input: List[str]) -> Ply:
         Mid = int(input[0])
         Thickness = float(input[1])
@@ -444,6 +456,12 @@ def ReadFem(inputfile: str) -> Tuple[List[PCOMP], List[MAT8]]:
     return PCOMPs, MAT8s
 
 def WriteFem(Properties: List[PCOMP], Materials: List[MAT8], inputfile: str) -> None:
+    '''Writes a back to a .fem file the modified PCOMP and MAT8 objects given in the input. It is designed to be used on the same file as ReadFem function
+    ### Parameters:
+    - Properties: A list of PCOMP objects
+    - Materials: A list of MAT 8 objects
+    - inputfile: A path to a file as a string to which the objects will be returned
+    '''
     def replace_lines_in_file(file_path: str, line_numbers : List[int], new_lines: List[str]):
         if len(line_numbers) != len(new_lines):
             raise ValueError("The number of line numbers must match the number of new lines.")
@@ -481,6 +499,9 @@ def WriteFem(Properties: List[PCOMP], Materials: List[MAT8], inputfile: str) -> 
             replace_lines_in_file(inputfile, [Mat.LineIndex], [Mat.to_string()])
 
 def readmass(outputfile: str) -> float:
+    ''' Reads a .out file and checks if it contans Mass infirmation if it does it returns the mass as a float otherwise it throws a Value Error
+    ### Parameters:
+    - outputfile: A path as a string to a .out file'''
     if not outputfile.endswith('.out'):
         raise ValueError('Incorrect file type. File must be of type .out')
     
@@ -501,6 +522,13 @@ def readmass(outputfile: str) -> float:
     return Mass
 
 def CallSolver(inputfile: str, solverpath: str, options: str) -> subprocess.CompletedProcess:
+    '''This function calls the optistruct solver on the input file.
+    The function works by writing a temporary batch file the excecuting it and finally deleting it.
+    It returns the std out to the consoleand the completedProcess object provided by the subprocess module
+    ### Parameters:
+    - inputfile: a path as a string to a .fem solver input file 
+    - solverpath: the path to the altair yperwors solver scripts as a string
+    - options: a string of options excactly as they would be set in the command window or in the altair compute consosle'''
     inputfile = f'"{inputfile.replace('/', '\\')}"'
     solverpath = f'"{solverpath.replace('/', '\\')}"'
 
@@ -577,6 +605,10 @@ def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: 
     return Objective
 
 def DeleteUnessesaryFiles(directory: str, FileExtensions: Tuple[str, ...]) -> None:
+    '''This function deletes al;l file with certain extension within a directory USE CAREFULLY
+    ### Parameters:
+    - directory: path a string to a directory (folder)
+    - FileExtensions: A tuple of string containing the extension that will be deleted including the dot eg: ('.txt', '.exe') '''
     files = os.listdir(directory)
 
     for file in files:
@@ -592,9 +624,9 @@ def main():
     upper_bounds = [0.0050] + 3 * [+90]                     # Upper constraints of thickness and ply angles
     bounds = Bounds(lower_bounds, upper_bounds)             # type: ignore
     options = {'disp' : True,
-               'maxfev' : 5,
+               'maxfev' : 1000,
                'return_all' : True}
-    WrappedObj = ToleranceWrapper(ObjectiveFunction, 0.0001, 1, 130, inputFile, solverpath)
+    WrappedObj = ToleranceWrapper(ObjectiveFunction, 0.0001, 1, 80, inputFile, solverpath)
     Min = minimize(WrappedObj, x0 = x0, method = 'powell', bounds = bounds, options = options)
 
     DeleteUnessesaryFiles(os.getcwd(), FileExtensions = ('.out', '.stat'))
@@ -605,6 +637,7 @@ def main():
     FlutterSummary(inputFile.replace('.fem', '.flt')).PrintFlutterInfo()
 
 
+if __name__ == '__main__':
+    main()
 
-main()
 # FlutterSummary('FlutterOptimization.flt').PrintFlutterInfo()
