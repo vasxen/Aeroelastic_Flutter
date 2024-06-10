@@ -1,16 +1,17 @@
 import numpy  as np
 from matplotlib import pyplot as plt
 import pandas as pd
+import AerodynamicModule as aero
+import Preprocessor as pre
 from typing import List, Tuple, Union, Dict
 from numpy.typing import NDArray
-from Preprocessor import PSHELL, PCOMP, OrthotropicMaterial, IsotropicMaterial, CORD1R
+# from Preprocessor import PSHELL, PCOMP, OrthotropicMaterial, IsotropicMaterial, CORD1R, AeroelasticAnalysis
 
 from scipy.io import savemat
 from scipy.linalg import eig
 from scipy.sparse.linalg import eigs
-from Preprocessor import ConnectStructuredGrid
 
-class Q4Elements():
+class Q4ElementsCalculations():
 
     @staticmethod
     def __ShapeFunctions1GaussPoint() -> Tuple[List[float], NDArray[np.float64], NDArray[np.float64]]:
@@ -50,7 +51,7 @@ class Q4Elements():
     Ni_G1, Ni_partial_ksi_G1, Ni_partial_eta_G1 = __ShapeFunctions1GaussPoint()
     Ni_G4, Ni_partial_ksi_G4, Ni_partial_eta_G4 = __ShapeFunctions4GaussPoints()
 
-    def __init__(self, Elematrix: NDArray[np.int32], Nodematrix: NDArray[np.float64], PropertiesDict: Dict[int, Union[PSHELL, PCOMP]]) -> None:
+    def __init__(self, Elematrix: NDArray[np.int32], Nodematrix: NDArray[np.float64], PropertiesDict: Dict[int, Union[pre.PSHELL, pre.PCOMP]]) -> None:
         self.NE: int = Elematrix.shape[0] # Number of elementss
         self.NN: int = Nodematrix.shape[0] # Number of Nodes
         self.NPE: int = Elematrix.shape[1] # Nodes per Element
@@ -63,6 +64,9 @@ class Q4Elements():
         self.MassMatrix = M
         self.RotationMatrices = R
         self.Areas = A
+        self.Qmatrix = self.__Qmatrix(self.NE, self.DofPN * self.NN, 11, self.Nodematrix, self.Elematrix) #TODO pass NxElement imfo to Q4Elements
+        self.Dmatrix = self.__Dmatrix(self.NE, self.DofPN * self.NN, self.Nodematrix, self.Elematrix)
+        self.Ematrix = self.__Ematrix(self.NE, self.DofPN * self.NN, self.Elematrix)
 
     @staticmethod
     def __RotationMatrix(Nodes: NDArray) -> Tuple[NDArray, np.float64]:
@@ -73,8 +77,8 @@ class Q4Elements():
         k = S / Area
         j = np.cross(k,i)
         ijk = np.array([i,j,k])
-        Z3 = Q4Elements.Z3
-        Z6 = Q4Elements.Z6
+        Z3 = Q4ElementsCalculations.Z3
+        Z6 = Q4ElementsCalculations.Z6
 
         R_prime = np.block(arrays=[[ijk, Z3],[Z3 , ijk]])
         RotationMatrix = np.block( [[R_prime, Z6, Z6, Z6],
@@ -84,7 +88,7 @@ class Q4Elements():
         return RotationMatrix, Area
 
     @staticmethod 
-    def __LocalMatricesSingleQ4Element(Nodes: NDArray[np.float64], RotationMatrix: NDArray[np.float64], Property: Union[PSHELL,  PCOMP]) \
+    def __LocalMatricesSingleQ4Element(Nodes: NDArray[np.float64], RotationMatrix: NDArray[np.float64], Property: Union[pre.PSHELL,  pre.PCOMP]) \
         -> Tuple[NDArray, NDArray]:
         #Define Local Coordinate System
         i = RotationMatrix[0, 0:3]
@@ -93,34 +97,34 @@ class Q4Elements():
 
         J1 = np.zeros((2,2))
         for jj in range(4):
-            J1 +=   np.block([[Q4Elements.Ni_partial_ksi_G1[jj]], [Q4Elements.Ni_partial_eta_G1[jj]]])    \
+            J1 +=   np.block([[Q4ElementsCalculations.Ni_partial_ksi_G1[jj]], [Q4ElementsCalculations.Ni_partial_eta_G1[jj]]])    \
                     @ (np.atleast_2d(Nodes[jj,:])                \
                     @ np.block([[i], [j]]).T)
 
         # Partial Derivatives of Shape Function with respect to physical Local coordinates x' and y'
-        Ni_partial_phys_G1 = np.linalg.solve(J1, np.block([[Q4Elements.Ni_partial_ksi_G1], [Q4Elements.Ni_partial_eta_G1]]))
+        Ni_partial_phys_G1 = np.linalg.solve(J1, np.block([[Q4ElementsCalculations.Ni_partial_ksi_G1], [Q4ElementsCalculations.Ni_partial_eta_G1]]))
 
         S1 = 4 * np.linalg.det(J1)
         if S1 < 0: raise ValueError(f"Element found on iteration with negative Jacobian. Element too Distorted cannot continue")
 
         # ======== Core Matrices =========
-        if isinstance(Property, PSHELL):
-            Ct_prime, Cs_prime, Cm_prime, Cb_prime, Cmb_prime, rho_prime = Q4Elements.__CoreMatricesIsotropicShell(Property)
-        elif isinstance(Property, PCOMP):
-            Ct_prime, Cs_prime, Cm_prime, Cb_prime, Cmb_prime, rho_prime = Q4Elements.__CoreMatricesOrthotropicShell(Property, LocalxAxis = i)
+        if isinstance(Property, pre.PSHELL):
+            Ct_prime, Cs_prime, Cm_prime, Cb_prime, Cmb_prime, rho_prime = Q4ElementsCalculations.__CoreMatricesIsotropicShell(Property)
+        elif isinstance(Property, pre.PCOMP):
+            Ct_prime, Cs_prime, Cm_prime, Cb_prime, Cmb_prime, rho_prime = Q4ElementsCalculations.__CoreMatricesOrthotropicShell(Property, LocalxAxis = i)
 
         # === Local Stifness Matrix Calculation  ===
         #Drilled Digree of Freedom theta_z
         Bt_prime = np.zeros((1,24))
-        Bt_prime[0,5::6] = [Q4Elements.Ni_G1[i] for i in range(4)]
+        Bt_prime[0,5::6] = [Q4ElementsCalculations.Ni_G1[i] for i in range(4)]
         # Ct_prime =np.array(5*h*E / (12*(1+nu))).reshape(1,1)
         Kt_prime = Bt_prime.T * Ct_prime * Bt_prime
 
 
         #Shear
         Bs_prime = np.zeros((2,24))
-        Bs_prime[0,4*Q4Elements.mask1] = [item for i in range(4) for item in (Ni_partial_phys_G1[0, i], Q4Elements.Ni_G1[i])]
-        Bs_prime[1,4*Q4Elements.mask2] = [item for i in range(4) for item in (Ni_partial_phys_G1[1, i], -Q4Elements.Ni_G1[i])]
+        Bs_prime[0,4*Q4ElementsCalculations.mask1] = [item for i in range(4) for item in (Ni_partial_phys_G1[0, i], Q4ElementsCalculations.Ni_G1[i])]
+        Bs_prime[1,4*Q4ElementsCalculations.mask2] = [item for i in range(4) for item in (Ni_partial_phys_G1[1, i], -Q4ElementsCalculations.Ni_G1[i])]
         # Cs_prime = np.array([[1, 0], [0, 1]]) * 5*h*E / 12 / (1 + nu)
         Ks_prime = Bs_prime.T @ Cs_prime @ Bs_prime
 
@@ -129,7 +133,7 @@ class Q4Elements():
         Bm_prime = np.zeros((3,24))
         Bm_prime[0,0::6] = [Ni_partial_phys_G1[0, i] for i in range(4)]
         Bm_prime[1,1::6] = [Ni_partial_phys_G1[1, i] for i in range(4)]
-        Bm_prime[2,4*Q4Elements.mask3] = [item for i in range(4) for item in (Ni_partial_phys_G1[1, i], Ni_partial_phys_G1[0, i])]
+        Bm_prime[2,4*Q4ElementsCalculations.mask3] = [item for i in range(4) for item in (Ni_partial_phys_G1[1, i], Ni_partial_phys_G1[0, i])]
         # Cm_prime = np.array([[1, nu, 0], [nu, 1, 0], [0, 0, (1- nu)/2]]) * h * E /(1 - nu**2)
 
         Km_prime = Bm_prime.T @ Cm_prime @ Bm_prime
@@ -144,18 +148,18 @@ class Q4Elements():
         for k in range(4): # For each Gauss Point
             J4 = np.zeros((2,2))
             for jj in range(4):
-                J4 += np.block([[Q4Elements.Ni_partial_ksi_G4[k, jj]], [Q4Elements.Ni_partial_eta_G4[k, jj]]])    \
+                J4 += np.block([[Q4ElementsCalculations.Ni_partial_ksi_G4[k, jj]], [Q4ElementsCalculations.Ni_partial_eta_G4[k, jj]]])    \
                         @ (np.atleast_2d(Nodes[jj,:])                   \
                         @ np.block([[i], [j]]).T)
 
-            Ni_partial_phys_G4 = np.linalg.solve(J4, np.block([[Q4Elements.Ni_partial_ksi_G4[k,:]],[Q4Elements.Ni_partial_eta_G4[k,:]]]))
+            Ni_partial_phys_G4 = np.linalg.solve(J4, np.block([[Q4ElementsCalculations.Ni_partial_ksi_G4[k,:]],[Q4ElementsCalculations.Ni_partial_eta_G4[k,:]]]))
             S4 = np.linalg.det(J4)
             if S1 < 0: raise ValueError(f"Element found on iteration with negative Jacobian. Element too Distorted cannot continue")
             # Bending
             Bb_prime = np.zeros((3,24))
             Bb_prime[0,4::6] = [Ni_partial_phys_G4[0, i] for i in range(4)]
             Bb_prime[1,3::6] = [Ni_partial_phys_G4[1, i] for i in range(4)]
-            Bb_prime[2,4*Q4Elements.mask4] = [item for i in range(4) for item in (-Ni_partial_phys_G4[0, i], Ni_partial_phys_G4[1, i])]
+            Bb_prime[2,4*Q4ElementsCalculations.mask4] = [item for i in range(4) for item in (-Ni_partial_phys_G4[0, i], Ni_partial_phys_G4[1, i])]
             # Cb_prime = np.array([[1, nu, 0], [nu, 1, 0], [0, 0, (1-nu)/2]])* h**3 * E / 12 / (1-nu**2)
             Kb_prime = Bb_prime.T @ Cb_prime @ Bb_prime
             StiffnessMatrix += S4 * ( RotationMatrix.T @ Kb_prime @ RotationMatrix)
@@ -163,7 +167,7 @@ class Q4Elements():
             # Mass
             N_prime = np.zeros((6,24))
             for ii in range(4):
-                N_prime[:, 6*ii:6*ii+6] = Q4Elements.Ni_G4[k,ii] * np.eye(6,6)
+                N_prime[:, 6*ii:6*ii+6] = Q4ElementsCalculations.Ni_G4[k,ii] * np.eye(6,6)
             
             # rho_prime = rho*h*np.diag([1,1,1,h**2/12,h**2/12,0])
             MassMatrix += S4 * (RotationMatrix.T @ N_prime.T @ rho_prime @ N_prime @ RotationMatrix)
@@ -171,7 +175,7 @@ class Q4Elements():
         return StiffnessMatrix, MassMatrix
 
     @staticmethod
-    def __CoreMatricesIsotropicShell(Property: PSHELL) \
+    def __CoreMatricesIsotropicShell(Property: pre.PSHELL) \
         -> Tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.float64], NDArray[np.float64], NDArray[np.float64], NDArray[np.float64]]:
 
         h = Property.Thickness
@@ -189,7 +193,7 @@ class Q4Elements():
         return Ct, Cs, Cm , Cb, Cmb, rho
        
     @staticmethod
-    def __CoreMatricesOrthotropicShell(Property: PCOMP, LocalxAxis: NDArray) \
+    def __CoreMatricesOrthotropicShell(Property: pre.PCOMP, LocalxAxis: NDArray) \
         -> Tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.float64], NDArray[np.float64], NDArray[np.float64], NDArray[np.float64]]:
        
         def DpDs(E1: float, E2: float , nu12: float, nu21: float, G1z: float, G2z: float, beta_i: float) \
@@ -303,8 +307,8 @@ class Q4Elements():
             Nodes = NodeMatrix[NodeIds,:]
             Property = PropertiesDict[ElementId]
 
-            R, A = Q4Elements.__RotationMatrix(Nodes)
-            StiffnessMatrix, MassMatrix = Q4Elements.__LocalMatricesSingleQ4Element(Nodes, R, Property)
+            R, A = Q4ElementsCalculations.__RotationMatrix(Nodes)
+            StiffnessMatrix, MassMatrix = Q4ElementsCalculations.__LocalMatricesSingleQ4Element(Nodes, R, Property)
 
             # Assemble to Global matrix 
             GlobalDofs = [value  for i in range(4) for value in range(6*NodeIds[i], 6*NodeIds[i]+6)]
@@ -316,18 +320,147 @@ class Q4Elements():
         
         return GlobalStiffnessMatrix, GlobalMassMatrix, Areas, RotationMatrices
 
-def main() -> None:
+    @staticmethod
+    def __Qmatrix(Nel: int, Ndof: int, NxElements: int, NodeMatrix: NDArray[np.float64], ElementMatrix: NDArray[np.int32]) -> NDArray[np.float64]:
+        '''Q matrix Relates pressure distribution with external forces'''
+        Q = np.zeros((Ndof, Nel), dtype = np.float64)
+        for i in range(Nel):
+            y1 = NodeMatrix[ElementMatrix[i,0], 1]
+            y2 = NodeMatrix[ElementMatrix[i,1], 1]
+            y3 = NodeMatrix[ElementMatrix[i,2], 1]
+            y4 = NodeMatrix[ElementMatrix[i,3], 1]
+            Dy = (y3 + y4) / 2 - (y1 + y2) / 2
+            Dofs = (ElementMatrix[i,:] + 1) * 6 - 4
+            LE = i % (NxElements) == 0 # is leading edge panel?
+            Q[Dofs, i] += Dy / 4
+            if not LE:
+                Q[Dofs, i - 1] += -Dy / 4
+
+        return Q
+    
+    @staticmethod
+    def __Dmatrix(Nel: int, Ndof: int, NodeMatrix: NDArray[np.float64], ElementMatrix: NDArray[np.int32]) -> NDArray[np.float64]:
+        '''D matrix Relates AoA with vertical (z) displacement of the nodes'''
+        D = np.zeros((Nel, Ndof), dtype = np.float64)
+        for i in range(Nel):
+            x1 = NodeMatrix[ElementMatrix[i,1], 0]
+            x2 = NodeMatrix[ElementMatrix[i,2], 0]
+            x3 = NodeMatrix[ElementMatrix[i,3], 0]
+            x4 = NodeMatrix[ElementMatrix[i,4], 0]
+            Dx = (x2 + x3) / 2 - (x1 + x4) /2
+            D[i, 6*(ElementMatrix[i,1:] + 1) - 4] = 1 / (2 * Dx) * np.array([1, -1, -1, 1], dtype = np.float64)
+        return D
+    
+    @staticmethod
+    def __Ematrix(Nel: int, Ndof: int, ElementMatrix: NDArray[np.int32] ) -> NDArray[np.float64]:
+        '''E matrix Relates structural velocity in the collocation points (zdirection ) to velocity vector { u_point }'''
+        # Collocation point isoparametric coordinates
+        E = np.zeros((Nel, Ndof), dtype = np.float64)
+        xi = 0.5
+        eta = 0
+        a = np.array([-1, 1, 1, -1])
+        b = np.array([-1, -1, 1, 1])
+        for e in range(Nel):
+            for i in range(4):
+                E[e, (ElementMatrix[e,i] + 1) * 6 - 4] = 0.25 * (1 + xi * a[i]) * (1 + eta *b [i])
+
+        return E
+
+
+class VortexPanelElements():
+    def __init__(self, PanelNodes: NDArray[np.float64], PanelConnectivity: NDArray[np.int32]):
+        self.Nel: int = PanelConnectivity.shape[0]
+        self.PanelNodes = PanelNodes
+        self.PanelConnectivity = PanelConnectivity
+        normals, Db = self.__NormalsAndWidth()
+        self.nomals = normals
+        self.Width = Db
+
+
+    def __NormalsAndWidth(self) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
+        normals: NDArray[np.float64] = np.zeros((self.Nel, 3), dtype = np.float64)
+        Db: NDArray[np.float64] = np.zeros((self.Nel), dtype = np.float64)
+        for i in range(self.Nel):
+            NodeIds = self.PanelConnectivity[i,1:5]
+            Nodes = self.PanelNodes[NodeIds,:]
+            S = np.cross(Nodes[2,:] - Nodes[0,:], Nodes[3,:] - Nodes[1,:] )/2
+            Area = np.linalg.norm(S)
+            normals[i,:] = S / Area
+            Db[i] = (np.abs(Nodes[0, 1] - Nodes[3, 1]) + np.abs(Nodes[1, 1] - Nodes[2, 1])) / 2
+        return normals, Db
+    
+    @property
+    def CollocationPoints(self) -> NDArray[np.float64]:
+        CollocationPoints = np.zeros((self.Nel, 3), dtype = np.float64)
+        for i in range(self.Nel):
+            NodeIds = self.PanelConnectivity[i, 1:5]
+            Nodes = self.PanelNodes[NodeIds, :]
+            CollocationPoints[i, :] = np.sum(Nodes, axis = 0) / 4
+        
+        return CollocationPoints
+
+    def InfluenceCoefficients(self, Nshells: int, Panel2ShellConnectivity: NDArray[np.int32]) -> Tuple[NDArray[np.float64], NDArray[np.float64]]:
+        A, B = aero.InfluenceCoefficients(Nshells, self.CollocationPoints, self.nomals, self.Nel, self.PanelNodes, self.PanelConnectivity, Panel2ShellConnectivity)
+        return A, B
+
+
+def Eigenproblem(K: NDArray[np.float64], M: NDArray[np.float64], N: int) -> Tuple[NDArray[np.float64], NDArray[np.float64]]:
+    Vals, Vecs = eigs(A = K, M = M, k = N, which= 'SM') #type: ignore
+    idx = np.argsort(Vals)
+    Vals = Vals[idx]
+    Vecs = Vecs[:,idx]
+    return Vals, Vecs
+
+def AerodynamicFlutter(Analysis: pre.AeroelasticAnalysis):
+    Structural = Analysis.Structural
+    Aerodynamics = Analysis.AerodynamicMesh
+    Shells = Q4ElementsCalculations(Structural.Mesh.ConnectivityMatrix, Structural.Mesh.NodeMatrix, Structural.Element2Prop)
+    Panels = VortexPanelElements(Aerodynamics.NodeMatrix, Aerodynamics.ConnectivityMatrix)
+    Vinf = np.atleast_1d(Analysis.Controls.Velocities)
+    Neig = Analysis.Controls.NumModes
+    rho = Analysis.Controls.Density
+    BoundedDofs = Structural.Boundary
+    AllDofs = np.arange(Shells.NN * Shells.DofPN)
+    FreeDofs = np.setdiff1d(AllDofs, BoundedDofs)
+    NumFreeDofs = FreeDofs.shape[0]
+
+
+    A, _ = Panels.InfluenceCoefficients(Shells.NE, Analysis.Panel2ShellConnection)
+    invA = np.linalg.inv(A)
+
+
+    lenV = Vinf.shape[0]
+    pR = np.zeros((Neig, lenV), dtype = np.float64 )
+    pI = np.zeros_like(pR)
+    Lamda = np.zeros_like(pR, dtype = np.complex128)
+
+    for i in range(lenV):
+        Ca = rho * Vinf[i] *  Shells.Qmatrix @ invA @ Shells.Ematrix
+        Ka = Shells.StifnessMatrix + rho * Vinf[i]**2 * (Shells.Qmatrix @ invA @ Shells.Dmatrix)
+        mask = np.ix_(FreeDofs, FreeDofs)
+        Z =  np.zeros((NumFreeDofs, NumFreeDofs))
+        I = np.eye(NumFreeDofs, NumFreeDofs)
+        Mbar = np.block([[Ca[mask], Shells.MassMatrix[mask]],
+                         [-I, Z]])
+        Kbar = np.block([[Ka[mask], Z],
+                         [Z, I]])
+        
+        EigenValues, EigenVectors = Eigenproblem(Kbar, Mbar, Neig)
+        pR[:, i] = EigenValues.real
+        pI[:, i] = EigenValues.imag
+
+def DDmain() -> None:
     X,Y = np.meshgrid(np.arange(-5, 5, 1),np.arange(-5, 5, 1) )
     X = X.flatten()
     Y = Y.flatten()
     Z = np.zeros(100)
     NodeMatrix  = np.column_stack([X,Y,Z])
-    Elematrix = ConnectStructuredGrid(10,10)
-    M1 = IsotropicMaterial(1, 7.89E-9, 210000, 0.3)
-    P1 = PSHELL(1, M1, 0.001)
+    Elematrix = pre.ConnectStructuredGrid(10,10)
+    M1 = pre.IsotropicMaterial(1, 7.89E-9, 210000, 0.3)
+    P1 = pre.PSHELL(1, M1, 0.001)
     PropDict = dict((int(ElId), P1) for ElId in list(Elematrix[:,0]))
 
-    ShellElements = Q4Elements(Elematrix, NodeMatrix, PropDict) #type: ignore
+    ShellElements = Q4ElementsCalculations(Elematrix, NodeMatrix, PropDict) #type: ignore
     K = ShellElements.StifnessMatrix
     M = ShellElements.MassMatrix
     K = (K.T + K ) / 2 
@@ -371,6 +504,24 @@ def main() -> None:
     plt.xlabel("X")
     plt.ylabel("Y")
     plt.show()
+
+def main():
+    Wing = pre.WingPlanform(Wingspan = 12, Croot = 6, Ctip = 6, Sweepback= np.deg2rad(5))
+    StructuralMesh, AeroMesh, Panel2ShellConnectivity = pre.MainMeshFunction(Wing, Nspan = 15, Nchord = 10)
+    FixedDoFs = pre.ClampLeftEdge(StructuralMesh)
+    Mat1 = pre.IsotropicMaterial(1, 1600, 9E10, 0.33)
+    Prop1 = pre.PSHELL(1, Mat1, 0.001)
+    
+    Mat2 = pre.OrthotropicMaterial(2, 1600, 9E10, 9E9, 0.4, 40000, 40000)
+    C1 = pre.CORD1R(1, np.array([0.,0., 0.]), np.eye(3,3, dtype = np.float64) )
+    Prop2 = pre.PCOMP(2,[Mat2, Mat2], [0.001, 0.002], C1, [0, 3.14/2] )
+
+    PropertyAssignment = pre.AssignProperty(StructuralMesh.ConnectivityMatrix[:,0].tolist(), Prop1)
+    Structural = pre.StructuralProperties(StructuralMesh, FixedDoFs, [Prop1, Prop2], PropertyAssignment)
+    controls = pre.AeroelasticAnalysisControls(np.array(1),1,1)
+    Analysis = pre.AeroelasticAnalysis(Structural, AeroMesh, controls, Panel2ShellConnectivity)
+    AerodynamicFlutter(Analysis)
+
 
 if __name__ == '__main__': 
     main()
