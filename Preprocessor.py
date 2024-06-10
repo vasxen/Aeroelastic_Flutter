@@ -200,19 +200,36 @@ class PBEAM():
     ...
 
 @dataclass
-class CAERO():
-    PanelNodes: NDArray[np.float64]
-    PanelConnectivity: NDArray[np.int32]
+class Mesh():
+    NodeMatrix: NDArray[np.float64]
+    ConnectivityMatrix: NDArray[np.int32]
+    NxElements: int
 
+    @property
+    def Nel(self) -> int:
+        return self.ConnectivityMatrix.shape[0]
+    
 # -------- Aeroelastic Analysis --------
 @dataclass
-class AerolasticAnalysis():
-    NodeMatrix: NDArray[np.float64]
-    ShellConnectivity: NDArray[np.int32]
+class AeroelasticAnalysisControls():
+    Velocities: NDArray[np.float64]
+    Density: float
+    NumModes: int
+
+@dataclass
+class StructuralProperties():
+    Mesh: Mesh
     Boundary: List[int]
     Properties: List[PSHELL | PCOMP]
     Element2Prop: Dict[int, PSHELL | PCOMP]
-    Aerodynamics: CAERO
+
+@dataclass
+class AeroelasticAnalysis():
+    Structural: StructuralProperties
+    AerodynamicMesh: Mesh
+    Controls: AeroelasticAnalysisControls
+    Panel2ShellConnection: NDArray[np.int32]
+
 
     def ExportData(self, filepath: str):
         directory = os.path.dirname(filepath)
@@ -227,10 +244,10 @@ class AerolasticAnalysis():
         filepath = directory + filename
 
         #Prepare Data
-        PropData = np.array([p.to_string() for p in self.Properties], dtype = 'S')
+        PropData = np.array([p.to_string() for p in self.Structural.Properties], dtype = 'S')
         MatData:List[str] = []
 
-        for p in self.Properties:
+        for p in self.Structural.Properties:
             if isinstance(p, PSHELL):
                 MatData.append(p.MAT.to_string())
             elif isinstance(p, PCOMP):
@@ -246,30 +263,45 @@ class AerolasticAnalysis():
         MatDataArray = np.array(MatData, dtype = 'S')
 
 
-        keys = list(self.Element2Prop.keys())
-        values = [e.Id for e in self.Element2Prop.values()]
+        keys = list(self.Structural.Element2Prop.keys())
+        values = [e.Id for e in self.Structural.Element2Prop.values()]
         length = len(keys)
         Element2PropData = np.empty((length, 2), dtype = np.int32)
         Element2PropData[:,0] = keys 
         Element2PropData[:,1] = values
 
         with h5py.File(filepath, 'w') as f:
-            f.create_dataset('NODES', data = self.NodeMatrix)
-            f.create_dataset('CQUAD4', data = self.ShellConnectivity)
-            f.create_dataset('SPC', data = np.array(self.Boundary))
-            f.create_dataset('PROPERTIES', data = PropData)
-            f.create_dataset('ASSIGN_PROPERTIES', data = Element2PropData)
-            f.create_dataset('MATERIALS', data = MatDataArray)
-            CAEROGroup = f.create_group('CAERO')
-            CAEROGroup.create_dataset('NODES', data = self.Aerodynamics.PanelNodes)
-            CAEROGroup.create_dataset('PANELS', data = self.Aerodynamics.PanelConnectivity)
+            # Structural Group
+            StructuralGroup = f.create_group('STRUCTURAL')
+            StructuralGroup.create_dataset('NODES', data = self.Structural.Mesh.NodeMatrix)
+            StructuralGroup.create_dataset('CQUAD4', data = self.Structural.Mesh.ConnectivityMatrix)
+            StructuralGroup.create_dataset('SPC', data = np.array(self.Structural.Boundary))
+            StructuralGroup.create_dataset('PROPERTIES', data = PropData)
+            StructuralGroup.create_dataset('ASSIGN_PROPERTIES', data = Element2PropData)
+            StructuralGroup.create_dataset('MATERIALS', data = MatDataArray)
+            # Aerodynamics Group
+            CAEROGroup = f.create_group('AERODYNAMICS')
+            CAEROGroup.create_dataset('NODES', data = self.AerodynamicMesh.NodeMatrix)
+            CAEROGroup.create_dataset('PANELS', data = self.AerodynamicMesh.ConnectivityMatrix)
+            
+            # Coordinate Systems
             CORDGroup = f.create_group('CORD')
-            for p in self.Properties:
+            for p in self.Structural.Properties:
                 if isinstance(p, PCOMP):
                     name = p.CoordinateSystem.type + '_' + str(p.CoordinateSystem.Id)
                     temp = CORDGroup.create_group(name)
                     temp.create_dataset('ORIGIN', data = p.CoordinateSystem.Origin)
                     temp.create_dataset('UNIT_VECTORS', data = p.CoordinateSystem.UnitVectors)
+
+            # Aeroelastic Analysis Controls
+            Controls = f.create_group('CONTROLS')
+            Controls.create_dataset('VELOCITY', data = self.Controls.Velocities)
+            Controls.create_dataset('DENSITY', data = self.Controls.Density)
+            Controls.create_dataset('NMODES', data = self.Controls.NumModes)
+
+            # Panel2ShellConnection
+            f.create_dataset('Panel2ShellConnection', data = self.Panel2ShellConnection)
+
 
 # ----------- Preprocessor Functions ----------
 def CreateWingNodes(Wing: WingPlanform, Nspan: int, Nchord: int, WakeFactor: float = 2) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
@@ -333,7 +365,12 @@ def CreateSPC(NodeIds: List[int], Dofs: str)-> List[int]:
 
     return GlobalDofsConstrained
 
-def ClampLeftEdge(Nspan: int, Nchord: int) -> List[int]:
+def ClampLeftEdge(Mesh: Mesh) -> List[int]:
+    NxElements = Mesh.NxElements
+    NyElements = Mesh.Nel // NxElements
+
+    Nspan = NxElements - 1
+    Nchord = NyElements - 1
     NodeIds = [i*Nspan for i in range(Nchord)]
     Dofs = '123456'
     FixedDofs = CreateSPC(NodeIds, Dofs)
@@ -342,40 +379,62 @@ def ClampLeftEdge(Nspan: int, Nchord: int) -> List[int]:
 def AssignProperty(ElementIds: List[int], Property: Union[PSHELL, PCOMP]) -> dict[int, Union[PSHELL, PCOMP]]:
     return dict((ElId, Property) for ElId in ElementIds)
 
-def CreateCaeroPanels(Nspan: int, Nchord: int, NodeIndeces: List[int] = [], FirstIndex: int = 0 ) -> NDArray[np.int32]:
+def CreateCaeroPanels(Nspan: int, Nchord: int, NodeIndeces: List[int] = [], FirstIndex: int = 0 ) -> Tuple[NDArray[np.int32], NDArray[np.int32]]:
     Elematrix =  ConnectStructuredGrid(Nspan, Nchord, NodeIndeces, FirstIndex)
     NxElements = Nchord - 1
     Aeromatrix = np.zeros((Elematrix.shape[0], 6), dtype = np.int32)
     Aeromatrix[:,0:5] = Elematrix
+    Panel2ShellConnectivity = np.zeros((Elematrix.shape[0], 2), dtype = np.int32)
+    Panel2ShellConnectivity[:,0] = np.arange(Panel2ShellConnectivity.shape[0])
+    j = 0
     for i in range(Aeromatrix.shape[0]):
-        if i % (NxElements) == 0:
+        if i % (NxElements) == 0: # Leading Edge
             Aeromatrix[i, 5] = 1
-        elif i % (NxElements)  == NxElements - 1:
+            Panel2ShellConnectivity[i,1] = i - j
+
+        elif i % (NxElements)  == NxElements - 1: # trailing Edge
             Aeromatrix[i, 5] = -1
-    return Aeromatrix
+            j += 1
+            Panel2ShellConnectivity[i,1] = i - j
+            Panel2ShellConnectivity[i-1 ,1] = i - j
+
+        else:
+            Panel2ShellConnectivity[i,1] = i - j # Middle
+
+
+    return Aeromatrix, Panel2ShellConnectivity
+
+def MainMeshFunction(Wing: WingPlanform, Nspan: int, Nchord: int) -> Tuple[Mesh, Mesh, NDArray[np.int32]]:
+    NodeMatrix, PanelNodes = CreateWingNodes(Wing, Nspan,Nchord)
+    Elematrix = ConnectStructuredGrid(Nspan, Nchord)
+    StructuralMesh = Mesh(NodeMatrix, Elematrix, Nchord - 1)
+
+    Aeropanels, Panel2ShellConnectivity = CreateCaeroPanels(Nspan , Nchord + 1 )
+    AeroMesh = Mesh(PanelNodes, Aeropanels, Nchord)
+
+    return StructuralMesh, AeroMesh, Panel2ShellConnectivity
 
 def main() -> None:
     Wing = WingPlanform(Wingspan = 12, Croot = 6, Ctip = 6, Sweepback= np.deg2rad(5))
-    Nspan = 15 +1 
-    Nchord = 10 + 1
-    NodeMatrix, PanelNodes = CreateWingNodes(Wing, Nspan,Nchord)
-    Elematrix = ConnectStructuredGrid(Nspan, Nchord)
-    Aeropanels = CreateCaeroPanels(Nspan , Nchord + 1 )
-    FixedDoFs = ClampLeftEdge(Nspan, Nchord)
+    StructuralMesh, AeroMesh, Panel2ShellConnectivity = MainMeshFunction(Wing, Nspan = 17, Nchord = 11)
+    FixedDoFs = ClampLeftEdge(StructuralMesh)
     Mat1 = IsotropicMaterial(1, 1600, 9E10, 0.33)
     Prop1 = PSHELL(1, Mat1, 0.001)
-    Caero = CAERO(PanelNodes, Aeropanels)
     
     Mat2 = OrthotropicMaterial(2, 1600, 9E10, 9E9, 0.4, 40000, 40000)
     C1 = CORD1R(1, np.array([0.,0., 0.]), np.eye(3,3, dtype = np.float64) )
     Prop2 = PCOMP(2,[Mat2, Mat2], [0.001, 0.002], C1, [0, 3.14/2] )
 
-    PropertyAssignment = AssignProperty(Elematrix[:,0].tolist(), Prop1)
-    Analysis = AerolasticAnalysis(NodeMatrix, Elematrix, FixedDoFs, [Prop1, Prop2], PropertyAssignment, Caero)
+    PropertyAssignment = AssignProperty(StructuralMesh.ConnectivityMatrix[:,0].tolist(), Prop1)
+    Structural = StructuralProperties(StructuralMesh, FixedDoFs, [Prop1, Prop2], PropertyAssignment)
+    controls = AeroelasticAnalysisControls(np.array(1),1,1)
+    Analysis = AeroelasticAnalysis(Structural, AeroMesh, controls, Panel2ShellConnectivity)
     Analysis.ExportData('test')
     fig = plt.figure()
     ax = fig.add_subplot()
     # ax.scatter(NodeMatrix[:,0], NodeMatrix[:,1])
+    NodeMatrix = Structural.Mesh.NodeMatrix
+    Elematrix = Structural.Mesh.ConnectivityMatrix
     for i in range(NodeMatrix.shape[0]):
         ax.text(NodeMatrix[i,0], NodeMatrix[i,1], str(i))
         ax.scatter(NodeMatrix[i,0], NodeMatrix[i,1], color = 'blue')
@@ -387,6 +446,9 @@ def main() -> None:
         
         # Plot the line connecting the four points
         ax.plot(x_coords, y_coords, color = 'red')
+
+    PanelNodes = AeroMesh.NodeMatrix
+    Aeropanels = AeroMesh.ConnectivityMatrix
 
     for element in Aeropanels:
         # Extract x, y, z coordinates for each point in the element
