@@ -6,7 +6,7 @@ from numba import jit
 from time import time
 
 @jit(nopython = True) # type: ignore
-def VortexLineInducedVelocity(P1: NDArray[np.float64], P2: NDArray[np.float64], P: NDArray[np.float64], Gamma: float, tol: float = 1E-4) -> NDArray[np.float64]:
+def __VortexLineInducedVelocity(P1: NDArray[np.float64], P2: NDArray[np.float64], P: NDArray[np.float64], Gamma: float, tol: float = 1E-4) -> NDArray[np.float64]:
     r0 = P2 - P1
     r1 = P - P1
     r2 = P - P2
@@ -47,18 +47,18 @@ def InfluenceCoefficients(Nel: int, CollocationPoints: NDArray[np.float64], Norm
             P4 = PanelNodes[PanelConnectivity[j, 2], :]
 
             if PanelConnectivity[j, 5] == -1: # trailing edgle horshoe vortex panel
-                u12 = VortexLineInducedVelocity(P1, P2, CollocationPoint, gamma)
-                u23 = VortexLineInducedVelocity(P2, P3, CollocationPoint, gamma)
-                u41 = VortexLineInducedVelocity(P4, P1, CollocationPoint, gamma)
+                u12 = __VortexLineInducedVelocity(P1, P2, CollocationPoint, gamma)
+                u23 = __VortexLineInducedVelocity(P2, P3, CollocationPoint, gamma)
+                u41 = __VortexLineInducedVelocity(P4, P1, CollocationPoint, gamma)
 
                 Vinduced = u12 + u23 + u41
                 VinducedFreeStream = u23 + u41
 
             else:
-                u12 = VortexLineInducedVelocity(P1, P2, CollocationPoint, gamma)
-                u23 = VortexLineInducedVelocity(P2, P3, CollocationPoint, gamma)
-                u34 = VortexLineInducedVelocity(P3, P4, CollocationPoint, gamma)
-                u41 = VortexLineInducedVelocity(P4, P1, CollocationPoint, gamma)
+                u12 = __VortexLineInducedVelocity(P1, P2, CollocationPoint, gamma)
+                u23 = __VortexLineInducedVelocity(P2, P3, CollocationPoint, gamma)
+                u34 = __VortexLineInducedVelocity(P3, P4, CollocationPoint, gamma)
+                u41 = __VortexLineInducedVelocity(P4, P1, CollocationPoint, gamma)
 
                 Vinduced = u12 + u23 + u34 + u41
                 VinducedFreeStream = u23 + u41
@@ -67,49 +67,6 @@ def InfluenceCoefficients(Nel: int, CollocationPoints: NDArray[np.float64], Norm
             B[i, Panel2ShellConnectivity[j,1]] += np.dot(VinducedFreeStream, norm)
 
     return A, B
-
-def Qmatrix(Nel: int, Ndof: int, NxElements: int, NodeMatrix: NDArray[np.float64], ElementMatrix: NDArray[np.int32]):
-    '''Q matrix Relates pressure distribution with external forces'''
-    Q = np.zeros((Ndof, Nel), dtype = np.float64)
-    for i in range(Nel):
-        y1 = NodeMatrix[ElementMatrix[i,0], 1]
-        y2 = NodeMatrix[ElementMatrix[i,1], 1]
-        y3 = NodeMatrix[ElementMatrix[i,2], 1]
-        y4 = NodeMatrix[ElementMatrix[i,3], 1]
-        Dy = (y3 + y4) / 2 - (y1 + y2) / 2
-        Dofs = (ElementMatrix[i,:] + 1) * 6 - 4
-        LE = i % (NxElements) == 0 # is leading edge panel?
-        Q[Dofs, i] += Dy / 4
-        if not LE:
-            Q[Dofs, i - 1] += -Dy / 4
-
-    return Q
-
-def Dmatrix(Nel: int, Ndof: int, NodeMatrix: NDArray[np.float64], ElementMatrix: NDArray[np.int32]):
-    '''D matrix Relates AoA with vertical (z) displacement of the nodes'''
-    D = np.zeros((Nel, Ndof), dtype = np.float64)
-    for i in range(Nel):
-        x1 = NodeMatrix[ElementMatrix[i,0], 0]
-        x2 = NodeMatrix[ElementMatrix[i,1], 0]
-        x3 = NodeMatrix[ElementMatrix[i,2], 0]
-        x4 = NodeMatrix[ElementMatrix[i,3], 0]
-        Dx = (x2 + x3) / 2 - (x1 + x4) /2
-        D[i, 6*(ElementMatrix[i,:] + 1) - 4] = 1 / (2 * Dx) * np.array([1, -1, -1, 1], dtype = np.float64)
-    return D
-
-def Ematrix(Nel: int, Ndof, ElementMatrix: NDArray[np.int32] ):
-    '''E matrix Relates structural velocity in the collocation points (zdirection ) to velocity vector { u_point }'''
-    # Collocation point isoparametric coordinates
-    E = np.zeros((Nel, Ndof), dtype = np.float64)
-    xi = 0.5
-    eta = 0
-    a = np.array([-1, 1, 1, -1])
-    b = np.array([-1, -1, 1, 1])
-    for e in range(Nel):
-        for i in range(4):
-            E[e, (ElementMatrix[e,i] + 1) * 6 - 4] = 0.25 * (1 + xi * a[i]) * (1 + eta *b [i])
-
-    return E
 
 def RHSVector(Nel: int, Vinf: NDArray[np.float64], normals: NDArray[np.float64]):
     RHS = np.zeros((Nel, 1))
@@ -127,7 +84,6 @@ def InducedVelocity(InfluenceCoefficientsB: NDArray[np.float64], Gamma: NDArray[
     return Wind
 
 def CalculateLift(Nel: int, rho: float, Vinf: NDArray[np.float64], Gamma: NDArray[np.float64], PanelConnectivity: NDArray[np.int32], Db: NDArray[np.float64]):
-    # assert Nel == NxElements * NyElements, f'Check Number of elements and Grid Size: Nel must equal Nx * Ny. Nel = {Nel}, Nx = {NxElements}, Ny = {NyElements}'
     Lift = np.zeros((Nel, 3), dtype = np.float64)
     for i in range(Nel):
         if PanelConnectivity[i, 5] == 1: # if LE panel
@@ -138,32 +94,40 @@ def CalculateLift(Nel: int, rho: float, Vinf: NDArray[np.float64], Gamma: NDArra
     Lift *= rho
     return np.sum(Lift, axis = 0)
 
-def CalculateDrag():
-    ...
+def CalculateDrag(Nel: int, rho: float, Wind: NDArray[np.float64], Gamma: NDArray[np.float64], PanelConnectivity: NDArray[np.float64], Db: NDArray[np.float64]):
+    Drag = np.zeros((Nel, 3), dtype = np.float64)
+    for i in range(Nel):
+        if PanelConnectivity[i, 5] == 1: # if LE panel
+            Drag[i, :] = [0, 0, Wind[i]] * Gamma[i,0] * Db[i]
+        else:
+            Drag[i, :] = [0, 0, Wind[i]] * (Gamma[i,0] - Gamma[i-1, 0]) * Db[i]
+    Drag *= rho
+    return np.sum(Drag, axis = 0)
+
 
 
 ######## Code Test ##########
-if __name__ == '__main__':
-    Dm = sio.loadmat('Dmatrix')
-    Dq = sio.loadmat('matrixQ')
-    De = sio.loadmat('Ematrix')
-    dim = Dm['dim']
-    X = Dm['X']
-    Tn = (Dm['Tn'] - 1).astype(np.int32)
-    # Dmatlab = Dm['D']
-    # D = Dmatrix(160, 1122, X, Tn)
-    Q = Qmatrix(160, 1122, 10, X, Tn)
-    Qmatlab = Dq['Q']
-    DiffQ = Q - Qmatlab
-    E = Ematrix(160, 1122, Tn)
-    Ematlab = De['E']
-    DiffE = E -Ematlab
+# if __name__ == '__main__':
+#     Dm = sio.loadmat('Dmatrix')
+#     Dq = sio.loadmat('matrixQ')
+#     De = sio.loadmat('Ematrix')
+#     dim = Dm['dim']
+#     X = Dm['X']
+#     Tn = (Dm['Tn'] - 1).astype(np.int32)
+#     # Dmatlab = Dm['D']
+#     # D = Dmatrix(160, 1122, X, Tn)
+#     # Q = Qmatrix(160, 1122, 10, X, Tn)
+#     Qmatlab = Dq['Q']
+#     DiffQ = Q - Qmatlab
+#     # E = Ematrix(160, 1122, Tn)
+#     Ematlab = De['E']
+#     DiffE = E -Ematlab
 
 
     # P1 = np.array([0, 0, 0], dtype = np.float64)
     # P2 = np.array([1, 1, 1], dtype = np.float64)
     # P = np.array([2, 2, 2], dtype = np.float64)
-    Gamma = 2
+    # Gamma = 2
     # V = VortexLineInducedVelocity(P1, P2, P , Gamma)
 
     # InfCoeffInput = sio.loadmat('InfCoeffInput')
