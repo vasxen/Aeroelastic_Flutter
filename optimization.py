@@ -617,7 +617,7 @@ def DeleteUnessesaryFiles(directory: str, FileExtensions: Tuple[str, ...]) -> No
 
 def main():
     # Dεfine optimization problem parameters
-    inputFile = "C:/Users/vasxen/OneDrive/Thesis/code/FlutterOptimization.fem"
+    inputFile = "C:/Users/vasxen/OneDrive/Thesis/code/ASW28 Wing.fem"
     solverpath = "C:/My_Programms/Altair/hwsolvers/scripts"
     x0 = np.array([0.0005, 44, -44, 44], dtype = np.float64)# initial solution vector
     lower_bounds = [0.0001] + 3 * [-90]                     # lower constraints of thickness and ply angles
@@ -626,7 +626,7 @@ def main():
     options = {'disp' : True,
                'maxfev' : 1000,
                'return_all' : True}
-    WrappedObj = ToleranceWrapper(ObjectiveFunction, 0.0001, 1, 80, inputFile, solverpath)
+    WrappedObj = ToleranceWrapper(ObjectiveFunction, 0.0001, 1, 90, inputFile, solverpath)
     Min = minimize(WrappedObj, x0 = x0, method = 'powell', bounds = bounds, options = options)
 
     DeleteUnessesaryFiles(os.getcwd(), FileExtensions = ('.out', '.stat'))
