@@ -2,6 +2,7 @@ import os
 import subprocess
 import pandas as pd
 import numpy as np
+import simanneal
 from enum import Enum
 from scipy.optimize import minimize, Bounds
 from numpy.typing import NDArray
