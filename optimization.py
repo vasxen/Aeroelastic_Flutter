@@ -544,7 +544,7 @@ def CallSolver(inputfile: str, solverpath: str, options: str) -> subprocess.Comp
 
 
     s = subprocess.run([f'temp.bat'])
-    # os.remove('temp.bat')
+    os.remove('temp.bat')
     return s
 
 def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: str, solverpath: str, FlutterVelocityConstraint: float, sym: PlySymmetry, penalty: float) -> float:
@@ -603,9 +603,8 @@ def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: 
         if FlutterVelocity < FlutterVelocityConstraint:
             P = penalty * (FlutterVelocityConstraint - FlutterVelocity)
 
-    Objective = Mass + P
-
-    return -1 * FlutterVelocity
+    Objective = Mass + P 
+    return Objective
 
 def DeleteUnessesaryFiles(directory: str, FileExtensions: Tuple[str, ...]) -> None:
     '''This function deletes al;l file with certain extension within a directory USE CAREFULLY
@@ -619,22 +618,20 @@ def DeleteUnessesaryFiles(directory: str, FileExtensions: Tuple[str, ...]) -> No
             os.remove(os.path.join(directory, file))
 
 def main():
-    # Define optimization problem parameters
+    # Dεfine optimization problem parameters
     inputFile = "C:/Users/vasxen/OneDrive/Thesis/code/ASW28 Wing.fem"
     solverpath = "C:/My_Programms/Altair/hwsolvers/scripts"
     x0 = np.array([0.0005, 44, -44, 44], dtype = np.float64)# initial solution vector
-    lower_bounds = [0.0005] + 3 * [-90]                     # lower constraints of thickness and ply angles
-    upper_bounds = [0.0005] + 3 * [+90]                     # Upper constraints of thickness and ply angles
+    lower_bounds = [0.0001] + 3 * [-90]                     # lower constraints of thickness and ply angles
+    upper_bounds = [0.0050] + 3 * [+90]                     # Upper constraints of thickness and ply angles
     bounds = Bounds(lower_bounds, upper_bounds)             # type: ignore
     options = {'disp' : True,
                'maxfev' : 1000,
                'return_all' : True}
     WrappedObj = ToleranceWrapper(ObjectiveFunction, 0.0001, 1, 90, inputFile, solverpath)
-    Min = minimize(WrappedObj, x0 = x0,method = 'powell', bounds = bounds, options = options)
+    Min = minimize(WrappedObj, x0 = x0, method = 'powell', bounds = bounds, options = options)
 
-    DeleteUnessesaryFiles(os.path.dirname(inputFile), FileExtensions = ('.out', '.stat', '.mvw'))
-    DeleteUnessesaryFiles(os.getcwd(), FileExtensions = ('.bat', ))
-
+    DeleteUnessesaryFiles(os.getcwd(), FileExtensions = ('.out', '.stat'))
 
     WrappedObj.savecahce('FunctionEvaluations.xlsx')
     print('\n\n=========== OPTIMIZATION SUMMARY ===========')
