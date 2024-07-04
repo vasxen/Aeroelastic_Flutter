@@ -2,15 +2,13 @@ import os
 import subprocess
 import pandas as pd
 import numpy as np
-import simanneal
 from enum import Enum
 from scipy.optimize import minimize, Bounds
 from numpy.typing import NDArray
 from dataclasses import dataclass
 from typing import List, Tuple, Callable, Any, Dict
+from simanneal import Annealer
 # from time import time
-
-#asouh gpuhpupa uidh auhf apuihp apuhpaupue9   teats s
 
 # ---------- Classes -------------
 @dataclass
@@ -369,6 +367,16 @@ class ToleranceWrapper():
         Dataframe.to_excel(file)
         return
 
+class OptimizationProblem(Annealer):
+    def __init__(self, initial_state=None, load_state=None):
+        super().__init__(initial_state, load_state)
+
+    def move(self):
+        ...
+    
+    def energy(self):
+        return super().energy()
+
 # -------- Functions --------------
 def ReadFem(inputfile: str) -> Tuple[List[PCOMP], List[MAT8]]:
     '''This funciton reads a .fem optistruct iinput file and detects any PCOMP and any MAT8 entries. This function assumes that PCOMP refers exlusively to MAT8 material types.
@@ -618,7 +626,7 @@ def DeleteUnessesaryFiles(directory: str, FileExtensions: Tuple[str, ...]) -> No
             os.remove(os.path.join(directory, file))
 
 def main():
-    # Dεfine optimization problem parameters
+    # Define optimization problem parameters
     inputFile = "C:/Users/vasxen/OneDrive/Thesis/code/ASW28 Wing.fem"
     solverpath = "C:/My_Programms/Altair/hwsolvers/scripts"
     x0 = np.array([0.0005, 44, -44, 44], dtype = np.float64)# initial solution vector
