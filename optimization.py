@@ -7,6 +7,7 @@ from scipy.optimize import minimize, Bounds
 from numpy.typing import NDArray
 from dataclasses import dataclass
 from typing import List, Tuple, Callable, Any, Dict
+import plotly.graph_objects as go
 # from time import time
 
 
@@ -149,6 +150,27 @@ class FlutterAnalysisPoint():
             FlutterSpeed.append(Vflutter)
 
         return FlutterSpeed, FlutterIndeces
+    
+    def Plot(self,fig: go.Figure, ix: int, iy: int, Plotname: str = '') -> go.Figure:
+        scatter = go.Scatter(x = self.Data.iloc[:,ix], y =  self.Data.iloc[:,iy], mode = 'lines+markers', name = Plotname)
+        fig.add_trace(scatter)
+        return fig
+
+
+    def PlotDamping(self) -> go.Figure:
+        fig = go.Figure()
+        self.Plot(fig, 2, 3, f'MODE {self.ModeNumber}')
+        fig.update_layout(xaxis_title = 'VELOCITY', yaxis_title = 'DAMPING', showlegend = True)
+        return fig
+
+
+    def PlotFrequency(self) -> go.Figure:
+        fig = go.Figure()
+        self.Plot(fig, 2, 4, f'MODE {self.ModeNumber}')
+        fig.update_layout(xaxis_title = 'VELOCITY', yaxis_title = 'DAMPING', showlegend = True)
+        return fig
+
+
     
 @dataclass
 class FlutterSubcase():
@@ -305,13 +327,14 @@ class FlutterSummary():
         #Number of Subcases
         self.NumSubcases = len(Subcases)
 
-    def PrintFlutterInfo(self):
-        print('********* FLUTTER INFORMATION *********\n\n')
+    def FlutterInfo(self) -> str:
+        s = f'\n\n********* FLUTTER INFORMATION *********\n\n'
         for subcase in self.Subcases:
-            print(f'|------ SUBCASE {subcase.SubcaseId} ------|')
-            print('|                       |')
+            s += f'|------ SUBCASE {subcase.SubcaseId} ------|\n'
+            s += '|                       |\n'
             for point, vel in subcase.FlutterInfo().items():
-                print(f'| POINT {point} -> {round(vel, 2)} m/s |')
+                s += f'| POINT {point} -> {round(vel, 2)} m/s |\n'
+        return s
 
 class PlySymmetry(Enum):
     AntiSymmetric = -1
@@ -534,7 +557,6 @@ def CallSolver(inputfile: str, solverpath: str, options: str) -> subprocess.Comp
 
 
     lines = ['@echo off\n',
-             'cd ' + solverpath, '\n',
              'optistruct ' + inputfile + ' ' + options]
     
     with open('temp.bat', 'w') as file:
@@ -625,7 +647,7 @@ def main():
     upper_bounds = [0.0005] + 3 * [+90]                     # Upper constraints of thickness and ply angles
     bounds = Bounds(lower_bounds, upper_bounds)             # type: ignore
     options = {'disp' : True,
-               'maxfev' : 1000,
+               'maxfev' : 1,
                'return_all' : True}
     WrappedObj = ToleranceWrapper(ObjectiveFunction, 0.0001, 1, 90, inputFile, solverpath)
     Min = minimize(WrappedObj, x0 = x0,method = 'powell', bounds = bounds, options = options)
@@ -635,12 +657,11 @@ def main():
 
 
     WrappedObj.savecahce('FunctionEvaluations.xlsx')
-    print('\n\n=========== OPTIMIZATION SUMMARY ===========')
-    print(Min)
-    FlutterSummary(inputFile.replace('.fem', '.flt')).PrintFlutterInfo()
+    with open('Optimization Summary.txt', 'w') as f:
+        print('\n\n=========== OPTIMIZATION SUMMARY ===========', file = f)
+        print(Min, file = f)
+        print(FlutterSummary(inputFile.replace('.fem', '.flt')).FlutterInfo(), file = f)
 
 
 if __name__ == '__main__':
     main()
-
-# FlutterSummary('FlutterOptimization.flt').PrintFlutterInfo()
