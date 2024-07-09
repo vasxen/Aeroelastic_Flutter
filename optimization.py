@@ -2,6 +2,7 @@ import os
 import subprocess
 import pandas as pd
 import numpy as np
+import pygad
 from enum import Enum
 from scipy.optimize import minimize, Bounds
 from numpy.typing import NDArray
@@ -341,45 +342,32 @@ class PlySymmetry(Enum):
     NoSymmetry = 0
     Symmetric = 1
     
-class ToleranceWrapper():
+class FitnessWraper():
     def __init__(self, func: Callable,
-                  ThicknessTolerance: float,
-                      AngleTolerance: float,
-                        FlutterVelocityConstraint: float,
                           inputfile: str,
                             solverpath: str,
-                              Penalty: float = 1E10,
                                 PlySymmetry: PlySymmetry = PlySymmetry.AntiSymmetric):
         self.func = func
-        self.ThicknessTolerance = ThicknessTolerance
-        self.AngleTolerance = AngleTolerance
-        self.FlutterVelocityConstraint = FlutterVelocityConstraint
         self.inputfile = inputfile
         self.solverpath = solverpath
-        self.Penalty = Penalty
         self.PlySymmetry = PlySymmetry
-        self.cache: Dict[Tuple[float], float] = {}
+        self.cache: Dict[Tuple[float], List[float]] = {}
     
-    def __call__(self, x: NDArray[np.float64]) -> float:
-        t = x[0]
-        t = np.round(t / self.ThicknessTolerance) * self.ThicknessTolerance
-
-        a = x[1:]
-        a = (np.round(a / self.AngleTolerance) * self.AngleTolerance).tolist()
+    def call(self, ga_instance, SolutionVec, solution_idx) -> List[float]:
+        t = SolutionVec[0]
+        a = SolutionVec[1:].tolist()
         NumLayers = len(a)
         t = NumLayers * [t]
-        rounded_input = (*t, *a)
-        if rounded_input in self.cache:
-            return self.cache[rounded_input]
+        input = (*t, *a)
+        if input in self.cache:
+            return self.cache[input]
         else:
-            result = self.func(t, a, self.inputfile, self.solverpath, self.FlutterVelocityConstraint, self.PlySymmetry, self.Penalty)
-            self.cache[rounded_input] = result
-            return result
+            Mass, FlutterVelocity = self.func(t, a, self.inputfile,self.solverpath, self.PlySymmetry)
+            self.cache[input] = [-Mass, FlutterVelocity] 
+            return [-Mass, FlutterVelocity]
     
     def __str__(self) -> str:
-        s = f'Thickness Tolerance: {self.ThicknessTolerance}\n'
-        s += f'Angle Tolerance: {self.AngleTolerance}\n'
-        s += '\nCached Data:\n'
+        s = 'Cached Data:\n'
         for k, v in self.cache.items():
             s += f'x = {k} -> f(x) = {v}\n'
         return s
@@ -567,7 +555,7 @@ def CallSolver(inputfile: str, solverpath: str, options: str) -> subprocess.Comp
     # os.remove('temp.bat')
     return s
 
-def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: str, solverpath: str, FlutterVelocityConstraint: float, sym: PlySymmetry, penalty: float) -> float:
+def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: str, solverpath: str, sym: PlySymmetry) -> Tuple[float, float]:
     assert len(thicknesses) == len(angles), f'Thicknesses and angles must haver the same length'
     assert all([e > 0 for e in thicknesses]), ' All thicknesses must be strictly positive'
 
@@ -617,15 +605,14 @@ def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: 
         Vel, _ = point.DetectFlutter()
         if Vel: Velocities.append(Vel[0])
     
-    P: float = 0
+    # P: float = 0
     if Velocities:
         FlutterVelocity = min(Velocities)
-        if FlutterVelocity < FlutterVelocityConstraint:
-            P = penalty * (FlutterVelocityConstraint - FlutterVelocity)
+        # if FlutterVelocity < FlutterVelocityConstraint:
+        #     P = penalty * (FlutterVelocityConstraint - FlutterVelocity)
+    else: FlutterVelocity = 500
 
-    Objective = Mass + P
-
-    return -1 * FlutterVelocity
+    return Mass, FlutterVelocity
 
 def DeleteUnessesaryFiles(directory: str, FileExtensions: Tuple[str, ...]) -> None:
     '''This function deletes al;l file with certain extension within a directory USE CAREFULLY
@@ -642,24 +629,46 @@ def main():
     # Define optimization problem parameters
     inputFile = "C:/Users/vasxen/OneDrive/Thesis/code/ASW28 Wing.fem"
     solverpath = "C:/My_Programms/Altair/hwsolvers/scripts"
-    x0 = np.array([0.0005, 44, -44, 44], dtype = np.float64)# initial solution vector
-    lower_bounds = [0.0005] + 3 * [-90]                     # lower constraints of thickness and ply angles
-    upper_bounds = [0.0005] + 3 * [+90]                     # Upper constraints of thickness and ply angles
-    bounds = Bounds(lower_bounds, upper_bounds)             # type: ignore
+    AngleRange =  np.arange(-90, 90+1, 1, dtype = np.float64)
+    ThicknessRange = np.arange(0.0001, 0.0011, 0.0001, dtype = np.float64)
     options = {'disp' : True,
                'maxfev' : 1,
                'return_all' : True}
-    WrappedObj = ToleranceWrapper(ObjectiveFunction, 0.0001, 1, 90, inputFile, solverpath)
-    Min = minimize(WrappedObj, x0 = x0,method = 'powell', bounds = bounds, options = options)
+    FitnessFunction = FitnessWraper(ObjectiveFunction, inputFile, solverpath)
+
+    GA = pygad.GA(num_generations = 1000,
+            num_parents_mating = 4,
+            fitness_func= FitnessFunction.call,
+            sol_per_pop = 10,
+            initial_population = None,
+            num_genes= 4,
+            gene_type = 4*[np.float64], #type: ignore
+            parent_selection_type= 'sss',
+            keep_elitism = 4,
+            crossover_type= "single_point",
+            crossover_probability= 0.7,
+            mutation_type= 'random',
+            mutation_probability= 0.1,
+            mutation_by_replacement= True,
+            gene_space = [ThicknessRange, AngleRange, AngleRange, AngleRange],
+            save_best_solutions= True,
+            save_solutions= True)
+    GA.run()
+    GA.save('Genetic_Algorithm_Run')
+
+    # Min = minimize(WrappedObj, x0 = x0,method = 'powell', bounds = bounds, options = options)
 
     DeleteUnessesaryFiles(os.path.dirname(inputFile), FileExtensions = ('.out', '.stat', '.mvw'))
     DeleteUnessesaryFiles(os.getcwd(), FileExtensions = ('.bat', ))
 
-
-    WrappedObj.savecahce('FunctionEvaluations.xlsx')
-    with open('Optimization Summary.txt', 'w') as f:
+    
+    FitnessFunction.savecahce('FunctionEvaluations.xlsx')
+    with open('GA Optimization Summary.txt', 'w') as f:
         print('\n\n=========== OPTIMIZATION SUMMARY ===========', file = f)
-        print(Min, file = f)
+        solution, solution_fitness, solution_idx = GA.best_solution()
+        print(f"Parameters of the best solution : {solution}", file = f)
+        print(f"Fitness value of the best solution = {solution_fitness}", file = f)
+        print(f"Index of the best solution : {solution_idx}", file = f)
         print(FlutterSummary(inputFile.replace('.fem', '.flt')).FlutterInfo(), file = f)
 
 
