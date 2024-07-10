@@ -553,6 +553,7 @@ def CallSolver(inputfile: str, solverpath: str, options: str) -> subprocess.Comp
 
     s = subprocess.run([f'temp.bat'])
     # os.remove('temp.bat')
+    DeleteUnessesaryFiles(os.path.dirname(inputfile), FileExtensions = ('.out', '.stat', '.mvw', '.mesg'))
     return s
 
 def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: str, solverpath: str, sym: PlySymmetry) -> Tuple[float, float]:
@@ -658,7 +659,6 @@ def main():
 
     # Min = minimize(WrappedObj, x0 = x0,method = 'powell', bounds = bounds, options = options)
 
-    DeleteUnessesaryFiles(os.path.dirname(inputFile), FileExtensions = ('.out', '.stat', '.mvw'))
     DeleteUnessesaryFiles(os.getcwd(), FileExtensions = ('.bat', ))
 
     
