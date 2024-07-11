@@ -342,52 +342,47 @@ class PlySymmetry(Enum):
     Symmetric = 1
     
 class ToleranceWrapper():
-    def __init__(self, func: Callable,
-                  ThicknessTolerance: float,
-                      AngleTolerance: float,
-                        FlutterVelocityConstraint: float,
-                          inputfile: str,
-                            solverpath: str,
-                              Penalty: float = 1E10,
-                                PlySymmetry: PlySymmetry = PlySymmetry.AntiSymmetric):
+    def __init__(self, func: Callable, inputfile: str, solverpath: str, PlySymmetry: PlySymmetry = PlySymmetry.AntiSymmetric):
         self.func = func
-        self.ThicknessTolerance = ThicknessTolerance
-        self.AngleTolerance = AngleTolerance
-        self.FlutterVelocityConstraint = FlutterVelocityConstraint
         self.inputfile = inputfile
         self.solverpath = solverpath
-        self.Penalty = Penalty
         self.PlySymmetry = PlySymmetry
-        self.cache: Dict[Tuple[float], float] = {}
+        self.cache: Dict[Tuple[float,...], Tuple[float, float]] = {}
     
-    def __call__(self, x: NDArray[np.float64]) -> float:
+    def __call__(self, x: NDArray[np.float64]) -> Tuple[float, float]:
         t = x[0]
-        t = np.round(t / self.ThicknessTolerance) * self.ThicknessTolerance
-
-        a = x[1:]
-        a = (np.round(a / self.AngleTolerance) * self.AngleTolerance).tolist()
+        a = x[1:].tolist()
         NumLayers = len(a)
         t = NumLayers * [t]
-        rounded_input = (*t, *a)
-        if rounded_input in self.cache:
-            return self.cache[rounded_input]
+        input = (*t, *a)
+        if input in self.cache:
+            return self.cache[input]
         else:
-            result = self.func(t, a, self.inputfile, self.solverpath, self.FlutterVelocityConstraint, self.PlySymmetry, self.Penalty)
-            self.cache[rounded_input] = result
+            result = self.func(t, a, self.inputfile, self.solverpath, self.PlySymmetry)
+            self.cache[input] = result
             return result
     
     def __str__(self) -> str:
-        s = f'Thickness Tolerance: {self.ThicknessTolerance}\n'
-        s += f'Angle Tolerance: {self.AngleTolerance}\n'
-        s += '\nCached Data:\n'
+        s = '\nCached Data:\n'
         for k, v in self.cache.items():
             s += f'x = {k} -> f(x) = {v}\n'
         return s
     
     def savecahce(self, file: str) -> None:
         assert file.endswith('.xlsx'), f'The file must be an .xlsx file not a .{file.split('.')[1]} file'
-        Dataframe = pd.DataFrame(list(self.cache.items()), columns = ['Input Vector', 'Function Value'])
-        Dataframe.to_excel(file)
+
+        rows = []
+        for key, value in self.cache.items():
+            # Combine key and value into a single list
+            key = key[2:]
+            row = list(key) + list(value)
+            rows.append(row)
+
+        # Create pandas DataFrame from the list of lists
+        df = pd.DataFrame(rows, columns= ['X0', 'X1', 'X2', 'X3', 'Y1', 'Y2'])
+
+        # Write the DataFrame to the Excel file
+        df.to_excel(file, index = False)
         return
 
 # -------- Functions --------------
@@ -567,7 +562,7 @@ def CallSolver(inputfile: str, solverpath: str, options: str) -> subprocess.Comp
     # os.remove('temp.bat')
     return s
 
-def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: str, solverpath: str, FlutterVelocityConstraint: float, sym: PlySymmetry, penalty: float) -> float:
+def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: str, solverpath: str, sym: PlySymmetry) -> Tuple[float, float]:
     assert len(thicknesses) == len(angles), f'Thicknesses and angles must haver the same length'
     assert all([e > 0 for e in thicknesses]), ' All thicknesses must be strictly positive'
 
@@ -616,16 +611,14 @@ def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: 
     for point in Subcase.Points:
         Vel, _ = point.DetectFlutter()
         if Vel: Velocities.append(Vel[0])
-    
-    P: float = 0
+
+    DeleteUnessesaryFiles(os.path.dirname(inputfile), FileExtensions = ('.out', '.stat', '.mvw', 'mesg'))
+
+    FlutterVelocity: float = 0
     if Velocities:
         FlutterVelocity = min(Velocities)
-        if FlutterVelocity < FlutterVelocityConstraint:
-            P = penalty * (FlutterVelocityConstraint - FlutterVelocity)
 
-    Objective = Mass + P
-
-    return -1 * FlutterVelocity
+    return FlutterVelocity, Mass
 
 def DeleteUnessesaryFiles(directory: str, FileExtensions: Tuple[str, ...]) -> None:
     '''This function deletes al;l file with certain extension within a directory USE CAREFULLY
@@ -639,28 +632,40 @@ def DeleteUnessesaryFiles(directory: str, FileExtensions: Tuple[str, ...]) -> No
             os.remove(os.path.join(directory, file))
 
 def main():
-    # Define optimization problem parameters
     inputFile = "C:/Users/vasxen/OneDrive/Thesis/code/ASW28 Wing.fem"
     solverpath = "C:/My_Programms/Altair/hwsolvers/scripts"
-    x0 = np.array([0.0005, 44, -44, 44], dtype = np.float64)# initial solution vector
-    lower_bounds = [0.0005] + 3 * [-90]                     # lower constraints of thickness and ply angles
-    upper_bounds = [0.0005] + 3 * [+90]                     # Upper constraints of thickness and ply angles
-    bounds = Bounds(lower_bounds, upper_bounds)             # type: ignore
-    options = {'disp' : True,
-               'maxfev' : 1,
-               'return_all' : True}
-    WrappedObj = ToleranceWrapper(ObjectiveFunction, 0.0001, 1, 90, inputFile, solverpath)
-    Min = minimize(WrappedObj, x0 = x0,method = 'powell', bounds = bounds, options = options)
+    
+    # Define problem constraints
+    AngleRange: NDArray = np.arange(-90, 90+1, 1, dtype = np.int32)
+    NumAngles: int = AngleRange.shape[0]
+    ThicknessRange: NDArray = np.round(np.arange(0.0001, 0.001, 0.0001, dtype = np.float64), decimals = 4)
+    NumThickness: int = ThicknessRange.shape[0]
 
-    DeleteUnessesaryFiles(os.path.dirname(inputFile), FileExtensions = ('.out', '.stat', '.mvw'))
+    NumSamples: int = 1500
+    Wrapper = ToleranceWrapper(ObjectiveFunction, inputFile, solverpath)
+    # Gather Data
+    for i in range(NumSamples):
+        while True:
+            inputidx = np.random.randint(0, NumThickness, size = 1).tolist()
+            inputidx += np.random.randint(0, NumAngles, size = 3).tolist()
+            x = np.zeros((4,))
+            x[0] = ThicknessRange[inputidx[0]]
+            x[1] = AngleRange[inputidx[1]]
+            x[2] = AngleRange[inputidx[2]]
+            x[3] = AngleRange[inputidx[3]]
+            t = x[0]
+            a = x[1:].tolist()
+            NumLayers = len(a)
+            t = NumLayers * [t]
+            input = (*t, *a)
+            if input not in Wrapper.cache: break
+        
+        print(f'Data sample Number {i}')
+        Wrapper(x) #Calculate Objective Function
+    
+    Wrapper.savecahce('FunctionDataPoints.xlsx')
+
     DeleteUnessesaryFiles(os.getcwd(), FileExtensions = ('.bat', ))
-
-
-    WrappedObj.savecahce('FunctionEvaluations.xlsx')
-    with open('Optimization Summary.txt', 'w') as f:
-        print('\n\n=========== OPTIMIZATION SUMMARY ===========', file = f)
-        print(Min, file = f)
-        print(FlutterSummary(inputFile.replace('.fem', '.flt')).FlutterInfo(), file = f)
 
 
 if __name__ == '__main__':
