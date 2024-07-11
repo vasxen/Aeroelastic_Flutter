@@ -632,9 +632,6 @@ def main():
     solverpath = "C:/My_Programms/Altair/hwsolvers/scripts"
     AngleRange =  np.arange(-90, 90+1, 1, dtype = np.float64)
     ThicknessRange = np.arange(0.0001, 0.0011, 0.0001, dtype = np.float64)
-    options = {'disp' : True,
-               'maxfev' : 1,
-               'return_all' : True}
     FitnessFunction = FitnessWraper(ObjectiveFunction, inputFile, solverpath)
 
     GA = pygad.GA(num_generations = 1000,
@@ -644,6 +641,7 @@ def main():
             initial_population = None,
             num_genes= 4,
             gene_type = 4*[np.float64], #type: ignore
+            stop_criteria= ['saturate_25'],
             parent_selection_type= 'sss',
             keep_elitism = 4,
             crossover_type= "single_point",
