@@ -553,7 +553,6 @@ def CallSolver(inputfile: str, solverpath: str, options: str) -> subprocess.Comp
 
     s = subprocess.run([f'temp.bat'])
     # os.remove('temp.bat')
-    DeleteUnessesaryFiles(os.path.dirname(inputfile), FileExtensions = ('.out', '.stat', '.mvw', '.mesg'))
     return s
 
 def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: str, solverpath: str, sym: PlySymmetry) -> Tuple[float, float]:
@@ -613,6 +612,7 @@ def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: 
         #     P = penalty * (FlutterVelocityConstraint - FlutterVelocity)
     else: FlutterVelocity = 500
 
+    DeleteUnessesaryFiles(os.path.dirname(inputfile), FileExtensions = ('.out', '.stat', '.mvw', '.mesg'))
     return Mass, FlutterVelocity
 
 def DeleteUnessesaryFiles(directory: str, FileExtensions: Tuple[str, ...]) -> None:
