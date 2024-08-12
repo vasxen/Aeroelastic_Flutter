@@ -377,12 +377,6 @@ class FitnessWraper():
         Dataframe = pd.DataFrame(list(self.cache.items()), columns = ['Input Vector', 'Function Value'])
         Dataframe.to_excel(file)
         return
-    
-    def savehistory(self, file: str) -> None:
-        assert file.endswith('.xlsx'), f'The file must be an .xlsx file not a .{file.split('.')[1]} file'
-        Dataframe = pd.DataFrame(list(self.history.items()), columns = ['Input Vector', 'Function Value'])
-        Dataframe.to_excel(file)
-        return
 
 # -------- Functions --------------
 def ReadFem(inputfile: str) -> Tuple[List[PCOMP], List[MAT8]]:
