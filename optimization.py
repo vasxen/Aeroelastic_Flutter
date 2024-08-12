@@ -359,6 +359,7 @@ class ToleranceWrapper():
         self.Penalty = Penalty
         self.PlySymmetry = PlySymmetry
         self.cache: Dict[Tuple[float], float] = {}
+        self.history: Dict[Tuple[float], float] = {}
     
     def __call__(self, x: NDArray[np.float64]) -> float:
         t = x[0]
@@ -370,9 +371,12 @@ class ToleranceWrapper():
         t = NumLayers * [t]
         rounded_input = (*t, *a)
         if rounded_input in self.cache:
-            return self.cache[rounded_input]
+            result = self.cache[rounded_input]
+            self.history[rounded_input] = result
+            return result
         else:
             result = self.func(t, a, self.inputfile, self.solverpath, self.FlutterVelocityConstraint, self.PlySymmetry, self.Penalty)
+            self.history[rounded_input] = result
             self.cache[rounded_input] = result
             return result
     
@@ -387,6 +391,12 @@ class ToleranceWrapper():
     def savecahce(self, file: str) -> None:
         assert file.endswith('.xlsx'), f'The file must be an .xlsx file not a .{file.split('.')[1]} file'
         Dataframe = pd.DataFrame(list(self.cache.items()), columns = ['Input Vector', 'Function Value'])
+        Dataframe.to_excel(file)
+        return
+    
+    def savehistory(self, file: str) -> None:
+        assert file.endswith('.xlsx'), f'The file must be an .xlsx file not a .{file.split('.')[1]} file'
+        Dataframe = pd.DataFrame(list(self.history.items()), columns = ['Input Vector', 'Function Value'])
         Dataframe.to_excel(file)
         return
 
@@ -651,12 +661,13 @@ def main():
                'return_all' : True}
     WrappedObj = ToleranceWrapper(ObjectiveFunction, 0.0001, 1, 90, inputFile, solverpath)
     Min = minimize(WrappedObj, x0 = x0,method = 'powell', bounds = bounds, options = options)
-
     DeleteUnessesaryFiles(os.path.dirname(inputFile), FileExtensions = ('.out', '.stat', '.mvw'))
     DeleteUnessesaryFiles(os.getcwd(), FileExtensions = ('.bat', ))
 
 
     WrappedObj.savecahce('FunctionEvaluations.xlsx')
+    WrappedObj.savehistory('OptimizationHistory.xlsx')
+    
     with open('Optimization Summary.txt', 'w') as f:
         print('\n\n=========== OPTIMIZATION SUMMARY ===========', file = f)
         print(Min, file = f)
