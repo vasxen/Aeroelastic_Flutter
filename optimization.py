@@ -661,7 +661,11 @@ def main():
             if input not in Wrapper.cache: break
         
         print(f'Data sample Number {i}')
-        Wrapper(x) #Calculate Objective Function
+        try:
+            Wrapper(x) #Calculate Objective Function
+        except:
+            Wrapper.savecahce('FunctionDataPoints.xlsx')
+            raise Exception("An error occured while reading the .out file Saving cach and sxiting program")
     
     Wrapper.savecahce('FunctionDataPoints.xlsx')
 
