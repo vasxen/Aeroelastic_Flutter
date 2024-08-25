@@ -8,6 +8,7 @@ from numpy.typing import NDArray
 from dataclasses import dataclass
 from typing import List, Tuple, Callable, Any, Dict
 import plotly.graph_objects as go
+import pickle
 # from time import time
 
 
@@ -635,7 +636,7 @@ def ObjectiveFunction(thicknesses: List[float], angles: List[float], inputfile: 
 
     Objective = Mass + P
 
-    return -1 * FlutterVelocity
+    return Objective
 
 def DeleteUnessesaryFiles(directory: str, FileExtensions: Tuple[str, ...]) -> None:
     '''This function deletes al;l file with certain extension within a directory USE CAREFULLY
@@ -652,12 +653,12 @@ def main():
     # Define optimization problem parameters
     inputFile = "C:/Users/vasxen/OneDrive/Thesis/code/ASW28 Wing.fem"
     solverpath = "C:/My_Programms/Altair/hwsolvers/scripts"
-    x0 = np.array([0.0005, 44, -44, 44], dtype = np.float64)# initial solution vector
-    lower_bounds = [0.0005] + 3 * [-90]                     # lower constraints of thickness and ply angles
-    upper_bounds = [0.0005] + 3 * [+90]                     # Upper constraints of thickness and ply angles
+    x0 = np.array([0.0005, 45, -45, 45], dtype = np.float64)# initial solution vector
+    lower_bounds = [0.0002] + 3 * [-90]                     # lower constraints of thickness and ply angles
+    upper_bounds = [0.0008] + 3 * [+90]                     # Upper constraints of thickness and ply angles
     bounds = Bounds(lower_bounds, upper_bounds)             # type: ignore
     options = {'disp' : True,
-               'maxfev' : 1,
+               'maxfev' : 1000,
                'return_all' : True}
     WrappedObj = ToleranceWrapper(ObjectiveFunction, 0.0001, 1, 90, inputFile, solverpath)
     Min = minimize(WrappedObj, x0 = x0,method = 'powell', bounds = bounds, options = options)
@@ -667,6 +668,8 @@ def main():
 
     WrappedObj.savecahce('FunctionEvaluations.xlsx')
     WrappedObj.savehistory('OptimizationHistory.xlsx')
+    with open('minimization.pkl', 'wb') as f:
+        pickle.dump(Min, f)
     
     with open('Optimization Summary.txt', 'w') as f:
         print('\n\n=========== OPTIMIZATION SUMMARY ===========', file = f)
