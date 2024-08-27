@@ -17,7 +17,8 @@ class Array(np.ndarray, Generic[DType]):
 def plot_fittness(GA: pygad.GA, title: str = '', labels: List[str] = []):
     NumGenerations: int = GA.generations_completed + 1 #type: ignore
     if NumGenerations > 0:
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(layout = 'constrained')
+        fig.suptitle('Fitness Evolution', fontname = 'Times New Roman', fontsize = 14)
         x: List[int] = list(range(NumGenerations))
         data: List[NDArray[np.float64]] = GA.best_solutions_fitness #type: ignore
         Ndim = data[0].shape[0]
@@ -31,12 +32,12 @@ def plot_fittness(GA: pygad.GA, title: str = '', labels: List[str] = []):
                 name = labels[i]
             else:
                 name = f'Obj {i}'
-            ax.plot(x, y, label = name)
-
+            ax.plot(x, y, label = name, marker = '.', markersize = 2)
+        ax.grid(which = 'both')
+        ax.legend()
         ax.set_title(title)
-        ax.set_xlabel('Num. Generation', Times_New_Roman )
-        ax.set_ylabel('Fittness', Times_New_Roman )
-        plt.show()
+        ax.set_xlabel('Num. Generation', Times_New_Roman, fontsize = 12 )
+        ax.set_ylabel('Fittness', Times_New_Roman, fontsize = 12 )
     else:
         print('0 Generations completed, Exiting...')
         return 
@@ -49,31 +50,29 @@ def plot_genes(GA: pygad.GA, GeneNames: List[str] = [], ytitles: List[str] = [])
     if not GeneNames:
         GeneNames = [f'Gene {i}' for i in range(N)] 
     x = list(range(Ngen))
-    fig, axess = plt.subplots(N, 1, figsize = (8,6) ,sharex = True)
+    fig, axess = plt.subplots(N, 1, figsize = (8,6) ,sharex = True, layout = 'constrained')
     axess = cast(Array[Axes], axess)
-    
+    fig.suptitle('Gene Evolution', fontname = 'Times New Roman', fontsize = 14)
     for i in range(N):
         y = data[:,i]
         ax = axess[i]
-        ax.scatter(x, y, s = 2, label = GeneNames[i])
+        ax.scatter(x, y, s = 5, label = GeneNames[i])
         ax.set_ylabel(ytitles[i])
-        ax.legend(loc = 'upper right')
-        ax.grid()
+        # ax.legend(loc = 'upper right')
+        ax.grid(which= 'both')
         ax.ticklabel_format(axis = 'y', style = 'sci', scilimits = (-1, 3), useMathText=True)
         if i != 0:
             ax.set_ylim((-90,90))
             ax.set_yticks(np.arange(-90,91,45))
-            ax.legend(loc = 'best')
+            # ax.legend(loc = 'best')
 
-    ax.set_xlabel('Num. Generation', Times_New_Roman, fontsize = 16)
-
-    plt.show()
+    ax.set_xlabel('Num. Generation', Times_New_Roman, fontsize = 12)
 
 
 with open('GeneticAlgorithmResults/12.7.2024/Genetic_Algorithm_Run.pkl', 'rb') as f:
     Run: pygad.GA = pickle.load(f)
 
-# plot_fittness(Run, labels = ['Mass', 'Flutter Velocity'])
+plot_fittness(Run, labels = ['Mass', 'Flutter Velocity'])
 plot_genes(Run, GeneNames= [ 'Thickness', '$\\theta_1$', '$\\theta_2$', '$\\theta_3$'],
-            ytitles = ['m', 'deg.', 'deg.', 'deg.'] )
-# Run.plot_genes(plot_type = 'scatter', solutions = 'best', )
+            ytitles = ['$Thickness \\; [m]$', '$\\vartheta_1 \\; [deg]$.', '$\\vartheta_2 \\; [deg]$', '$\\vartheta_3 \\; [deg]$'] )
+plt.show()
