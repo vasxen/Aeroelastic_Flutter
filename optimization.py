@@ -8,7 +8,11 @@ from scipy.optimize import minimize, Bounds
 from numpy.typing import NDArray
 from dataclasses import dataclass
 from typing import List, Tuple, Callable, Any, Dict
-import plotly.graph_objects as go
+from matplotlib.axes import Axes
+from matplotlib.lines import Line2D
+from matplotlib.figure import Figure
+from matplotlib import pyplot as plt
+import pickle
 # from time import time
 
 
@@ -152,23 +156,26 @@ class FlutterAnalysisPoint():
 
         return FlutterSpeed, FlutterIndeces
     
-    def Plot(self,fig: go.Figure, ix: int, iy: int, Plotname: str = '') -> go.Figure:
-        scatter = go.Scatter(x = self.Data.iloc[:,ix], y =  self.Data.iloc[:,iy], mode = 'lines+markers', name = Plotname)
-        fig.add_trace(scatter)
+    def Plot(self,ax: Axes, ix: int, iy: int, label: str = '') -> Line2D:
+        line, =  ax.plot(self.Data.iloc[:,ix], self.Data.iloc[:,iy], marker = '.', label = label )
+        return line
+
+
+    def PlotDamping(self) -> Figure:
+        fig, ax = plt.subplots()
+        self.Plot(ax, 2, 3, f'MODE {self.ModeNumber}')
+        ax.set_xlabel('VELOCITY')
+        ax.set_ylabel('DAMPING')
+        ax.legend()
         return fig
 
 
-    def PlotDamping(self) -> go.Figure:
-        fig = go.Figure()
-        self.Plot(fig, 2, 3, f'MODE {self.ModeNumber}')
-        fig.update_layout(xaxis_title = 'VELOCITY', yaxis_title = 'DAMPING', showlegend = True)
-        return fig
-
-
-    def PlotFrequency(self) -> go.Figure:
-        fig = go.Figure()
-        self.Plot(fig, 2, 4, f'MODE {self.ModeNumber}')
-        fig.update_layout(xaxis_title = 'VELOCITY', yaxis_title = 'DAMPING', showlegend = True)
+    def PlotFrequency(self) -> Figure:
+        fig, ax = plt.subplots()
+        self.Plot(ax, 2, 4, f'MODE {self.ModeNumber}')
+        ax.set_xlabel('VELOCITY')
+        ax.set_ylabel('FREQUECY')
+        ax.legend()
         return fig
 
 
