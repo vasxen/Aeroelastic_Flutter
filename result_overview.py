@@ -95,9 +95,12 @@ def PlotFlutter(flt_file: str, lastmode: int, firstmode: int = 0, blacknwhite: b
 
 
 def main():
-    resultsdir = 'C:/Users/vasxen/OneDrive/Thesis/code/results/Powell Results 25_8_2024'
+    #======================================================================================
+    # Plot Results with ALL optimization variables (objective function 1)
+    #======================================================================================
+    resultsdir1 = 'C:/Users/vasxen/OneDrive/Thesis/code/results/Powell Results 25_8_2024'
     # Plot optimization history 
-    Optimization_History = pd.read_excel(resultsdir + 'OptimizationHistory.xlsx')
+    Optimization_History = pd.read_excel(resultsdir1 + '/OptimizationHistory.xlsx')
     Optimization_History = Preprocessing(Optimization_History)
     Objfig = plotObjective(Optimization_History)     # Objective function
     Varfig = plotInputVector(Optimization_History)     #Variables
@@ -105,12 +108,48 @@ def main():
     Varfig.savefig('C:/Users/vasxen/OneDrive/Thesis/images/Results/Powell/Variables1.svg', format = 'svg')
 
     # Plot the first 4 modes
-    Flutterfig = PlotFlutter(resultsdir + 'ASW28 Wing.flt', lastmode = 4)
+    Flutterfig = PlotFlutter(resultsdir1 + '/ASW28 Wing.flt', lastmode = 4)
     Flutterfig.savefig('C:/Users/vasxen/OneDrive/Thesis/images/Results/Powell/Flutter1.svg')
     
     # Plot the first divergent mode (MODE 3)
-    Flutterfig = PlotFlutter(resultsdir + 'ASW28 Wing.flt', firstmode = 2, lastmode = 3)
+    Flutterfig = PlotFlutter(resultsdir1 + '/ASW28 Wing.flt', firstmode = 2, lastmode = 3)
     Flutterfig.savefig('C:/Users/vasxen/OneDrive/Thesis/images/Results/Powell/Flutter1Mode3.svg')
+
+
+    #======================================================================================
+    # Plot Results with angle variables only (objective function 2)
+    #======================================================================================
+
+    resultsdir2 = 'C:/Users/vasxen/OneDrive/Thesis/code/results/Powell Results 12_8_2024'
+    # Plot optimization history 
+    Optimization_History = pd.read_excel(resultsdir2 + '/OptimizationHistory.xlsx')
+    Optimization_History = Preprocessing(Optimization_History)
+    Objfig = plotObjective(Optimization_History)     # Objective function
+    Varfig = plotInputVector(Optimization_History)     #Variables
+    Objfig.savefig('C:/Users/vasxen/OneDrive/Thesis/images/Results/Powell/Objective2.svg', format = 'svg')
+    Varfig.savefig('C:/Users/vasxen/OneDrive/Thesis/images/Results/Powell/Variables2.svg', format = 'svg')
+
+    # Plot the first 4 modes
+    Flutterfig = PlotFlutter(resultsdir2 + '/ASW28 Wing.flt', lastmode = 4)
+    Flutterfig.savefig('C:/Users/vasxen/OneDrive/Thesis/images/Results/Powell/Flutter2.svg')
+
+    # Plot the first divergent mode (MODE 3)
+    Flutterfig = PlotFlutter(resultsdir2 + '/ASW28 Wing.flt', firstmode = 2, lastmode = 3)
+    Flutterfig.savefig('C:/Users/vasxen/OneDrive/Thesis/images/Results/Powell/Flutter2Mode3.svg')
+
+
+    #======================================================================================
+    # Plot Initial Flutter solution
+    #======================================================================================
+    
+    Flutterfig = PlotFlutter("C:/Users/vasxen/OneDrive/Thesis/GiagkosModel/Attempt18/ASW.flt", 4)
+    Flutterfig.savefig('C:/Users/vasxen/OneDrive/Thesis/images/Results/Flutter/InitialFlutter.svg', format = 'svg')
+    Flutterfig = PlotFlutter("C:/Users/vasxen/OneDrive/Thesis/GiagkosModel/Attempt18/ASW.flt", 3,2)
+    Flutterfig.savefig('C:/Users/vasxen/OneDrive/Thesis/images/Results/Flutter/InitialFlutterMode3.svg', format = 'svg')
+    print(FlutterSummary("C:/Users/vasxen/OneDrive/Thesis/GiagkosModel/Attempt18/ASW.flt").FlutterInfo())
+
+
+    # plt.show()
 
 
 
