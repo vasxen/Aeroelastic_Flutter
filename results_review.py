@@ -7,6 +7,8 @@ from numpy.typing import NDArray
 import numpy as np
 import typing
 from typing import TypeVar, Generic, cast
+from itertools import cycle
+from optimization import ObjectiveFunction, PlySymmetry, FlutterSummary
 Times_New_Roman = {'fontname': 'Times New Roman'}
 
 DType = TypeVar("DType")
@@ -68,11 +70,57 @@ def plot_genes(GA: pygad.GA, GeneNames: List[str] = [], ytitles: List[str] = [])
 
     ax.set_xlabel('Num. Generation', Times_New_Roman, fontsize = 12)
 
+def PlotFlutter(flt_file: str, lastmode: int, firstmode: int = 0, blacknwhite: bool = False):
+    FltSummary = FlutterSummary(flt_file)
+    fig, axes = plt.subplots(2,1, layout = 'constrained')
+    axes = cast(Array[Axes], axes)
+   
+    axes[0].axhline(y=0, color='black')
+    axes[0].set_ylabel('Damping', Times_New_Roman)
+    axes[0].grid(which = 'both')
+    axes[0].set_title('V-g Plot', Times_New_Roman)
+    # axes[0].set_xlabel('Velocity', Times_New_Roman)
+    range(0,1)
+    axes[1].grid(which = 'both')
+    axes[1].set_ylabel('Frequency [Hz]', Times_New_Roman)
+    axes[1].set_xlabel('Velocity [m/s]', Times_New_Roman)
+    axes[1].set_title('V-f Plot', Times_New_Roman)
 
-with open('GeneticAlgorithmResults/12.7.2024/Genetic_Algorithm_Run.pkl', 'rb') as f:
-    Run: pygad.GA = pickle.load(f)
+    linestyles = cycle(['-', '--', '-.', ':'])
+    markers = cycle(['.', '^', 's', 'p', 'd'])
 
-plot_fittness(Run, labels = ['Mass', 'Flutter Velocity'])
-plot_genes(Run, GeneNames= [ 'Thickness', '$\\theta_1$', '$\\theta_2$', '$\\theta_3$'],
-            ytitles = ['$Thickness \\; [m]$', '$\\vartheta_1 \\; [deg]$.', '$\\vartheta_2 \\; [deg]$', '$\\vartheta_3 \\; [deg]$'] )
-plt.show()
+    for i in range (firstmode, lastmode):
+        linestyle = next(linestyles)
+        markerstyle = next(markers)
+
+        line_d = FltSummary.Subcases[0].Points[i].Plot(axes[0], 2, 3, f'Mode {i+1}')
+        if blacknwhite:
+            line_d.set_color('black')
+            line_d.set_linestyle(linestyle)
+            line_d.set_marker(markerstyle)
+
+        line_f = FltSummary.Subcases[0].Points[i].Plot(axes[1], 2, 4, f'Mode {i+1}')
+        if blacknwhite:
+            line_f.set_color('black')
+            line_f.set_linestyle(linestyle)
+            line_f.set_marker(markerstyle)
+
+    axes[0].legend()
+    axes[1].legend()
+    return fig
+
+def main():
+        
+    with open('GeneticAlgorithmResults/12.7.2024/Genetic_Algorithm_Run.pkl', 'rb') as f:
+        Run: pygad.GA = pickle.load(f)
+
+    plot_fittness(Run, labels = ['Mass', 'Flutter Velocity'])
+    plot_genes(Run, GeneNames= [ 'Thickness', '$\\theta_1$', '$\\theta_2$', '$\\theta_3$'],
+                ytitles = ['$Thickness \\; [m]$', '$\\vartheta_1 \\; [deg]$.', '$\\vartheta_2 \\; [deg]$', '$\\vartheta_3 \\; [deg]$'] )
+    plt.show()
+
+    f = PlotFlutter('C:/Users/vasxen/OneDrive/Thesis/code/GeneticAlgorithmResults/12.7.2024/ASW28 Wing.flt', 4)
+    print(FlutterSummary('C:/Users/vasxen/OneDrive/Thesis/code/GeneticAlgorithmResults/12.7.2024/ASW28 Wing.flt').FlutterInfo())
+    plt.show()
+
+main()
