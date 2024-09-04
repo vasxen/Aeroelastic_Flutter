@@ -3,34 +3,31 @@ import numpy as np
 from numpy.typing import NDArray
 import pandas as pd
 import keras
-from bokeh.plotting import figure, show
-from bokeh.io import export_svg, export_png
-
-# def ResultEvalutaion(ytrue, ypred):
-#     fig1, ax1 = plt.subplots()
-#     ax1.scatter(ytrue, ypred)
-#     ax1.plot(ytrue, ytrue)
-#     ax1.set
-#     ### 
-#     Residuals = ytrue - ypred
-#     fig2, ax2 = plt.subplots()
-#     ax2.scatter(ytrue, Residuals)
-#     plt.show()
 
 def ResultEvalutaion(ytrue, ypred):
-    p = figure(width=800, height=800)
-    p.scatter(ytrue,ypred,size=2)
-    p.line(ytrue,ytrue, color='black')
-    p.output_backend = 'svg' # type: ignore
-    export_svg(p,filename= 'test.svg')
-    # show(p)
-    # export_png(p,filename= 'test.png')
+    fig1, ax1 = plt.subplots()
+    ax1.scatter(ytrue, ypred, s=10, color="blue", alpha=0.6, label="Predicted vs Actual")
+    ax1.plot(ytrue, ytrue, color='black', label="Ideal Fit")  # Ideal line
+    ax1.set_title("Actual vs Predicted")
+    ax1.set_xlabel("Actual Values")
+    ax1.set_ylabel("Predicted Values")
+    ax1.legend()
+    ax1.grid(which = 'both')
 
-    ### 
+    # Residuals calculation
     Residuals = ytrue - ypred
-    p2 = figure(width=800, height=800)
-    p2.scatter(ytrue, Residuals, size = 3)
-    p2.output_backend = 'svg' #type: ignore
+    
+    # Scatter plot: ytrue vs Residuals
+    fig2, ax2 = plt.subplots()
+    ax2.scatter(ytrue, Residuals, s=10, color="red", alpha=0.6, label="Residuals")
+    ax2.axhline(0, color='black', linestyle='--', label="Zero Residual Line")
+    ax2.set_title("Residuals vs Actual Values")
+    ax2.set_xlabel("Actual Values")
+    ax2.set_ylabel("Residuals")
+    ax2.legend()
+    ax2.grid(True)
+
+    plt.show()
 
 
 def main():

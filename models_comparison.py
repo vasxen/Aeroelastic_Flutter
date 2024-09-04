@@ -2,24 +2,25 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sb
-# import tensorflow as tf
-import plotly.graph_objects as go
 import keras
-# import keras_tuner as kt
+
 
 
 def plot_loss(history, title: str = ''):
     y1 = history.history['loss']
     y2 = history.history['val_loss']
     x = list(range(1, len(y1) +1))
-    Loss = go.Scatter(x = x, y = y1, mode = 'lines+markers', name = 'loss')
-    ValLoss = go.Scatter(x = x, y = y2, mode = 'lines+markers', name = 'validation loss')
-    fig = go.Figure()
-    fig.add_trace(Loss)
-    fig.add_trace(ValLoss)
+    fig, ax = plt.subplots()
+    ax.plot(x, y1, marker = '.', label='Training Loss')
+    ax.plot(x, y2, marker = '.', label='Validation Loss')
+    ax.set_title(title)
+    ax.set_xlabel('Epoch')
+    ax.set_ylabel('Loss')
+    ax.legend()
+    ax.grid(which='both')
 
-    fig.update_layout(title = title, xaxis_title = 'Epoch', yaxis_title = 'Error [FlutterVelocity]')
-    fig.show()
+    plt.show()
+
 
 
 
