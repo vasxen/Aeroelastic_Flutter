@@ -55,9 +55,12 @@ def main():
 
         NUMBER_LAYERS = hp.Int('N_Hidden_layers', 1, 10, 1)
         for i in range(NUMBER_LAYERS): #type: ignore
-            UNITS = hp.Choice(f'Units L{i+1}', [2, 4, 8, 16, 32, 64, 128, 256, 512])
-            ACTIVATION = hp.Choice('Activation', ['relu', 'tanh', keras.layers.LeakyReLU(negative_slope= 0.05)])
-            model.add(keras.layers.Dense(UNITS, activation = ACTIVATION))
+            UNITS = hp.Choice(f'Units L{i+1}', [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024])
+            ACTIVATION = hp.Choice('Activation', ['relu', 'tanh', 'leaky'])
+            if ACTIVATION == 'leaky':
+                model.add(keras.layers.Dense(UNITS, activation = keras.layers.LeakyReLU(negative_slope=0.1)))
+            else:
+                model.add(keras.layers.Dense(UNITS, activation = ACTIVATION))
         
         model.add(keras.layers.Dense(1))
         LR = hp.Choice('learning rate', [1e-2, 1e-3, 1e-4])
@@ -87,11 +90,11 @@ def main():
                 directory = 'C:/Users/vasxen/OneDrive/Thesis',
                 project_name = 'Hypermodel_Tuning3')
     
-    tensorboard = keras.callbacks.TensorBoard('C:/Users/vasxen/OneDrive/Thesis/tb_logs2')
+    tensorboard = keras.callbacks.TensorBoard('C:/Users/vasxen/OneDrive/Thesis/tb_logs3')
     tuner.search(train_features, train_labels, validation_data = (test_features, test_labels), callbacks= [tensorboard])
 
     bestmodel = tuner.get_best_models(1)[0]
-    bestmodel.save('keras_models/tunedmodel3.keras')
+    bestmodel.save('keras_models/tunedmodel_24_11_2024_a.keras')
     print('Tuned model Info')
     print(bestmodel.summary())
     print(bestmodel.evaluate(test_features, test_labels))
