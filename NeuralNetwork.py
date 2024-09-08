@@ -38,14 +38,12 @@ def Preprocessing(dataset: pd.DataFrame, train_test_ratio:float = 0.9):
 
   return train_features, train_labels, test_features, test_labels
 
-def staticmodel(normalizer: keras.Layer):
-    model = keras.Sequential([
-    normalizer,
-    keras.layers.Dense(64, activation= 'relu'),
-    keras.layers.Dense(64, activation= 'relu'),
-    keras.layers.Dense(64, activation= 'relu'),
-    keras.layers.Dense(1)
-  ])
+def staticmodel(normalizer: keras.Layer, NumHiddenLayers: int):
+    model = keras.Sequential()
+    model.add(normalizer)
+    for _ in range(NumHiddenLayers):
+        model.add(keras.layers.Dense(64, activation= 'relu'))
+    model.add(keras.layers.Dense(1))
     model.compile(loss= 'mean_absolute_error', optimizer= keras.optimizers.Adam(0.001), metrics= ['mse' ,'mae']) #type: ignore
     return model
 
@@ -69,37 +67,41 @@ def main():
         model.compile(loss= 'mean_absolute_error', optimizer= keras.optimizers.Adam(LR), metrics= ['mse' ,'mae']) #type: ignore
         return model
   
+    # Data Preprocessing
     raw_dataset = pd.read_excel('FunctionDataPoints.xlsx')
     train_features, train_labels, test_features, test_labels = Preprocessing(raw_dataset)
 
-    # Data normalization
+    # Data normalization layer
     normalizer = keras.layers.Normalization(axis = -1)
     normalizer.adapt(np.array(train_features))
 
-    # model = staticmodel(normalizer)
+    # Creattion of Static model with differing number of hidden layers
+    for NHL in [1,2,4,6]:          
+        model = staticmodel(normalizer, NHL)
+        train_history = model.fit(train_features, train_labels, validation_split=0.1, verbose= '2', epochs=100)
+        model.save(f'keras_models/{NHL}Hiddenlayers.keras')
+        print(model.summary())
 
-    # train_history = model.fit(train_features, train_labels, validation_split=0.1, verbose= '2', epochs=100)
-    # model.save('1Hiddenlayers.keras')
-    # eval = model.evaluate(test_features, test_labels)
-    # print(eval)
-    # plot_loss(train_history)
-    # print('===================================================')
+        # eval = model.evaluate(test_features, test_labels)
+        # print(eval)
+        # plot_loss(train_history)
+        # print('===================================================')
 
-    ## Tune Model
-    tuner = kt.Hyperband(modelbuilder,
-                objective= 'val_mae',
-                max_epochs = 150,
-                directory = 'C:/Users/vasxen/OneDrive/Thesis',
-                project_name = 'Hypermodel_Tuning3')
+    #Create Hypertuned model
+    # tuner = kt.Hyperband(modelbuilder,
+    #             objective= 'val_mae',
+    #             max_epochs = 150,
+    #             directory = 'C:/Users/vasxen/OneDrive/Thesis',
+    #             project_name = 'Hypermodel_Tuning3')
     
-    tensorboard = keras.callbacks.TensorBoard('C:/Users/vasxen/OneDrive/Thesis/tb_logs3')
-    tuner.search(train_features, train_labels, validation_data = (test_features, test_labels), callbacks= [tensorboard])
+    # tensorboard = keras.callbacks.TensorBoard('C:/Users/vasxen/OneDrive/Thesis/tb_logs3')
+    # tuner.search(train_features, train_labels, validation_data = (test_features, test_labels), callbacks= [tensorboard])
 
-    bestmodel = tuner.get_best_models(1)[0]
-    bestmodel.save('keras_models/tunedmodel_24_11_2024_a.keras')
-    print('Tuned model Info')
-    print(bestmodel.summary())
-    print(bestmodel.evaluate(test_features, test_labels))
+    # bestmodel = tuner.get_best_models(1)[0]
+    # bestmodel.save('keras_models/tunedmodel_24_11_2024_a.keras')
+    # print('Tuned model Info')
+    # print(bestmodel.summary())
+    # print(bestmodel.evaluate(test_features, test_labels))
 
 if __name__ == '__main__':
     main()
