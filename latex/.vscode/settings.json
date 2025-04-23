@@ -1,0 +1,51 @@
+{
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk-pdf-bibtex-shell-escape",
+            "tools": [
+                "latexmk-shell-escape",
+                "bibtex",
+                "pdflatex-shell-escape",
+                "pdflatex-shell-escape"
+            ]
+        },
+        {
+            "name": "pdflatex-shell-escape-recipe",
+            "tools": [
+                "pdflatex-shell-escape"
+            ]
+        }
+    ],
+    "latex-workshop.latex.tools": [
+        {
+            "name": "pdflatex-shell-escape",
+            "command": "pdflatex",
+            "args": [
+                "--shell-escape",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "latexmk-shell-escape",
+            "command": "latexmk",
+            "args": [
+                "-pdf",
+                "-shell-escape",
+                "-bibtex",
+                "-file-line-error",
+                "-interaction=nonstopmode",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": [
+                "%DOCFILE%"
+            ]
+        }
+    ]
+}

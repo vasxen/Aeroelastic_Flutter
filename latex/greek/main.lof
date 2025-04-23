@@ -1,0 +1,96 @@
+\babel@toc {greek}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {greek}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Σύστημα συντεταγμένων σύνθετου στοιχείου}}{8}{figure.caption.5}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Ορισμός στρωμάτων σε \textlatin {composite laminated plate \cite {onate2013}}}}{11}{figure.caption.6}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces \textlatin {natural and physical coordinate space of quadrilateral plate element \cite {bolla2022}}}}{18}{figure.caption.8}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Σημεία \textlatin {Gauss} για πλήρη και μειωμένη ολοκλήρωση στοιχείων τεσσάρων κόμβων}}{19}{figure.caption.9}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces Ορισμός \textlatin {Local} και \textlatin {Global} συστημάτων συντεταγμένων \cite {onate2013}}}{22}{figure.caption.11}%
+\contentsline {figure}{\numberline {2.6}{\ignorespaces \textlatin {Curved Three-dimensional vortex filament of strength $\Gamma $ \cite {pinzon2015}}}}{23}{figure.caption.12}%
+\contentsline {figure}{\numberline {2.7}{\ignorespaces Ταχύτητα σε σημειο \textlatin {P} λόγω ενός \textlatin {vortex distribution} \cite {katz2001}}}{24}{figure.caption.13}%
+\contentsline {figure}{\numberline {2.8}{\ignorespaces Επαγόμενη ταχύτητα από \textlatin {straight Vortex Segment \cite {katz2001}}}}{25}{figure.caption.14}%
+\contentsline {figure}{\numberline {2.9}{\ignorespaces Γεωμετρία \textlatin {Vortex segment \cite {katz2001}}}}{27}{figure.caption.15}%
+\contentsline {figure}{\numberline {2.10}{\ignorespaces Απεικόνιση στοιχείου \textlatin {Vortex Ring Element}}}{28}{figure.caption.16}%
+\contentsline {figure}{\numberline {2.11}{\ignorespaces \textlatin {Vortex ring elements} σε πλέγμα \cite {katz2001}}}{29}{figure.caption.17}%
+\contentsline {figure}{\numberline {2.12}{\ignorespaces Διάταξη από \textlatin {wing} και \textlatin {wake panels} \cite {katz2001}}}{30}{figure.caption.18}%
+\contentsline {figure}{\numberline {2.13}{\ignorespaces Σύστημα συντεταγμένων \textlatin {Surface Spline} \cite {msc2021}}}{33}{figure.caption.19}%
+\contentsline {figure}{\numberline {2.14}{\ignorespaces Μια πιθανή διαμόρφωση σημείων \cite {brent1973} }}{39}{figure.caption.20}%
+\contentsline {figure}{\numberline {2.15}{\ignorespaces Τυπική τερματική διαμόρφωση σημαντικών σημείων \cite {brent1973}}}{40}{figure.caption.21}%
+\contentsline {figure}{\numberline {2.16}{\ignorespaces Η μέθοδος \textlatin {Cyclic Coordinate Search \cite {kochenderfer2019}}}}{41}{figure.caption.22}%
+\contentsline {figure}{\numberline {2.17}{\ignorespaces Η μέθοδος \textlatin {Powell} \cite {kochenderfer2019}}}{42}{figure.caption.23}%
+\contentsline {figure}{\numberline {2.18}{\ignorespaces Διασταύρωση \textlatin {(Crossover)} ενός σημείου \cite {kochenderfer2019}}}{44}{figure.caption.24}%
+\contentsline {figure}{\numberline {2.19}{\ignorespaces Διασταύρωση \textlatin {(Crossover)} δύο σημείων \cite {kochenderfer2019}}}{44}{figure.caption.25}%
+\contentsline {figure}{\numberline {2.20}{\ignorespaces Ομοιόμορφη διασταύρωση \textlatin {(Uniform Crossover) \cite {kochenderfer2019}}}}{44}{figure.caption.26}%
+\contentsline {figure}{\numberline {2.21}{\ignorespaces Η δομή ενός νευρώνα}}{46}{figure.caption.27}%
+\contentsline {figure}{\numberline {2.22}{\ignorespaces Η δομή ενός νευρωνικού δικτύου \cite {takyar2025}}}{47}{figure.caption.28}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Τεχνικά δεδομένα του ανεμοπλάνου \textlatin {ASW 28 \cite {asw28}}}}{52}{figure.caption.29}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Εμπρόσθια, πλάγια και άνω όψη του ανεμοπλάνου \textlatin {ASW 28 \cite {asw28}}}}{53}{figure.caption.30}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Εξωτερική Γεωμετρία της πτέρυγας του \textlatin {ASW 28} \textlatin {(length in meters)}}}{54}{figure.caption.31}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Εσωτερική Γεωμετρία της πτέρυγας του \textlatin {ASW 28}}}{55}{figure.caption.32}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Διακριτοποίηση Εσωτερικής Γεωμετρίας της πτέρυγας του \textlatin {ASW 28}}}{56}{figure.caption.33}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Διακριτοποίηση Εξωτερικής Γεωμετρίας της πτέρυγας του \textlatin {ASW 28}}}{57}{figure.caption.34}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Συνοριακές συνθήκες της πτέρυγας του \textlatin {ASW 28} }}{59}{figure.caption.35}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Σύστημα συντεταγμένων ενός \textlatin {CAERO1 Aerodynamic panel \cite {altair_flutter_tips}}}}{60}{figure.caption.36}%
+\contentsline {figure}{\numberline {3.9}{\ignorespaces Τα \textlatin {CAERO1 macro elements} της πτέρυγας του \textlatin {ASW 28}}}{61}{figure.caption.37}%
+\contentsline {figure}{\numberline {3.10}{\ignorespaces \textlatin {SPLINE1 entries} του μοντέλου της πτέρυγας \textlatin {ASW 28}}}{63}{figure.caption.38}%
+\contentsline {figure}{\numberline {3.11}{\ignorespaces Επεξήγηση του \textlatin {Optistruct .flt file}}}{69}{figure.caption.39}%
+\contentsline {figure}{\numberline {3.12}{\ignorespaces Παραδείγματα απο \textlatin {V-g} και \textlatin {V-f plots} με τέσσερις ιδιομορφές \cite {altair_flutter_tips}}}{70}{figure.caption.40}%
+\contentsline {figure}{\numberline {3.13}{\ignorespaces Αντισυμμετρικά στρώματα σύνθετου υλικού}}{74}{figure.caption.42}%
+\contentsline {figure}{\numberline {3.14}{\ignorespaces Δομή Νευρωνικού δικτύου με $1$ κρυφό στρώμα}}{82}{figure.caption.43}%
+\contentsline {figure}{\numberline {3.15}{\ignorespaces Δομή Νευρωνικού δικτύου με $2$ κρυφά στρώματα}}{82}{figure.caption.43}%
+\contentsline {figure}{\numberline {3.16}{\ignorespaces Δομή Νευρωνικού δικτύου με $4$ κρυφά στρώματα}}{83}{figure.caption.44}%
+\contentsline {figure}{\numberline {3.17}{\ignorespaces Δομή Νευρωνικού δικτύου με $6$ κρυφά στρώματα}}{83}{figure.caption.44}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Ο πρώτες 6 ιδιομορφές του φτερού \textlatin {ASW 28}}}{87}{figure.caption.45}%
+\contentsline {subfigure}{\numberline {({\greekscript \textalpha \textnumeralsigngreek })}{\ignorespaces {\textlatin {Mode 1},\hskip 1em\relax $f = 1.518 Hz$}}}{87}{subfigure.1.1}%
+\contentsline {subfigure}{\numberline {({\greekscript \textbeta \textnumeralsigngreek })}{\ignorespaces {\textlatin {Mode 2},\hskip 1em\relax $f = 2.704 Hz$}}}{87}{subfigure.1.2}%
+\contentsline {subfigure}{\numberline {({\greekscript \textgamma \textnumeralsigngreek })}{\ignorespaces {\textlatin {Mode 3},\hskip 1em\relax $f = 7.061 Hz$}}}{87}{subfigure.1.3}%
+\contentsline {subfigure}{\numberline {({\greekscript \textdelta \textnumeralsigngreek })}{\ignorespaces {\textlatin {Mode 4},\hskip 1em\relax $f = 17.38 Hz$}}}{87}{subfigure.1.4}%
+\contentsline {subfigure}{\numberline {({\greekscript \textepsilon \textnumeralsigngreek })}{\ignorespaces {\textlatin {Mode 5},\hskip 1em\relax $f = 30.02 Hz$}}}{87}{subfigure.1.5}%
+\contentsline {subfigure}{\numberline {({\greekscript \textstigma \textnumeralsigngreek })}{\ignorespaces {\textlatin {Mode 6},\hskip 1em\relax $f = 33.99 Hz$}}}{87}{subfigure.1.6}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Αρχικό διάγραμμα πτερυγισμού για τις 4 πρώτες ιδιομορφές.}}{89}{figure.caption.46}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Διάγραμμα πτερυγισμού για την 3\textsuperscript {η} ιδιομορφή}}{90}{figure.caption.47}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Τιμή της αντικειμενικής συνάρτησης κατά τη διάρκεια της βελτιστοποίησης (Περίπτωση 1)}}{92}{figure.caption.48}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Τιμή κάθε μεταβλητής βελτιστοποίησης κατά τη διάρκεια της βελτιστοποίησης (Περίπτωση 1) }}{93}{figure.caption.49}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Διαγράμματα ανάλυσης πτερυγισμού από τη μέθοδο του \textlatin {Powell}. (Περίπτωση 1)}}{94}{figure.caption.50}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Ανάλυση πτερυγισμού της 3\textsuperscript {ης} ιδιομορφής με τη μέθοδο του \textlatin {Powell}. (Περίπτωση 1)}}{95}{figure.caption.51}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Τιμή της αντικειμενικής συνάρτησης κατά τη διάρκεια της βελτιστοποίησης (Περίπτωση 2)}}{96}{figure.caption.52}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Τιμή κάθε μεταβλητής βελτιστοποίησης κατά τη διάρκεια της βελτιστοποίησης (Περίπτωση 2)}}{97}{figure.caption.53}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Διαγράμματα ανάλυσης πτερυγισμού από τη μέθοδο του \textlatin {Powell}. (Περίπτωση 2)}}{98}{figure.caption.54}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Ανάλυση πτερυγισμού της 3\textsuperscript {ης} ιδιομορφής με τη μέθοδο του \textlatin {Powell}. (Περίπτωση 2)}}{99}{figure.caption.55}%
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Εξέλιξη του \textlatin {fittness fucntion} της καλύτερης λύσης κάθε γενιάς κατά τη διαδικασία βελτιστοποίησης}}{101}{figure.caption.56}%
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Εξέλιξη των τιμών των γονιδίων κατά τη διάρκεια της διαδικασίας βελτιστοποίησης.}}{102}{figure.caption.57}%
+\contentsline {figure}{\numberline {4.14}{\ignorespaces Διάγραμμα πτερυγισμού από τον αλγόριθμο γενετικής βελτιστοποίησης.}}{103}{figure.caption.58}%
+\contentsline {figure}{\numberline {4.15}{\ignorespaces Διάγραμμα πτερυγισμού της 1\textsuperscript {ης} ιδιομορφής από αλγόριθμο γενετικής βελτιστοποίησης}}{104}{figure.caption.59}%
+\contentsline {figure}{\numberline {4.16}{\ignorespaces \textlatin {pair plot} των δεδομένων εκπαίδευσης}}{106}{figure.caption.60}%
+\contentsline {figure}{\numberline {4.17}{\ignorespaces Απόδοση Νευρωνικου δικτύου με 1 κρυφό στρώμα}}{107}{figure.caption.61}%
+\contentsline {subfigure}{\numberline {({\greekscript \textalpha \textnumeralsigngreek })}{\ignorespaces {\textlatin {training history}}}}{107}{subfigure.17.1}%
+\contentsline {subfigure}{\numberline {({\greekscript \textbeta \textnumeralsigngreek })}{\ignorespaces {$Y_{true}$ \textlatin {vs} $Y_{pred}$}}}{107}{subfigure.17.2}%
+\contentsline {subfigure}{\numberline {({\greekscript \textgamma \textnumeralsigngreek })}{\ignorespaces {\textlatin {Residuals}}}}{107}{subfigure.17.3}%
+\contentsline {figure}{\numberline {4.18}{\ignorespaces Απόδοση Νευρωνικου δικτύου με 2 κρυφά στρώματα}}{108}{figure.caption.62}%
+\contentsline {subfigure}{\numberline {({\greekscript \textalpha \textnumeralsigngreek })}{\ignorespaces {\textlatin {training history}}}}{108}{subfigure.18.1}%
+\contentsline {subfigure}{\numberline {({\greekscript \textbeta \textnumeralsigngreek })}{\ignorespaces {$Y_{true}$ \textlatin {vs} $Y_{pred}$}}}{108}{subfigure.18.2}%
+\contentsline {subfigure}{\numberline {({\greekscript \textgamma \textnumeralsigngreek })}{\ignorespaces {\textlatin {Residuals}}}}{108}{subfigure.18.3}%
+\contentsline {figure}{\numberline {4.19}{\ignorespaces Απόδοση Νευρωνικου δικτύου με 4 κρυφά στρώματα}}{109}{figure.caption.63}%
+\contentsline {subfigure}{\numberline {({\greekscript \textalpha \textnumeralsigngreek })}{\ignorespaces {\textlatin {training history}}}}{109}{subfigure.19.1}%
+\contentsline {subfigure}{\numberline {({\greekscript \textbeta \textnumeralsigngreek })}{\ignorespaces {$Y_{true}$ \textlatin {vs} $Y_{pred}$}}}{109}{subfigure.19.2}%
+\contentsline {subfigure}{\numberline {({\greekscript \textgamma \textnumeralsigngreek })}{\ignorespaces {\textlatin {Residuals}}}}{109}{subfigure.19.3}%
+\contentsline {figure}{\numberline {4.20}{\ignorespaces Απόδοση Νευρωνικου δικτύου με 6 κρυφά στρώματα}}{110}{figure.caption.64}%
+\contentsline {subfigure}{\numberline {({\greekscript \textalpha \textnumeralsigngreek })}{\ignorespaces {\textlatin {training history}}}}{110}{subfigure.20.1}%
+\contentsline {subfigure}{\numberline {({\greekscript \textbeta \textnumeralsigngreek })}{\ignorespaces {$Y_{true}$ \textlatin {vs} $Y_{pred}$}}}{110}{subfigure.20.2}%
+\contentsline {subfigure}{\numberline {({\greekscript \textgamma \textnumeralsigngreek })}{\ignorespaces {\textlatin {Residuals}}}}{110}{subfigure.20.3}%
+\contentsline {figure}{\numberline {4.21}{\ignorespaces Δομή βελτιστοποιημένου Νευρωνικού Δικτύου.}}{112}{figure.caption.65}%
+\contentsline {figure}{\numberline {4.22}{\ignorespaces Απόδοση \textlatin {Hyperparameter tuned} Νευρωνικού δικτύου}}{113}{figure.caption.66}%
+\contentsline {subfigure}{\numberline {({\greekscript \textalpha \textnumeralsigngreek })}{\ignorespaces {\textlatin {training history}}}}{113}{subfigure.22.1}%
+\contentsline {subfigure}{\numberline {({\greekscript \textbeta \textnumeralsigngreek })}{\ignorespaces {$Y_{true}$ \textlatin {vs} $Y_{pred}$}}}{113}{subfigure.22.2}%
+\contentsline {subfigure}{\numberline {({\greekscript \textgamma \textnumeralsigngreek })}{\ignorespaces {\textlatin {Residuals}}}}{113}{subfigure.22.3}%
+\addvspace {10\p@ }
+\babel@toc {english}{}\relax 
+\babel@toc {greek}{}\relax 
+\babel@toc {english}{}\relax 
+\babel@toc {greek}{}\relax 
+\addvspace {10\p@ }
+\babel@toc {english}{}\relax 

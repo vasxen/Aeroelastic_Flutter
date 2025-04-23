@@ -1,0 +1,125 @@
+\chapter{Conclusions \& Future Work}
+\label{conclusions-future-work}
+\chapterprecis{In this chapter a summary of the results is presented, more gerenal conclusions are drawn and ideas for further development are discussed}
+
+\section{Optimization }\label{optimization}
+
+A summary of the results produced in this work is now made and general
+conclusions are drawn.
+
+in \autoref{tab:flutter_results} is a summary of the results obtained with every different
+optimization method used in this work, as well as a table with the
+percentage difference from the initial flutter solution.
+
+\begin{table}[h]
+  \footnotesize
+  \centering
+  \setlength{\tabcolsep}{5pt}
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabularx}{\textwidth}{lccc}
+      \toprule
+      \textbf{Method} & \textbf{Flutter Velocity (m/s)} & \textbf{Mass (Kg)} & \textbf{Divergent Mode} \\
+      \midrule
+      Initial Flutter Characteristics & 94.11 & 67.33 & 3 \\
+      Powell’s Method Scenario 1 & 99.48 & 67.33 & 3 \\
+      Powell’s Method Scenario 2 & 175.28 & 67.33 & 3 \\
+      Genetic Algorithm & 214.69 & 45.1 & 1 \\
+      \bottomrule
+  \end{tabularx}
+  \caption{Summary of Optimization Methods}
+  \label{tab:flutter_results}
+\end{table}
+
+\begin{table}[h]
+  \centering
+  \footnotesize
+  \setlength{\tabcolsep}{5pt}
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabular}{lcc}
+      \toprule
+      \textbf{Method} & \textbf{Velocity Change (\%)} & \textbf{Mass Change (\%)} \\
+      \midrule
+      Powell’s Method Scenario 1 & 5.71\% & 0.00\% \\
+      Powell’s Method Scenario 2 & 86.25\% & 0.00\% \\
+      Genetic Algorithm & 128.13\% & -33.02\% \\
+      \bottomrule
+  \end{tabular}
+  \caption{Comparison of different optimization methods}
+  \label{tab:flutter_changes}
+\end{table}
+
+What is clear from the results summary is that there is a lot of room
+for improvement from the initial solution. The effect of the ply angles
+is considerable and something that should be considered when designing a
+composite laminate aircraft wing. This kind of optimization is worth
+executing because it can potentially reduce the structural mass of the
+aircraft which results in enhanced flight performance, handling and fuel
+economy. It is worth noting though that dynamic flutter instability is
+not the only limiting factor of a main wing structure and there are
+other factors that should be considered. One of the main considerations
+being the wing deformation and dynamic response under different loads
+and angles of attack. Another consideration is static aeroelastic
+effects and flight control reversal.
+
+From \autoref{tab:flutter_changes} it can be seen that the best result is achieved while using
+the genetic algorithm which manages to reduce the mass of the wing by a
+very substantial 33\% while still managing to increase the flutter speed
+by 128\%. This impressive result should be treated with a lot of
+caution, because as it has been discussed in \autoref{genetic-algorithm-optimization} the solution
+seems to become unstable earlier, even though the sign of the damping of
+the first mode does not change until 214 m/s.
+
+\section{Neural Network prediction}
+\label{neural-network-prediction.}
+
+From the development of Neural Networks to predict the flutter speed of
+this structure we have concluded that quite a complex neural network is
+required for the best accuracy in predictions. What is more, the data
+required for training is very computationally expensive to acquire and,
+in most cases, the computational effort of generating the training data
+far exceeds the computation effort required for a direct optimization.
+
+The accuracy of the predicted results is good enough in most cases but
+not enough for accurate flutter prediction in every case because there
+are some outliers in the data, where the prediction is not satisfactory.
+
+It is worth noting that after the model has been trained, there is
+almost no computational effort required to make a prediction about the
+flutter speed. The Neural network can then be used for optimization of
+the structure.
+
+\section{Future Work}\label{future-work}
+
+The current study provides some insight into flutter analysis and
+flutter tailoring techniques using optimization methods and python, but
+several avenues remain unexplored and could benefit from further
+investigation.
+
+Future efforts should include at least some experimental validation of
+the simulation results. This way the influence of the ply-angles of the
+laminate composite material could be verified in practice
+
+Although several optimization algorithms were employed in this study
+with promising results, many advanced techniques remain unexplored.
+Future work could investigate these more sophisticated algorithms, along
+with the potential application of machine learning-based methods to
+further enhance optimization processes.
+
+The flutter phenomenon investigated in this thesis, modeled using the Vortex
+Lattice aerodynamic theory coupled with a structural solver based on
+modal analysis, could also be simulated through a transient
+Fluid-Structure Interaction (FSI) analysis. This would allow for a
+comparison of the results between the two approaches, providing further
+validation and insights
+
+Finally, the integration of Physics-Informed Neural Networks (PINNs) in
+this application presents a promising avenue for future research. PINNs
+are an emerging computational framework that combines data-driven
+learning with governing physical laws, such as the equations of fluid
+flow and structural dynamics. By embedding the physics directly into the
+neural network\textquotesingle s training process, PINNs can offer a
+more efficient and accurate solution to complex fluid-structure
+interaction problems. Their potential to bypass some of the limitations
+of traditional numerical methods, such as mesh generation and solver
+convergence issues, makes them particularly attractive for engineering
+systems.

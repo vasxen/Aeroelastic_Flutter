@@ -1,0 +1,86 @@
+\babel@toc {english}{}\relax 
+\babel@toc {greek}{}\relax 
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Problem Statement}{2}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Objective}{3}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Scope and Limitations}{4}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Motivation}{5}{section.1.4}%
+\contentsline {chapter}{\numberline {2}Theoretical Background}{6}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Composite Finite Elements}{7}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Displacement Field}{7}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Strain vectors}{7}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Stress -- Strain relationship}{9}{subsection.2.1.3}%
+\contentsline {subsection}{\numberline {2.1.4}Generalized Constitutive Matrix}{12}{subsection.2.1.4}%
+\contentsline {subsection}{\numberline {2.1.5}Discretized stress and strain - Shape functions}{14}{subsection.2.1.5}%
+\contentsline {subsection}{\numberline {2.1.6}Stiffness matrix }{17}{subsection.2.1.6}%
+\contentsline {section}{\numberline {2.2}Aerodynamic Theory (VLM)}{22}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}The Vortex Filament -- Biot SavartLaw}{22}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Straight Vortex Segment}{24}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Lifting Surface Computational Solution by Vortex Ring Elements}{26}{subsection.2.2.3}%
+\contentsline {section}{\numberline {2.3}Flutter Analysis Equations}{31}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Interconnection of the Structure with Aerodynamics -- Infinite Plate splines}{31}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}The PK Method of Flutter Solution}{34}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}Optimization techniques }{37}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Brent's -- Dekker Line search method }{37}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Powell's Method}{39}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Genetic Algorithm}{41}{subsection.2.4.3}%
+\contentsline {subsubsection}{Initialization}{41}{subsection.2.4.3}%
+\contentsline {subsubsection}{Parent Selection}{42}{subsection.2.4.3}%
+\contentsline {subsubsection}{Crossover}{42}{subsection.2.4.3}%
+\contentsline {subsubsection}{Mutation}{43}{figure.caption.26}%
+\contentsline {subsubsection}{Elitism}{44}{figure.caption.26}%
+\contentsline {subsection}{\numberline {2.4.4}Neural Networks}{44}{subsection.2.4.4}%
+\contentsline {subsubsection}{What are Artificial Neural Networks (ANN's)}{44}{subsection.2.4.4}%
+\contentsline {subsubsection}{Artificial Neural Network Training}{46}{figure.caption.28}%
+\contentsline {subsubsection}{Hyperparameter Tuning}{47}{equation.2.4.87}%
+\contentsline {chapter}{\numberline {3}Methodology}{49}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Problem Introduction }{50}{section.3.1}%
+\contentsline {section}{\numberline {3.2}ASW 28 main Composite Wing Model}{53}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Wing Geometry \bbl@greek@ampersand Discretization}{53}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Material properties Definition}{56}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Boundary Conditions}{58}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Aerodynamic Grid}{58}{subsection.3.2.4}%
+\contentsline {subsection}{\numberline {3.2.5}The Spline}{61}{subsection.3.2.5}%
+\contentsline {subsection}{\numberline {3.2.6}Aeroelastic Problem Setup}{62}{subsection.3.2.6}%
+\contentsline {subsubsection}{The AERO card:}{62}{subsection.3.2.6}%
+\contentsline {subsubsection}{The MKAERO1 card:}{63}{subsection.3.2.6}%
+\contentsline {subsubsection}{The FLFACT card:}{64}{subsection.3.2.6}%
+\contentsline {subsubsection}{The Flutter card:}{65}{equation.3.2.1}%
+\contentsline {subsubsection}{The EIGRL card:}{66}{Item.41}%
+\contentsline {subsubsection}{Subcase Definition:}{66}{Item.43}%
+\contentsline {section}{\numberline {3.3}Optistruct -- Python Interface}{67}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Results of Flutter Analysis \bbl@greek@ampersand Python }{67}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Modifying Optistruct's input using python}{69}{subsection.3.3.2}%
+\contentsline {section}{\numberline {3.4}Optimization Problem}{71}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Applying Powell's method}{71}{subsection.3.4.1}%
+\contentsline {subsubsection}{Decision Variables:}{71}{subsection.3.4.1}%
+\contentsline {subsubsection}{Objective function:}{72}{equation.3.4.2}%
+\contentsline {subsubsection}{Search space boundaries}{74}{equation.3.4.4}%
+\contentsline {subsubsection}{Acceleration of the algorithm}{74}{equation.3.4.6}%
+\contentsline {subsubsection}{Applying the Genetic Algorithm}{75}{Item.47}%
+\contentsline {subsection}{\numberline {3.4.2}Flutter Speed Prediction using Neural networks}{77}{subsection.3.4.2}%
+\contentsline {subsubsection}{Training Data}{78}{Item.53}%
+\contentsline {subsubsection}{Model Structure \bbl@greek@ampersand parameters}{78}{equation.3.4.9}%
+\contentsline {subsubsection}{Loss Function}{82}{figure.caption.44}%
+\contentsline {subsubsection}{Optimizer}{82}{figure.caption.44}%
+\contentsline {subsubsection}{Hyper Parameter Tuning}{82}{figure.caption.44}%
+\contentsline {chapter}{\numberline {4}Results}{83}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Modal Analysis}{84}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Initial Flutter Analysis}{87}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Powell's Optimization Method}{89}{section.4.3}%
+\contentsline {subsubsection}{Scenario 1:}{89}{section.4.3}%
+\contentsline {subsubsection}{Scenario 2:}{92}{equation.4.3.2}%
+\contentsline {section}{\numberline {4.4}Genetic Algorithm Optimization}{97}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Neural Network Prediction Results}{101}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Training data examination}{101}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}1 Hidden Layer Neural Network}{103}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}2 Hidden Layer Neural Network}{104}{subsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.5.4}4 Hidden Layer Neural Network}{105}{subsection.4.5.4}%
+\contentsline {subsection}{\numberline {4.5.5}6 Hidden Layer Neural Network}{106}{subsection.4.5.5}%
+\contentsline {subsection}{\numberline {4.5.6}Hyperparameter tuned Neural Network}{107}{subsection.4.5.6}%
+\contentsline {chapter}{\numberline {5}Conclusions \bbl@greek@ampersand Future Work}{110}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Optimization }{111}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Neural Network prediction}{113}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Future Work}{114}{section.5.3}%
+\contentsline {chapter}{\numberline {A}Python Code for Optimization}{117}{appendix.A}%

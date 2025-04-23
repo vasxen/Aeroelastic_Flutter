@@ -1,0 +1,74 @@
+\begin{thebibliography}{10}
+
+\bibitem{bolla2022}
+G.A. Bolla.
+\newblock Aeroelastic study of the flutter conditions of an aircraft wing.
+\newblock Master's thesis, Universitat Politecnica de Catalunya, 2022.
+
+\bibitem{brent1973}
+R.~P. Brent.
+\newblock {\em Algorithms for Minimization without Derivatives}.
+\newblock Prentice Hall, New Jersey, 1973.
+
+\bibitem{asw28}
+Alexander Schleicher GmbH~\& Co.
+\newblock Asw 28 glider information, 2025.
+
+\bibitem{altair_flutter_tips}
+Altair Community.
+\newblock Flutter analysis setup - tips \& tricks, 2025.
+\newblock Accessed: 2025-03-01.
+
+\bibitem{gad2023pygad}
+Ahmed~Fawzy Gad.
+\newblock Pygad: An intuitive genetic algorithm python library.
+\newblock {\em Multimedia Tools and Applications}, pages 1--14, 2023.
+
+\bibitem{AeroelasticityWright}
+Jonathan E.~Cooper Jan R.~Wright.
+\newblock {\em Dynamic Aeroelasticity – Flutter}, chapter~11, pages 167--198.
+\newblock John Wiley \& Sons, Ltd, 2014.
+
+\bibitem{katz2001}
+Joseph Katz.
+\newblock {\em Low-Speed Aerodynamics}.
+\newblock Cambridge University Press, second edition, 2001.
+
+\bibitem{kochenderfer2019}
+Mykel~L. Kochenderfer and Tim~A. Wheeler.
+\newblock {\em Algorithms for Optimization}.
+\newblock The MIT Press, London, 2019.
+
+\bibitem{li2018hyperbandnovelbanditbasedapproach}
+Lisha Li, Kevin Jamieson, Giulia DeSalvo, Afshin Rostamizadeh, and Ameet Talwalkar.
+\newblock Hyperband: A novel bandit-based approach to hyperparameter optimization, 2018.
+
+\bibitem{matweb}
+LLC MatWeb.
+\newblock Matweb material property data, 2025.
+\newblock Accessed: 2025-03-01.
+
+\bibitem{onate2013}
+E.~O\ {n}ate.
+\newblock {\em Structural Analysis with the Finite Element Method, vol. 2}.
+\newblock Springer, Barcelona, 2013.
+
+\bibitem{pinzon2015}
+S.~Pinzon.
+\newblock Introduction to vortex lattice theory.
+\newblock {\em Ciencia y Poder Aereo}, 10:39--48, 2015.
+
+\bibitem{msc2021}
+H.~M. Software.
+\newblock {\em MSC Nastran 2021.1 Aeroelastic User's Guide}, 2021.
+
+\bibitem{takyar2025}
+A.~Takyar.
+\newblock Neural networks: Architecture, types, working, applications, case studies, development and implementation, 2025.
+
+\bibitem{2020SciPy-NMeth}
+Pauli Virtanen, Ralf Gommers, Travis~E. Oliphant, Matt Haberland, Tyler Reddy, David Cournapeau, Evgeni Burovski, Pearu Peterson, Warren Weckesser, Jonathan Bright, St{\'e}fan~J. {van der Walt}, Matthew Brett, Joshua Wilson, K.~Jarrod Millman, Nikolay Mayorov, Andrew R.~J. Nelson, Eric Jones, Robert Kern, Eric Larson, C~J Carey, {\.I}lhan Polat, Yu~Feng, Eric~W. Moore, Jake {VanderPlas}, Denis Laxalde, Josef Perktold, Robert Cimrman, Ian Henriksen, E.~A. Quintero, Charles~R. Harris, Anne~M. Archibald, Ant{\^o}nio~H. Ribeiro, Fabian Pedregosa, Paul {van Mulbregt}, and {SciPy 1.0 Contributors}.
+\newblock Scipy 1.0: Fundamental algorithms for scientific computing in python.
+\newblock {\em Nature Methods}, 17:261--272, 2020.
+
+\end{thebibliography}

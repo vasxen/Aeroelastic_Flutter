@@ -1,0 +1,91 @@
+\babel@toc {english}{}\relax 
+\babel@toc {greek}{}\relax 
+\babel@toc {english}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Composite element coordinate system}}{8}{figure.caption.5}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Definition of layers in a composite laminated plate \cite {onate2013}}}{10}{figure.caption.6}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces natural and physical coordinate space of quadrilateral plate element \cite {bolla2022}}}{18}{figure.caption.8}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Gauss points for full and reduced Integration in 4 node elements}}{19}{figure.caption.9}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces local and global axes definition \cite {onate2013}}}{21}{figure.caption.11}%
+\contentsline {figure}{\numberline {2.6}{\ignorespaces Curved Three-dimensional vortex filament of strength $\Gamma $ \cite {pinzon2015}}}{22}{figure.caption.12}%
+\contentsline {figure}{\numberline {2.7}{\ignorespaces Velocity at point P due to a vortex distribution \cite {katz2001}}}{23}{figure.caption.13}%
+\contentsline {figure}{\numberline {2.8}{\ignorespaces Induced Velocity from straight Vortex Segment \cite {katz2001}}}{24}{figure.caption.14}%
+\contentsline {figure}{\numberline {2.9}{\ignorespaces Vortex segment geometry \cite {katz2001}}}{25}{figure.caption.15}%
+\contentsline {figure}{\numberline {2.10}{\ignorespaces Vortex Ring Element}}{27}{figure.caption.16}%
+\contentsline {figure}{\numberline {2.11}{\ignorespaces Vortex ring elements in a grid \cite {katz2001}}}{28}{figure.caption.17}%
+\contentsline {figure}{\numberline {2.12}{\ignorespaces Array of wing and wake panel corner points (dots) and of collocation points( $\times $ symbols) \cite {katz2001}}}{29}{figure.caption.18}%
+\contentsline {figure}{\numberline {2.13}{\ignorespaces Surface Spline coordinate system \cite {msc2021}}}{32}{figure.caption.19}%
+\contentsline {figure}{\numberline {2.14}{\ignorespaces A possible configuration of points \cite {brent1973} }}{38}{figure.caption.20}%
+\contentsline {figure}{\numberline {2.15}{\ignorespaces typical terminal configuration of important points \cite {brent1973}}}{39}{figure.caption.21}%
+\contentsline {figure}{\numberline {2.16}{\ignorespaces Cyclic coordinate search \cite {kochenderfer2019}}}{40}{figure.caption.22}%
+\contentsline {figure}{\numberline {2.17}{\ignorespaces Powell's method \cite {kochenderfer2019}}}{41}{figure.caption.23}%
+\contentsline {figure}{\numberline {2.18}{\ignorespaces Single Point Crossover \cite {kochenderfer2019}}}{43}{figure.caption.24}%
+\contentsline {figure}{\numberline {2.19}{\ignorespaces Two-point Crossover \cite {kochenderfer2019}}}{43}{figure.caption.25}%
+\contentsline {figure}{\numberline {2.20}{\ignorespaces Uniform Crossover \cite {kochenderfer2019}}}{43}{figure.caption.26}%
+\contentsline {figure}{\numberline {2.21}{\ignorespaces The Structure of a Neuron}}{45}{figure.caption.27}%
+\contentsline {figure}{\numberline {2.22}{\ignorespaces Structure of a Neural Network \cite {takyar2025}}}{46}{figure.caption.28}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Technical Data of ASW 28 glider \cite {asw28}}}{51}{figure.caption.29}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Front, side and top view of ASW 28 glider \cite {asw28}}}{52}{figure.caption.30}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces ASW 28 Wing external geometry (length in meters)}}{53}{figure.caption.31}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces ASW 28 Wing Internal geometry}}{54}{figure.caption.32}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces ASW 28 Wing Internal mesh}}{55}{figure.caption.33}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces ASW 28 Wing skin mesh}}{56}{figure.caption.34}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces ASW 28 Wing Boundary conditions}}{58}{figure.caption.35}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Coordinate System of CAERO1 Aerodynamic panel \cite {altair_flutter_tips}}}{59}{figure.caption.36}%
+\contentsline {figure}{\numberline {3.9}{\ignorespaces CAERO1 macro elements of the ASW 28 Wing Model}}{60}{figure.caption.37}%
+\contentsline {figure}{\numberline {3.10}{\ignorespaces SPLINE1 entries of the ASW 28 Wing model}}{61}{figure.caption.38}%
+\contentsline {figure}{\numberline {3.11}{\ignorespaces Optistruct .flt file explanation}}{67}{figure.caption.39}%
+\contentsline {figure}{\numberline {3.12}{\ignorespaces Example of V-g and V-f plot containing four eigenmodes \cite {altair_flutter_tips}}}{68}{figure.caption.40}%
+\contentsline {figure}{\numberline {3.13}{\ignorespaces Antisymmetric layer configuration}}{72}{figure.caption.42}%
+\contentsline {figure}{\numberline {3.14}{\ignorespaces Neural Network Structure with $1$ Hidden layer}}{80}{figure.caption.43}%
+\contentsline {figure}{\numberline {3.15}{\ignorespaces Neural Network Structure with $2$ Hidden layer}}{80}{figure.caption.43}%
+\contentsline {figure}{\numberline {3.16}{\ignorespaces Neural Network Structure with $4$ Hidden layer}}{81}{figure.caption.44}%
+\contentsline {figure}{\numberline {3.17}{\ignorespaces Neural Network Structure with $6$ Hidden layer}}{81}{figure.caption.44}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces First six Eigenmodes of the ASW 28 Wing}}{85}{figure.caption.45}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Mode 1,\hskip 1em\relax $f = 1.518 Hz$}}}{85}{subfigure.1.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Mode 2,\hskip 1em\relax $f = 2.704 Hz$}}}{85}{subfigure.1.2}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Mode 3,\hskip 1em\relax $f = 7.061 Hz$}}}{85}{subfigure.1.3}%
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {Mode 4,\hskip 1em\relax $f = 17.38 Hz$}}}{85}{subfigure.1.4}%
+\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {Mode 5,\hskip 1em\relax $f = 30.02 Hz$}}}{85}{subfigure.1.5}%
+\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {Mode 6,\hskip 1em\relax $f = 33.99 Hz$}}}{85}{subfigure.1.6}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Initial Flutter plot for the first four modes}}{87}{figure.caption.46}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Flutter plot of the 3\textsuperscript {rd} mode}}{88}{figure.caption.47}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Value of objective function throughout the optimization (Scenario 1)}}{89}{figure.caption.48}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces value of every optimization variable throughout the optimization process (Scenario 1) }}{90}{figure.caption.49}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Flutter analysis plots from Powell's method (Scenario 1)}}{91}{figure.caption.50}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Mode 3 Flutter analysis Powell's method (Scenario 1)}}{92}{figure.caption.51}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Value of objective function throughout the optimization (Scenario 2)}}{93}{figure.caption.52}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces value of every optimization variable throughout the optimization process (Scenario 2)}}{94}{figure.caption.53}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Flutter analysis plots from Powell's method (Scenario 2)}}{95}{figure.caption.54}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Mode 3 Flutter analysis plots from Powell's method (Scenario 2)}}{96}{figure.caption.55}%
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Evolution of the Fitness metrics of the best solution of every generation in the optimization process}}{97}{figure.caption.56}%
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Evolution of gene Values throughout the optimization process}}{98}{figure.caption.57}%
+\contentsline {figure}{\numberline {4.14}{\ignorespaces Flutter Plot from Genetic Algorithm}}{99}{figure.caption.58}%
+\contentsline {figure}{\numberline {4.15}{\ignorespaces Mode 1 Flutter Plot from Genetic Algorithm}}{100}{figure.caption.59}%
+\contentsline {figure}{\numberline {4.16}{\ignorespaces Pair Plot of training data}}{102}{figure.caption.60}%
+\contentsline {figure}{\numberline {4.17}{\ignorespaces 1 Hidden Layer Neural Network Performance}}{103}{figure.caption.61}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {training history}}}{103}{subfigure.17.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {$Y_{true}$ vs $Y_{pred}$}}}{103}{subfigure.17.2}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Residulas}}}{103}{subfigure.17.3}%
+\contentsline {figure}{\numberline {4.18}{\ignorespaces 2 Hidden Layer Neural Network Performance}}{104}{figure.caption.62}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {training history}}}{104}{subfigure.18.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {$Y_{true}$ vs $Y_{pred}$}}}{104}{subfigure.18.2}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Residulas}}}{104}{subfigure.18.3}%
+\contentsline {figure}{\numberline {4.19}{\ignorespaces 4 Hidden Layer Neural Network Performance}}{105}{figure.caption.63}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {training history}}}{105}{subfigure.19.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {$Y_{true}$ vs $Y_{pred}$}}}{105}{subfigure.19.2}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Residulas}}}{105}{subfigure.19.3}%
+\contentsline {figure}{\numberline {4.20}{\ignorespaces 6 Hidden Layer Neural Network Performance}}{106}{figure.caption.64}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {training history}}}{106}{subfigure.20.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {$Y_{true}$ vs $Y_{pred}$}}}{106}{subfigure.20.2}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Residulas}}}{106}{subfigure.20.3}%
+\contentsline {figure}{\numberline {4.21}{\ignorespaces Hypertuned model structure.}}{108}{figure.caption.65}%
+\contentsline {figure}{\numberline {4.22}{\ignorespaces Hypertuned Neural Network Performance}}{109}{figure.caption.66}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {training history}}}{109}{subfigure.22.1}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {$Y_{true}$ vs $Y_{pred}$}}}{109}{subfigure.22.2}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Residulas}}}{109}{subfigure.22.3}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }

@@ -1,0 +1,101 @@
+%% Creator: Inkscape 1.4 (86a8ad7, 2024-10-11), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'Neuron_svg-tex.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{960bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.5625)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{Neuron_svg-tex.pdf}}%
+    \put(0.00023804,0.55443195){\color[rgb]{0,0,0}\transparent{0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}෍\end{tabular}}}}%
+    \put(0.39737969,0.365625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑤\end{tabular}}}}%
+    \put(0.41055625,0.36171875){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑖\end{tabular}}}}%
+    \put(0.42078594,0.365625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}⋅\end{tabular}}}}%
+    \put(0.43029063,0.365625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑥\end{tabular}}}}%
+    \put(0.44013437,0.36171875){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑖\end{tabular}}}}%
+    \put(0.37728047,0.39296875){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑛\end{tabular}}}}%
+    \put(0.37026484,0.34140625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑖\end{tabular}}}}%
+    \put(0.37555156,0.34140625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}=\end{tabular}}}}%
+    \put(0.38544688,0.34140625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}0\end{tabular}}}}%
+    \put(0.45036406,0.365625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}+\end{tabular}}}}%
+    \put(0.46859297,0.365625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑏\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{Neuron_svg-tex.pdf}}%
+    \put(0.61358359,0.3546875){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑓\end{tabular}}}}%
+    \put(0.17727813,0.46953125){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑥\end{tabular}}}}%
+    \put(0.18668984,0.465625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0.17727813,0.39140625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑥\end{tabular}}}}%
+    \put(0.18712187,0.3875){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}2\end{tabular}}}}%
+    \put(0.17727813,0.3140625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑥\end{tabular}}}}%
+    \put(0.18712187,0.31015625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}3\end{tabular}}}}%
+    \put(0.17727813,0.23671875){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑥\end{tabular}}}}%
+    \put(0.18712187,0.2328125){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑛\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{Neuron_svg-tex.pdf}}%
+    \put(0.40899766,0.515625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}bia\end{tabular}}}}%
+    \put(0.43399766,0.515625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}s\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{Neuron_svg-tex.pdf}}%
+    \put(0.38689453,0.271875){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Summation\end{tabular}}}}%
+    \put(0.40022266,0.24921875){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}function\end{tabular}}}}%
+    \put(0.5852125,0.271875){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Activation\end{tabular}}}}%
+    \put(0.59199922,0.24921875){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}function\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{Neuron_svg-tex.pdf}}%
+    \put(0.80073438,0.3546875){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑦\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{Neuron_svg-tex.pdf}}%
+    \put(0.48889688,0.20234375){\color[rgb]{0.75294118,0.30980392,0.08235294}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Neuron\end{tabular}}}}%
+    \put(0.78151563,0.29140625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Output\end{tabular}}}}%
+    \put(0.27208047,0.45078125){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑤\end{tabular}}}}%
+    \put(0.284825,0.44765625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0.25056875,0.39140625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑤\end{tabular}}}}%
+    \put(0.26374609,0.3875){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}2\end{tabular}}}}%
+    \put(0.24682656,0.34375){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑤\end{tabular}}}}%
+    \put(0.26000313,0.33984375){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}3\end{tabular}}}}%
+    \put(0.24682656,0.29765625){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑤\end{tabular}}}}%
+    \put(0.25943594,0.29375){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑛\end{tabular}}}}%
+  \end{picture}%
+\endgroup%

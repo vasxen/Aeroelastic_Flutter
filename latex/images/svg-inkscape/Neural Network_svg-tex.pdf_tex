@@ -1,0 +1,98 @@
+%% Creator: Inkscape 1.4 (86a8ad7, 2024-10-11), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'Neural Network_svg-tex.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{680.96264648bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.49237368)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{Neural Network_svg-tex.pdf}}%
+    \put(-0.00028395,0.3792454){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{X}\textbf{\textsubscript{1}}\end{tabular}}}}%
+    \put(0.17813993,0.40457719){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.2}\end{tabular}}}}%
+    \put(0.37308455,0.3120611){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.2}\end{tabular}}}}%
+    \put(0.41713983,0.2327616){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.7}\end{tabular}}}}%
+    \put(0.37528731,0.27791826){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.61}\end{tabular}}}}%
+    \put(0.36647626,0.20412566){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.25}\end{tabular}}}}%
+    \put(0.37969284,0.16998282){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.3}\end{tabular}}}}%
+    \put(0.39951772,0.10059576){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.1}\end{tabular}}}}%
+    \put(0.43035641,0.13914413){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.1}\end{tabular}}}}%
+    \put(0.43366056,0.40347581){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.4}\end{tabular}}}}%
+    \put(0.3268265,0.37263711){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.8}\end{tabular}}}}%
+    \put(0.59776648,0.37594126){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.1}\end{tabular}}}}%
+    \put(0.60327339,0.24377542){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.9}\end{tabular}}}}%
+    \put(0.59666509,0.11711649){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.99}\end{tabular}}}}%
+    \put(0.32352236,0.24377542){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.12}\end{tabular}}}}%
+    \put(0.33013065,0.11711649){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.3}\end{tabular}}}}%
+    \put(0.66935631,0.38805646){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.2}\end{tabular}}}}%
+    \put(0.64843005,0.34179841){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.9}\end{tabular}}}}%
+    \put(0.65613972,0.27791826){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.12}\end{tabular}}}}%
+    \put(0.65834249,0.21624087){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.8}\end{tabular}}}}%
+    \put(0.6451259,0.16998282){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.87}\end{tabular}}}}%
+    \put(0.65944387,0.10059576){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.62}\end{tabular}}}}%
+    \put(0.43145779,0.35391362){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.331}\end{tabular}}}}%
+    \put(0.17813993,0.34840671){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.1}\end{tabular}}}}%
+    \put(0.11205701,0.31536525){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.6}\end{tabular}}}}%
+    \put(0.10985425,0.16998282){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.1}\end{tabular}}}}%
+    \put(0.15170677,0.23386298){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.9}\end{tabular}}}}%
+    \put(0.10324596,0.20963257){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.05}\end{tabular}}}}%
+    \put(0.16272059,0.14024551){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.75}\end{tabular}}}}%
+    \put(0.14289571,0.10059576){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.5}\end{tabular}}}}%
+    \put(0.14289571,0.25809338){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{0.12}\end{tabular}}}}%
+    \put(-0.00028395,0.25038371){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{X}\textbf{\textsubscript{2}}\end{tabular}}}}%
+    \put(-0.00028395,0.12152201){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{X}\textbf{\textsubscript{3}}\end{tabular}}}}%
+    \put(0.14840262,0.03120869){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{Weights}\end{tabular}}}}%
+    \put(0.43476194,0.03120869){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{Biases}\end{tabular}}}}%
+    \put(0.8224484,0.00477552){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}LeewayHertz\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{Neural Network_svg-tex.pdf}}%
+    \put(0.01072987,0.47396425){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{Input Layer}\end{tabular}}}}%
+    \put(0.34665138,0.47396425){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{Multiple Hidden Layers}\end{tabular}}}}%
+    \put(0.8224484,0.47396425){\color[rgb]{0.01960784,0.10980392,0.17254902}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textbf{Output Layer}\end{tabular}}}}%
+  \end{picture}%
+\endgroup%

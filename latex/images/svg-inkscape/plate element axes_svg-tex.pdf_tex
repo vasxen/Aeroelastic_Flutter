@@ -1,0 +1,73 @@
+%% Creator: Inkscape 1.4 (86a8ad7, 2024-10-11), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'plate element axes_svg-tex.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{579.44146729bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.55555553)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{plate element axes_svg-tex.pdf}}%
+    \put(0.92354227,0.02018127){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑥\end{tabular}}}}%
+    \put(0.93722355,0.02018127){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l},\end{tabular}}}}%
+    \put(0.94620634,0.02018127){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑢\end{tabular}}}}%
+    \put(0.44029415,0.47838113){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑦\end{tabular}}}}%
+    \put(0.45429901,0.47838113){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l},\end{tabular}}}}%
+    \put(0.46328957,0.47838113){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑣\end{tabular}}}}%
+    \put(0.01061011,0.47320373){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑧\end{tabular}}}}%
+    \put(0.02267345,0.47320373){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l},\end{tabular}}}}%
+    \put(0.031664,0.47320373){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑤\end{tabular}}}}%
+    \put(0.16703488,0.11078576){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝜃\end{tabular}}}}%
+    \put(0.17921083,0.10690271){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑥\end{tabular}}}}%
+    \put(0.87837852,0.35153484){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑡\end{tabular}}}}%
+    \put(0.09597896,0.15608801){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝜃\end{tabular}}}}%
+    \put(0.10815361,0.15091061){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}𝑦\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{plate element axes_svg-tex.pdf}}%
+  \end{picture}%
+\endgroup%

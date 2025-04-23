@@ -1,0 +1,120 @@
+%------------------------ DOCUMENT CLASS ------------------------
+\documentclass[12pt]{report}
+% Set how paragraph changes are handled
+\setlength{\parindent}{0ex} % 0 indent
+\setlength{\parskip}{1ex} % skip one line
+
+%---------------------------- PACKAGES ---------------------------
+\usepackage[LGR,T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[main=greek,english]{babel}
+\usepackage{libertinus}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{hyperref}
+\usepackage[inkscapelatex=false, inkscapepath=svgsubdir]{svg}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{cancel}
+\usepackage{titlesec}
+\usepackage{geometry}
+\usepackage{textgreek}
+\usepackage{fancyhdr}
+\usepackage{calc}
+\usepackage{longtable}
+\usepackage{subfig}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{textcomp}
+
+%----------------------- CUSTOM COMMANDS -----------------------
+
+% Increase header height
+\setlength{\headheight}{14.5pt}
+
+% Optionally adjust the top margin if you want to reduce space
+\addtolength{\topmargin}{-2.5pt}
+
+% Add functionality to \bmatrix so that it has a spacing input
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols c}}
+\makeatother
+
+
+% Custom text style for chapter description
+\newcommand{\chapterprecis}[1]{%
+  \vfill 
+  {\large\itshape #1} 
+  \vspace{1.5in}
+  \newpage
+  }
+
+% make sure that every section starts on a new page
+\newcommand{\sectionbreak}{\clearpage}
+
+\hyphenpenalty=7000
+
+%---------------------------  HEADERS ---------------------------
+\fancyhf{}
+\pagestyle{fancy}
+\fancyhf{}
+
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter\ - #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ - #1}}
+
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\rightmark}
+
+%---------------------------  FOOTERS ---------------------------
+\fancyfoot[C]{\thepage} % Page number in the center of the footer
+\setlength{\footskip}{90pt}
+
+%------------------------  IMAGES PATHS -------------------------
+
+\graphicspath{{images/}{images/Results/modal/}{images/Results/genetic algorithm/}{images/Results/Flutter/}{images/Results/Neural Net/}{images/Results/Powell/}}
+
+%--------------------------- META DATA ---------------------------
+\title{Aeroelastic Flutter Optimization of Wing Structures} 
+\author{Xenodochidis Vasileios} 
+\date{\today}
+
+
+\bibliographystyle{plain}
+
+%-------------------- MAIN DOCUMENT CONTROL ----------------------
+\begin{document}
+    \pagenumbering{roman}
+    \include{cover.tex}
+    \include{abstract.tex}
+    \selectlanguage{greek}
+    \pagestyle{plain}
+    \tableofcontents
+    
+    \listoffigures    
+    \listoftables
+
+    \pagestyle{fancy}
+    \clearpage
+    \setcounter{page}{1}
+    \pagenumbering{arabic}
+    \include{Ch1_Introduction.tex}
+    \include{Ch2_Theory.tex}
+    \include{Ch3_Methodology.tex}
+    \include{CH4_Results.tex}
+    \include{Ch5_Conclusions.tex}
+    
+    \pagestyle{plain}
+    \selectlanguage{english}
+    \bibliography{references.bib}
+    \selectlanguage{greek}
+    \include{Appendix.tex}
+
+\end{document}

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1280"
+   height="720"
+   overflow="hidden"
+   version="1.1"
+   id="svg22"
+   sodipodi:docname="plate element axes.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs22">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath22">
+      <rect
+         style="fill:#000000;fill-opacity:0.33119"
+         id="rect23"
+         width="772.58862"
+         height="429.21588"
+         x="317.85175"
+         y="70.375938"
+         ry="0" />
+    </clipPath>
+  </defs>
+  <sodipodi:namedview
+     id="namedview22"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="1.2930556"
+     inkscape:cx="639.95704"
+     inkscape:cy="360"
+     inkscape:window-width="1920"
+     inkscape:window-height="1175"
+     inkscape:window-x="-7"
+     inkscape:window-y="-7"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg22" />
+  <g
+     id="g22">
+    <rect
+       x="0"
+       y="0"
+       width="1280"
+       height="720"
+       fill="#FFFFFF"
+       id="rect1"
+       clip-path="url(#clipPath22)" />
+    <path
+       d="M365 464 596.733 226 979 226 747.267 464Z"
+       stroke="#000000"
+       stroke-width="6"
+       stroke-miterlimit="8"
+       fill="#FFFFFF"
+       fill-rule="evenodd"
+       id="path1" />
+    <path
+       d="M365 440 595.76 203 979 203 748.24 440Z"
+       stroke="#000000"
+       stroke-width="2"
+       stroke-miterlimit="8"
+       fill="none"
+       fill-rule="evenodd"
+       id="path2" />
+    <path
+       d="M364 487 595.733 249 978 249 746.267 487Z"
+       stroke="#000000"
+       stroke-width="2"
+       stroke-miterlimit="8"
+       fill="none"
+       fill-rule="evenodd"
+       id="path3" />
+    <path
+       d="M1.33333-3.94393e-07 1.33344 348.266-1.33323 348.266-1.33333 3.94393e-07ZM4.0001 346.932 0.000104987 354.932-3.9999 346.932Z"
+       transform="matrix(1 0 0 -1 364.5 464.432)"
+       id="path4" />
+    <path
+       d="M364.5 463.167 1067.68 463.167 1067.68 465.833 364.5 465.833ZM1066.34 460.5 1074.34 464.5 1066.34 468.5Z"
+       id="path5" />
+    <path
+       d="M0.955687-0.929752 326.794 333.998 324.883 335.857-0.955687 0.929752ZM327.777 331.183 330.488 339.707 322.043 336.762Z"
+       transform="matrix(1 0 0 -1 364.5 464.207)"
+       id="path6" />
+    <path
+       d="M365 374C414.706 374 455 414.071 455 463.5"
+       stroke="#000000"
+       stroke-width="2"
+       stroke-miterlimit="8"
+       fill="none"
+       fill-rule="evenodd"
+       id="path7" />
+    <path
+       d="M366.101 374.127C383.147 372.629 398.263 384.342 399.864 400.288 400.043 402.075 400.045 403.873 399.869 405.659"
+       stroke="#000000"
+       stroke-width="2"
+       stroke-miterlimit="8"
+       fill="none"
+       fill-rule="evenodd"
+       id="path8" />
+    <path
+       d="M377 377 361 374 377 371Z"
+       fill="#0D0D0D"
+       fill-rule="evenodd"
+       id="path9" />
+    <text
+       font-family="Cambria Math,Cambria Math_MSFontService,sans-serif"
+       font-weight="400"
+       font-size="19"
+       transform="translate(1031.37 484)"
+       id="text9">𝑥</text>
+    <text
+       font-family="Cambria Math,Cambria Math_MSFontService,sans-serif"
+       font-weight="400"
+       font-size="19"
+       transform="translate(1041.94 484)"
+       id="text10">,</text>
+    <text
+       font-family="Cambria Math,Cambria Math_MSFontService,sans-serif"
+       font-weight="400"
+       font-size="19"
+       transform="translate(1048.88 484)"
+       id="text11">𝑢</text>
+    <text
+       font-family="Cambria Math,Cambria Math_MSFontService,sans-serif"
+       font-weight="400"
+       font-size="19"
+       transform="translate(658.018 130)"
+       id="text12">𝑦</text>
+    <text
+       font-family="Cambria Math,Cambria Math_MSFontService,sans-serif"
+       font-weight="400"
+       font-size="19"
+       transform="translate(668.838 130)"
+       id="text13">,</text>
+    <text
+       font-family="Cambria Math,Cambria Math_MSFontService,sans-serif"
+       font-weight="400"
+       font-size="19"
+       transform="translate(675.784 130)"
+       id="text14">𝑣</text>
+    <text
+       font-family="Cambria Math,Cambria Math_MSFontService,sans-serif"
+       font-weight="400"
+       font-size="19"
+       transform="translate(326.049 134)"
+       id="text15">𝑧</text>
+    <text
+       font-family="Cambria Math,Cambria Math_MSFontService,sans-serif"
+       font-weight="400"
+       font-size="19"
+       transform="translate(335.369 134)"
+       id="text16">,</text>
+    <text
+       font-family="Cambria Math,Cambria Math_MSFontService,sans-serif"
+       font-weight="400"
+       font-size="19"
+       transform="translate(342.315 134)"
+       id="text17">𝑤</text>
+    <text
+       font-family="Cambria Math,Cambria Math_MSFontService,sans-serif"
+       font-weight="400"
+       font-size="19"
+       transform="translate(446.901 414)"
+       id="text18">𝜃</text>
+    <text
+       font-family="Cambria Math,Cambria Math_MSFontService,sans-serif"
+       font-weight="400"
+       font-size="14"
+       transform="translate(456.308 417)"
+       id="text19">𝑥</text>
+    <text
+       font-family="Cambria Math,Cambria Math_MSFontService,sans-serif"
+       font-weight="400"
+       font-size="19"
+       transform="translate(996.477 228)"
+       id="text20">𝑡</text>
+    <text
+       font-family="Cambria Math,Cambria Math_MSFontService,sans-serif"
+       font-weight="400"
+       font-size="19"
+       transform="translate(392.004 379)"
+       id="text21">𝜃</text>
+    <text
+       font-family="Cambria Math,Cambria Math_MSFontService,sans-serif"
+       font-weight="400"
+       font-size="14"
+       transform="translate(401.41 383)"
+       id="text22">𝑦</text>
+    <path
+       d="M0.500014 6.66667 0.500091 44.018-0.499909 44.018-0.499986 6.66667ZM-3.99998 8.00001 0 0 4.00002 7.99999ZM4.00009 42.6846 0.000104987 50.6846-3.99991 42.6846Z"
+       transform="matrix(1 0 0 -1 992.5 252.185)"
+       id="path22" />
+  </g>
+</svg>

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg63" version="1.1" style="max-height: 500px" viewBox="367.99305186972254 162.23175965665237 509.15463118664815 372.36051502145926" overflow="hidden" width="509.15463118664815" height="372.36051502145926">
+  <defs id="defs63">
+    <clipPath id="clipPath65" clipPathUnits="userSpaceOnUse">
+      <rect y="159.96925" x="366.86179" height="374.44403" width="511.32538" id="rect65" style="fill:#cf4646;fill-opacity:0.646302"/>
+    </clipPath>
+  </defs>
+  
+  <g id="g63">
+    <rect id="rect1" x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+    <path clip-path="url(#clipPath65)" id="path1" d="M0 0 1280 0 1280 720 0 720Z" fill="#FFFFFF"/>
+    <path id="path2" d="M702.5 415.5C702.5 405.007 708.32 396.5 715.5 396.5 722.68 396.5 728.5 405.007 728.5 415.5 728.5 425.993 722.68 434.5 715.5 434.5 708.32 434.5 702.5 425.993 702.5 415.5Z" stroke="#000000" stroke-width="3" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/>
+    <path id="path3" d="M715 416 728 416 728 437 715 437Z" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="8" fill="#FFFFFF"/>
+    <path id="path4" d="M728 410 727 421 726 410Z" stroke="#000000" stroke-width="2" stroke-miterlimit="8" fill-rule="evenodd"/>
+    <path id="path5" d="M561.5 417.5C561.5 407.007 567.32 398.5 574.5 398.5 581.68 398.5 587.5 407.007 587.5 417.5 587.5 427.993 581.68 436.5 574.5 436.5 567.32 436.5 561.5 427.993 561.5 417.5Z" stroke="#000000" stroke-width="3" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/>
+    <path id="path6" d="M574 417 588 417 588 438 574 438Z" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="8" fill="#FFFFFF"/>
+    <path id="path7" d="M588 411 586.5 423 585 411Z" stroke="#000000" stroke-width="2" stroke-miterlimit="8" fill-rule="evenodd"/>
+    <path id="path8" d="M628.5 414C628.5 403.783 634.096 395.5 641 395.5 647.904 395.5 653.5 403.783 653.5 414 653.5 424.217 647.904 432.5 641 432.5 634.096 432.5 628.5 424.217 628.5 414Z" stroke="#000000" stroke-width="3" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/>
+    <path id="path9" d="M641 414 654 414 654 435 641 435Z" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="8" fill="#FFFFFF"/>
+    <path id="path10" d="M654 408 653 420 652 408Z" stroke="#000000" stroke-width="2" stroke-miterlimit="8" fill-rule="evenodd"/>
+    <path id="path11" d="M572.5 296.5C572.5 286.007 581.007 277.5 591.5 277.5 601.993 277.5 610.5 286.007 610.5 296.5 610.5 306.993 601.993 315.5 591.5 315.5 581.007 315.5 572.5 306.993 572.5 296.5Z" stroke="#000000" stroke-width="3" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/>
+    <path id="path12" d="M591 297 611 297 611 317 591 317Z" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="8" fill="#FFFFFF"/>
+    <path id="path13" d="M611 290 609 302 607 290Z" stroke="#000000" stroke-width="2" stroke-miterlimit="8" fill-rule="evenodd"/>
+    <path id="path14" d="M550.5 337.5C550.5 327.007 559.007 318.5 569.5 318.5 579.993 318.5 588.5 327.007 588.5 337.5 588.5 347.993 579.993 356.5 569.5 356.5 559.007 356.5 550.5 347.993 550.5 337.5Z" stroke="#000000" stroke-width="3" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/>
+    <path id="path15" d="M569 337 589 337 589 358 569 358Z" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="8" fill="#FFFFFF"/>
+    <path id="path16" d="M589 331 587 343 585 331Z" stroke="#000000" stroke-width="2" stroke-miterlimit="8" fill-rule="evenodd"/>
+    <path id="path17" d="M521.5 386C521.5 375.783 530.007 367.5 540.5 367.5 550.993 367.5 559.5 375.783 559.5 386 559.5 396.217 550.993 404.5 540.5 404.5 530.007 404.5 521.5 396.217 521.5 386Z" stroke="#000000" stroke-width="3" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/>
+    <path id="path18" d="M540 386 560 386 560 407 540 407Z" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="8" fill="#FFFFFF"/>
+    <path id="path19" d="M560 380 558 392 556 380Z" stroke="#000000" stroke-width="2" stroke-miterlimit="8" fill-rule="evenodd"/>
+    <path id="path20" d="M385 341 440.942 341 440.942 343 385 343ZM439.609 338 447.609 342 439.609 346Z"/>
+    <path id="path21" d="M460 433 554.27 252 775 252 680.73 433Z" stroke="#000000" stroke-width="6" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/>
+    <path id="path22" d="M523.5 420.5 605.791 262.5 839.5 262.5 757.209 420.5Z" stroke="#042433" stroke-width="3" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/>
+    <text id="text22" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(463.946 450)">𝑖</text>
+    <text id="text23" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(688.342 455)">𝑖</text>
+    <text id="text24" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(697.402 455)">+</text>
+    <text id="text25" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(712.955 455)">1</text>
+    <text id="text26" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(439.394 428)">𝑗</text>
+    <text id="text27" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(498.297 248)">𝑗</text>
+    <text id="text28" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(507.957 248)">+</text>
+    <text id="text29" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(523.51 248)">1</text>
+    <text id="text30" font-family="Aptos,Aptos_MSFontService,sans-serif" font-weight="400" font-size="24" transform="translate(675.872 348)">x</text>
+    <path id="path30" d="M1-6.45779e-07 1.0001 155.907-0.999899 155.907-1 6.45779e-07ZM4.0001 154.574 0.000104987 162.574-3.9999 154.574Z" transform="matrix(1 0 0 -1 681 340.574)"/>
+    <text id="text31" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(689.982 180)">𝑛</text>
+    <path id="path31" d="M695.824 168.734 698.48 171.195 698.058 171.641 695.3 169.742 695.215 169.742 692.41 171.641 691.988 171.195 694.777 168.734Z"/>
+    <text id="text32" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="12" transform="translate(699.148 184)">𝑖𝑗</text>
+    <path id="path32" d="M437.667 500 640.777 500 640.777 502 437.667 502ZM439 505 431 501 439 497ZM639.444 497 647.444 501 639.444 505Z"/>
+    <path id="path33" d="M563.667 229 610.438 229 610.438 231 563.667 231ZM565 234 557 230 565 226ZM609.104 226 617.104 230 609.104 234Z"/>
+    <text id="text33" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="24" transform="translate(511.06 522)">Δ</text>
+    <text id="text34" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="24" transform="translate(525.393 522)">𝑥</text>
+    <text id="text35" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="18" transform="translate(537.993 527)">𝑖𝑗</text>
+    <path id="path35" d="M0 0 116.687 1.25207" stroke="#000000" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="8 6" fill="none" fill-rule="evenodd" transform="matrix(1 0 0 -1 681 342.252)"/>
+    <path id="path36" d="M4.04192 5.39511 39.3995 71.0362 37.6387 71.9847 2.28112 6.34356ZM0.272222 8.94013 0 0 7.31544 5.1463ZM41.4084 68.4396 41.6806 77.3797 34.3652 72.2334Z" transform="matrix(1 0 0 -1 767 421.38)"/>
+    <path id="path37" d="M3.92031 5.48403 40.0065 76.2199 38.2249 77.1288 2.13875 6.3929ZM0.0723593 8.94398 0 0 7.1986 5.3085ZM42.0729 73.6689 42.1453 82.6129 34.9467 77.3044Z" transform="matrix(1 0 0 -1 809 341.613)"/>
+    <text id="text37" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(839.811 295)">Δ</text>
+    <text id="text38" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(849.311 295)">𝑦</text>
+    <text id="text39" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="12" transform="translate(857.825 298)">𝑖𝑗</text>
+    <text id="text40" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(849.765 318)">2</text>
+    <path id="path40" d="M839.811 302.272 868.811 302.272 868.811 303.272 839.811 303.272Z" fill-rule="evenodd"/>
+    <text id="text41" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(806.049 382)">Δ</text>
+    <text id="text42" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(815.549 382)">𝑦</text>
+    <text id="text43" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="12" transform="translate(824.062 385)">𝑖𝑗</text>
+    <text id="text44" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(816.002 405)">2</text>
+    <path id="path44" d="M806.049 389.205 835.049 389.205 835.049 390.205 806.049 390.205Z" fill-rule="evenodd"/>
+    <text id="text45" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(571.769 202)">Δ</text>
+    <text id="text46" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(581.269 202)">𝑥</text>
+    <text id="text47" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="12" transform="translate(589.615 206)">𝑖𝑗</text>
+    <text id="text48" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(581.642 226)">4</text>
+    <path id="path48" d="M571.769 210.142 600.769 210.142 600.769 211.142 571.769 211.142Z" fill-rule="evenodd"/>
+    <text id="text49" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="24" transform="translate(377.149 332)">𝑄</text>
+    <text id="text50" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="18" transform="translate(392.556 337)">∞</text>
+    <text id="text51" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="24" transform="translate(590.52 342)">+</text>
+    <text id="text52" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="24" transform="translate(608.52 342)">Γ</text>
+    <text id="text53" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="18" transform="translate(618.727 347)">ij</text>
+    <path id="path53" d="M0 0 28.8 57.1933" stroke="#000000" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="8 6" fill="none" fill-rule="evenodd" transform="matrix(-1 0 0 1 459.8 436)"/>
+    <path id="path54" d="M0 0 28.8 57.1933" stroke="#000000" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="8 6" fill="none" fill-rule="evenodd" transform="matrix(-1 0 0 1 678.8 438)"/>
+    <path id="path55" d="M0 0 46.6254 90.2183" stroke="#000000" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" stroke-dasharray="8 6" fill="none" fill-rule="evenodd" transform="matrix(1 0 0 -1 685 341.218)"/>
+    <path id="path56" d="M738.667 231 772.477 231 772.477 233 738.667 233ZM740 236 732 232 740 228ZM771.144 228 779.144 232 771.144 236Z"/>
+    <text id="text56" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(745.387 205)">Δ</text>
+    <text id="text57" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(754.887 205)">𝑥</text>
+    <text id="text58" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="12" transform="translate(763.233 208)">𝑖𝑗</text>
+    <text id="text59" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="16" transform="translate(755.26 228)">4</text>
+    <path id="path59" d="M745.387 212.696 774.387 212.696 774.387 213.696 745.387 213.696Z" fill-rule="evenodd"/>
+    <text id="text60" fill="#FF0000" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="24" transform="translate(534.707 338)">1</text>
+    <text id="text61" fill="#FF0000" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="24" transform="translate(692.764 289)">2</text>
+    <text id="text62" fill="#FF0000" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="24" transform="translate(824.034 357)">3</text>
+    <text id="text63" fill="#FF0000" font-family="Cambria Math,Cambria Math_MSFontService,sans-serif" font-weight="400" font-size="24" transform="translate(653.847 402)">4</text>
+  </g>
+</svg>

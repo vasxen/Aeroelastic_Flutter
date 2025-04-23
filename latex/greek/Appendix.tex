@@ -1,0 +1,36 @@
+\appendix
+\chapter{Κώδικας Βελτιστοποίησης \textlatin{Python} }
+\label{appendix}
+
+Στο παράρτημα αυτό παρουσιάζεται ο κύριος κώδικας για την απλούστερη περίπτωση βελτιστοποίησης χρησιμοποιώντας τη μέθοδο \textlatin{Powell}. Ο κώδικας για όλες τις άλλες εφαρμογές είναι τροποποιημένος, αλλά η βασική λογική και πολλά μέρη παραμένουν ίδια σε όλη τη διαδικασία. Όλος ο κώδικας, συμπεριλαμβανομένου του κώδικα που χρησιμοποιήθηκε για την επεξεργασία των αποτελεσμάτων και την παραγωγή των γραφημάτων σε αυτή τη διατριβή, είναι διαθέσιμος στο \textlatin{GitHub}: \href{https://github.com/vasxen/Aeroelastic_Flutter}{\textlatin{vasxen/Aeroelastic\_Flutter (github.com)}}.
+
+\selectlanguage{english}
+% Define VS Code-style colors
+\definecolor{vscode_bg}{rgb}{0.16, 0.16, 0.16}      % Dark gray background
+\definecolor{vscode_keyword}{rgb}{0.86, 0.36, 0.07} % Orange keywords
+\definecolor{vscode_string}{rgb}{0.67, 0.83, 0.27}  % Green strings
+\definecolor{vscode_comment}{rgb}{0.5, 0.5, 0.5}    % Gray comments
+\definecolor{vscode_funcname}{rgb}{0.25, 0.72, 0.85} % Blue function names
+\definecolor{vscode_number}{rgb}{0.79, 0.43, 0.07}  % Orange numbers
+
+% Define VS Code-style Python listing
+\lstdefinestyle{vscodepython}{
+    language=Python,
+    backgroundcolor=\color{white}, 
+    basicstyle=\ttfamily\footnotesize\color{black}, % White text
+    keywordstyle=\color{vscode_keyword}\bfseries, 
+    stringstyle=\color{vscode_string}, 
+    commentstyle=\color{vscode_comment}\itshape, 
+    numberstyle=\color{vscode_number},
+    identifierstyle=\color{black}, % Default text color for variables
+    emph={self}, emphstyle=\color{vscode_funcname}, % Highlight "self" in blue
+    frame=single, 
+    rulecolor=\color{vscode_bg}, 
+    numbers=left, 
+    numbersep=5pt, 
+    stepnumber=1, 
+    breaklines=true, 
+    showstringspaces=false, 
+    tabsize=4
+}
+\lstinputlisting[style=vscodepython, caption={\textgreek{Κώδικας} Python \textgreek{για βελτιστοποίηση με τη μέθοδο} Powell}, label={lst:python_script}]{C:/Users/vasxen/OneDrive/Thesis/latex_test/greek/optimization.py}
